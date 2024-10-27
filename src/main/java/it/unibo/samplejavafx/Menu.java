@@ -3,7 +3,7 @@ package it.unibo.samplejavafx;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-//import javafx.scene.layout.StackPane;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
