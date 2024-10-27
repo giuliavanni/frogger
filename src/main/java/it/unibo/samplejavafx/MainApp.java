@@ -31,7 +31,7 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private boolean isPaused = false;
     private Text pauseText;
-    Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/java/it/unibo/samplejavafx/PressStart2P-Regular.ttf"), 36);
+    Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
 
     @Override
     public void start(Stage stage) {
