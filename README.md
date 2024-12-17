@@ -20,7 +20,7 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 
 - **[RF3] Modalità di Gioco Classica**:
   - La rana si muove attraverso diverse corsie utilizzando i tasti freccia per navigare.
-  - Ostacoli in movimento, come veicoli o tronchi, che devono essere evitati per completare il livello senza collisioni.
+  - Ostacoli in movimento, come veicoli (generano le collisioni) o tronchi (utilizzati come vettori per spostarsi), che devono essere evitati per completare il livello senza collisioni.
   - Possibilità di raccogliere gettoni che forniscono bonus, come estensioni del tempo o vite extra.
 
 - **[RF4] Sistema di Collisione**:
@@ -58,22 +58,29 @@ classDiagram
         +void move(direction)
     }
     class Lane {
-        +List~Obstacle~ obstacles
         +int speed
-        +String direction
+        +int direction
     }
     class Obstacle {
-        +int xPosition
-        +int yPosition
-        +int speed
+    }
+    class Log {
     }
     class Token {
-        +String type
         +void applyEffect(Player)
     }
+    class GameObjectControllable  {
+    }
+    class GameObjectNotControllable{
+        +int xPosition
+        +int yPosition
+    }
     Player -- Frog
-    Lane "1..*" -- Obstacle
-    Lane "1..*" -- Token
+    GameObjectNotControllable <|-- Obstacle
+    GameObjectNotControllable <|-- Token
+    GameObjectNotControllable <|-- Log
+    GameObjectControllable <|-- Frog
+    GameObjectControllable -- Lane
+    Lane *-- GameObjectNotControllable : composta da
 ```
 
 Ogni classe definisce un comportamento specifico:
