@@ -121,7 +121,7 @@ classDiagram
     GameObjectNotControllable <|-- Log
     GameObjectControllable <|-- Frog
     GameObjectControllable -- Lane
-    Lane *-- GameObjectNotControllable : composta da
+    Lane *-- GameObjectNotControllable : composed of
 
 ```
 
@@ -144,21 +144,31 @@ Il design del gioco segue il pattern MVC (Model-View-Controller), una scelta che
 
 ```mermaid
 classDiagram
-    class Model {
-        +Player player
-        +List~Lane~ lanes
-        +void updateGameState()
-    }
-    class View {
-        +void renderGame()
-        +void displayMenu()
-    }
-    class Controller {
-        +void handleInput()
-        +void updateView()
-    }
-    Model -- Controller
-    View -- Controller
+
+class Match {
+    +start() void
+}
+
+class MatchView {
+    +renderFrog(frog: Frog) void
+    +renderLane(lane: Lane) void
+    +updateFrogPosition(frog: Frog) void
+    +renderGameOver(score: int) void
+}
+
+class ViewObserver {
+    +onMove(direction: String) void
+}
+
+class MatchController {
+    +handleInput(input: String) void
+    +updateView() void
+}
+
+MatchController <|-- Match
+MatchController <|-- ViewObserver
+MatchController "1" -- "1..*" MatchView : interacts with
+
 ```
 
 - **Model**: Si occupa della logica del gioco e dello stato delle entità, come la posizione della rana e il timer.
