@@ -44,6 +44,8 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 
 Il dominio di *Frogger* si basa su un insieme di entità principali, ciascuna con responsabilità e comportamenti specifici. Queste entità, come la rana, le corsie, gli ostacoli e i gettoni, lavorano insieme per creare una dinamica di gioco coinvolgente e strategica.
 
+Gli elementi costitutivi il problema sono sintetizzati nella seguente figura.
+
 ```mermaid
 classDiagram
     class Player {
@@ -82,10 +84,51 @@ classDiagram
     GameObjectControllable -- Lane
     Lane *-- GameObjectNotControllable : composta da
 ```
+---
+
+```mermaid
+classDiagram
+    class Match {
+        +start() void
+    }
+    class Frog {
+        +int xPosition
+        +int yPosition
+        +int lives
+        +void collectToken()
+        +void move(direction)
+    }
+    class Lane {
+        +int speed
+        +int direction
+    }
+    class Obstacle {
+    }
+    class Log {
+    }
+    class Token {
+        +void applyEffect(Frog)
+    }
+    class GameObjectControllable  {
+    }
+    class GameObjectNotControllable{
+        +int xPosition
+        +int yPosition
+    }
+    Match -- GameObjectControllable
+    GameObjectNotControllable <|-- Obstacle
+    GameObjectNotControllable <|-- Token
+    GameObjectNotControllable <|-- Log
+    GameObjectControllable <|-- Frog
+    GameObjectControllable -- Lane
+    Lane *-- GameObjectNotControllable : composta da
+
+```
 
 Ogni classe definisce un comportamento specifico:
-- **Player** gestisce punteggi, vite e interazioni con bonus.
-- **Frog** rappresenta il personaggio principale controllato dal giocatore e fornisce le funzioni di movimento.
+- **Match**: coordinatore principale del flusso di gioco. Responsabile dell’inizio del match e del collegamento tra le varie entità.
+- **Frog**: rappresenta il personaggio principale controllato dal giocatore e fornisce le funzioni di movimento e raccolta dei gettoni.
+- **GameObjectNotControllable**: classe base per gli oggetti non controllabili. Possono essere ostacoli, tronchi o gettoni.
 - **Lane** e **Obstacle** definiscono gli elementi dinamici del percorso e la loro interazione.
 - **Token** introduce elementi strategici attraverso effetti bonus.
 
