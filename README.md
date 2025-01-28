@@ -116,11 +116,11 @@ classDiagram
         +int yPosition
     }
     Match -- GameObjectControllable
+    Match -- Lane
     GameObjectNotControllable <|-- Obstacle
     GameObjectNotControllable <|-- Token
     GameObjectNotControllable <|-- Log
     GameObjectControllable <|-- Frog
-    GameObjectControllable -- Lane
     Lane *-- GameObjectNotControllable : composed of
 
 ```
@@ -128,9 +128,11 @@ classDiagram
 Ogni classe definisce un comportamento specifico:
 - **Match**: coordinatore principale del flusso di gioco. Responsabile dell’inizio del match e del collegamento tra le varie entità.
 - **Frog**: rappresenta il personaggio principale controllato dal giocatore e fornisce le funzioni di movimento e raccolta dei gettoni.
+- **Lane**: definisce una corsia di gioco con una velocità e una direzione specifiche composta da elementi non controllabili.
 - **GameObjectNotControllable**: classe base per gli oggetti non controllabili. Possono essere ostacoli, tronchi o gettoni.
-- **Lane** e **Obstacle** definiscono gli elementi dinamici del percorso e la loro interazione.
-- **Token** introduce elementi strategici attraverso effetti bonus.
+- **Obstacle**: definisce gli elementi dinamici del percorso che determinano le collisioni.
+- **Token**: introduce elementi strategici attraverso effetti bonus.
+- **Log**: rappresenta un elemento in movimento che può essere utilizzato come mezzo di trasporto tra 2 sponde.
 
 Questa struttura consente una chiara separazione delle responsabilità, facilitando la manutenzione e l'espansione del progetto.
 
