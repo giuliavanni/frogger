@@ -20,7 +20,9 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 
 - **[RF3] Modalità di Gioco Classica**:
   - La rana si muove attraverso diverse corsie utilizzando i tasti freccia per navigare.
-  - Ostacoli in movimento, come veicoli (generano le collisioni) o tronchi (utilizzati come vettori per spostarsi), che devono essere evitati per completare il livello senza collisioni.
+  - Elementi in movimento, come: 
+    - veicoli: generano le collisioni e devono essere evitati per completare il livello
+    - tronchi: utilizzati come vettori per spostarsi e attraversare i corsi d'acqua.
   - Possibilità di raccogliere gettoni che forniscono bonus, come estensioni del tempo o vite extra.
 
 - **[RF4] Sistema di Collisione**:
@@ -45,46 +47,6 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 Il dominio di *Frogger* si basa su un insieme di entità principali, ciascuna con responsabilità e comportamenti specifici. Queste entità, come la rana, le corsie, gli ostacoli e i gettoni, lavorano insieme per creare una dinamica di gioco coinvolgente e strategica.
 
 Gli elementi costitutivi il problema sono sintetizzati nella seguente figura.
-
-```mermaid
-classDiagram
-    class Player {
-        +String name
-        +int score
-        +int lives
-        +void collectToken()
-    }
-    class Frog {
-        +int xPosition
-        +int yPosition
-        +void move(direction)
-    }
-    class Lane {
-        +int speed
-        +int direction
-    }
-    class Obstacle {
-    }
-    class Log {
-    }
-    class Token {
-        +void applyEffect(Player)
-    }
-    class GameObjectControllable  {
-    }
-    class GameObjectNotControllable{
-        +int xPosition
-        +int yPosition
-    }
-    Player -- Frog
-    GameObjectNotControllable <|-- Obstacle
-    GameObjectNotControllable <|-- Token
-    GameObjectNotControllable <|-- Log
-    GameObjectControllable <|-- Frog
-    GameObjectControllable -- Lane
-    Lane *-- GameObjectNotControllable : composta da
-```
----
 
 ```mermaid
 classDiagram
@@ -199,29 +161,50 @@ classDiagram
 ```
 
 #### Collision Detection
-**Problema**: Assicurare un rilevamento accurato delle collisioni tra rana e ostacoli dinamici.
 
-**Soluzione**: Utilizzo di bounding boxes per verificare le intersezioni tra coordinate, implementando un sistema efficiente e riutilizzabile.
+##### Problema
+
+Nel gioco, la rana si muove lungo le corsie evitando gli ostacoli o saltando su tronchi. Diventa quindi essenziale:
+- verificare la validità di ogni movimento (non fuori dai bordi dello schermo o su una posizione occupata da un ostacolo).
+- rilevare le collisioni con oggetti dinamici (es. veicoli).
+- garantire fluidità nel gameplay mantenendo un'implementazione efficiente.
+
+##### Soluzione
+
+Il movimento è gestito dalla classe ```Frog```, che calcola la nuova posizione in base alla direzione ricevuta. La classe ```CollisionDetector``` verifica se la posizione è valida utilizzando bounding boxes. Questa separazione migliora la modularità: ```Frog``` si occupa solo del movimento, mentre il ```CollisionDetector``` si concentra sulla logica di interazione.
+
+##### Motivazioni
+
+Separare il movimento e il rilevamento delle collisioni migliora la leggibilità e facilita i test unitari.
+L’uso del sistema di bounding boxes per le collisioni è stato scelto per la sua semplicità ed efficienza.
 
 ```mermaid
 classDiagram
-    class CollisionDetector {
-        +boolean checkCollision(Frog, Obstacle)
-    }
     class Frog {
-        +int x
-        +int y
+        +int xPosition
+        +int yPosition
+        +int lives
+        +void move(direction: String)
+    }
+    class CollisionDetector {
+        +boolean checkCollision(GameObjectNotControllable, Frog)
+    }
+    class GameObjectNotControllable {
+        +int xPosition
+        +int yPosition
         +int width
         +int height
     }
     class Obstacle {
-        +int x
-        +int y
-        +int width
-        +int height
+        +void updatePosition()
     }
-    CollisionDetector -- Frog
-    CollisionDetector -- Obstacle
+    class Log {
+        +void updatePosition()
+    }
+    Frog --> CollisionDetector : usa
+    CollisionDetector -- GameObjectNotControllable
+    GameObjectNotControllable <|-- Obstacle
+    GameObjectNotControllable <|-- Log
 ```
 
 ---
@@ -269,4 +252,3 @@ public void testCollisionDetection() {
 5. Alla fine della partita, visualizzare il punteggio e scegliere se continuare o uscire.
 
 ---
-
