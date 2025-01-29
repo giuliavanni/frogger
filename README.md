@@ -53,16 +53,24 @@ classDiagram
     class Match {
         +start() void
     }
-    class Frog {
+    class GameObjectControllable  {
         +int xPosition
         +int yPosition
+        +void move(String: direction)
+    }
+    class Frog {
         +int lives
         +void collectToken()
-        +void move(direction)
+        +int getLives()
     }
     class Lane {
         +int speed
         +int direction
+    }
+    class GameObjectNotControllable{
+        +int xPosition
+        +int yPosition
+        +void updatePosition()
     }
     class Obstacle {
     }
@@ -70,12 +78,6 @@ classDiagram
     }
     class Token {
         +void applyEffect(Frog)
-    }
-    class GameObjectControllable  {
-    }
-    class GameObjectNotControllable{
-        +int xPosition
-        +int yPosition
     }
     Match -- GameObjectControllable
     Match -- Lane
