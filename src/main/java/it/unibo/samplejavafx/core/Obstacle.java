@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx;
+package it.unibo.samplejavafx.core;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

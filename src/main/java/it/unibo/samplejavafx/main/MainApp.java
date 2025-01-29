@@ -1,8 +1,11 @@
-package it.unibo.samplejavafx;
+package it.unibo.samplejavafx.main;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unibo.samplejavafx.core.Frog;
+import it.unibo.samplejavafx.core.Obstacle;
+import it.unibo.samplejavafx.view.Menu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;

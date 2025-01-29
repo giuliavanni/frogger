@@ -1,5 +1,6 @@
-package it.unibo.samplejavafx;
+package it.unibo.samplejavafx.view;
 
+import it.unibo.samplejavafx.main.MainApp;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
