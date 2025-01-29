@@ -72,6 +72,8 @@ classDiagram
     class GameObjectNotControllable{
         +int xPosition
         +int yPosition
+        +int getXPosition()
+        +int getYPosition()
         +void updatePosition()
     }
     class Obstacle {
