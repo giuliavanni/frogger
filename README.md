@@ -58,7 +58,7 @@ classDiagram
         +int yPosition
         +int getXPosition()
         +int getYPosition()
-        +void move(String: direction)
+        +void move(KeyCode code)
     }
     class Frog {
         +int lives
@@ -187,19 +187,19 @@ L’uso del sistema di bounding boxes per le collisioni è stato scelto per la s
 ```mermaid
 classDiagram
     class Frog {
-        +int xPosition
-        +int yPosition
         +int lives
-        +void move(direction: String)
+        +void collectToken()
+        +int getLives()
     }
     class CollisionDetector {
         +boolean checkCollision(GameObjectNotControllable, Frog)
     }
-    class GameObjectNotControllable {
+    class GameObjectNotControllable{
         +int xPosition
         +int yPosition
-        +int width
-        +int height
+        +int getXPosition()
+        +int getYPosition()
+        +void updatePosition()
     }
     class Obstacle {
         +void updatePosition()
