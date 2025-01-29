@@ -56,6 +56,8 @@ classDiagram
     class GameObjectControllable  {
         +int xPosition
         +int yPosition
+        +int getXPosition()
+        +int getYPosition()
         +void move(String: direction)
     }
     class Frog {
