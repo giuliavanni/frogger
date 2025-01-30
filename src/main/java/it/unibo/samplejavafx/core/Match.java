@@ -31,7 +31,7 @@ public class Match {
 
     private void setupGame() {
         // Initialize Frog
-        frog = new Frog(WIDTH / 2, HEIGHT - 50, 3);
+        frog = new Frog(WIDTH / 2, HEIGHT - 46, 3);
     
         // Create ground lane (start)
         Lane groundStartLane = new Lane(0, 0, new ArrayList<>());
