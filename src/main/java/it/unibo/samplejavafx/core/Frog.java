@@ -4,34 +4,81 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-public class Frog extends ImageView {
-    private double x, y;
+public class Frog extends GameObjectControllable {
+    private int lives;
+    private ImageView imageView;
+    private boolean onLog = false;
+    private int logSpeed = 0;
+
     private static final String IMAGE_PATH = "/froggy1.png"; // Path to your image
 
-    public Frog(double x, double y) {
-        super(new Image(Frog.class.getResourceAsStream(IMAGE_PATH))); // Load image here
-        this.x = x;
-        this.y = y;
-        setX(x);
-        setY(y);
-        setFitWidth(40);
-        setFitHeight(40);
+    public Frog(int x, int y, int lives) {
+        super(x, y);
+        this.imageView = new ImageView(new Image(Frog.class.getResourceAsStream(IMAGE_PATH)));
+        this.imageView.setFitWidth(40); // Set appropriate size
+        this.imageView.setFitHeight(40); // Set appropriate size
+        this.lives = lives;
+    }
+
+    public boolean isOnLog() {
+        return onLog;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void loseLife() {
+        if (lives > 0) {
+            lives--;
+        }
+    }
+
+    public void gainLife() {
+        lives++;
+    }
+
+    public void collectToken(Token token) {
+        if (this.xPosition == token.getXPosition() && this.yPosition == token.getYPosition()) {
+            token.applyEffect(this);
+        }
     }
 
     public void move(KeyCode code) {
         switch (code) {
-            case UP: y -= 20; break;
-            case DOWN: y += 20; break;
-            case LEFT: x -= 20; break;
-            case RIGHT: x += 20; break;
+            case UP: yPosition -= 46; break;
+            case DOWN: yPosition += 46; break;
+            case LEFT: xPosition -= 46; break;
+            case RIGHT: xPosition += 46; break;
             default: break;
         }
         // Limit movement within window boundaries
-        x = Math.max(0, Math.min(x, 800 - 20));
-        y = Math.max(0, Math.min(y, 600 - 20));
+        xPosition = Math.max(0, Math.min(xPosition, 800 - 46));
+        yPosition = Math.max(0, Math.min(yPosition, 600 - 46));
+        imageView.setX(xPosition);
+        imageView.setY(yPosition);
+    }
 
-        // Update the position of the frog
-        setX(x);
-        setY(y);
+    public void resetPosition(int x, int y) {
+        this.xPosition = x;
+        this.yPosition = y;
+        imageView.setX(x);
+        imageView.setY(y);
+    }
+
+    public void setOnLog(boolean onLog, int logSpeed) {
+        this.onLog = onLog;
+        this.logSpeed = logSpeed;
+    }
+
+    public void updatePosition() {
+        if (onLog) {
+            xPosition += logSpeed;
+            imageView.setX(xPosition);
+        }
     }
 }
