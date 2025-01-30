@@ -14,6 +14,7 @@ public class Match implements ViewObserver {
     private static final int HEIGHT = 600;
     private static final int LANE_HEIGHT = HEIGHT / 13; // 13 lanes in total
     private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
+    private static final int OBSTACLE_Y_OFFSET = 12; // Offset to adjust the vertical position of obstacles
     private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
 
     private Frog frog;
@@ -97,7 +98,7 @@ public class Match implements ViewObserver {
                         }
                     }
                 } while (overlap);
-                int yPosition = (i + 7) * LANE_HEIGHT - 12; // Position in the current lane
+                int yPosition = (i + 7) * LANE_HEIGHT - OBSTACLE_Y_OFFSET; // Position in the current lane
                 lane.getObjects().add(new Obstacle(xPosition, yPosition));
             }
         }
