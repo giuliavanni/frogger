@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.main;
 import it.unibo.samplejavafx.core.Match;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
+import it.unibo.samplejavafx.controller.MatchController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -17,6 +18,7 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private Match match;
     private MatchView matchView;
+    private MatchController matchController;
 
     @Override
     public void start(Stage stage) {
@@ -35,6 +37,7 @@ public class MainApp extends Application {
 
         matchView = new MatchView();
         match = new Match(matchView);
+        matchController = new MatchController(match.getFrog(), match.getLanes(), matchView);
 
         // Create a new Scene for the game and set it on the stage
         StackPane root = new StackPane(matchView.getCanvas());
@@ -42,9 +45,9 @@ public class MainApp extends Application {
 
         gameScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.P) {
-                match.togglePause();
+                matchController.togglePause();
             } else {
-                match.handleInput(event.getCode());
+                matchController.handleInput(event.getCode());
             }
         });
 
