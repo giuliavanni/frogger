@@ -37,7 +37,7 @@ public class MainApp extends Application {
 
         matchView = new MatchView();
         match = new Match(matchView);
-        matchController = new MatchController(match.getFrog(), match.getLanes(), matchView);
+        matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView);
 
         // Create a new Scene for the game and set it on the stage
         StackPane root = new StackPane(matchView.getCanvas());

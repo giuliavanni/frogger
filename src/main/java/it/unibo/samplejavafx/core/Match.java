@@ -100,15 +100,12 @@ public class Match {
     }
 
     private void addTokenInValidPosition() {
-        // Choose a random lane index (excluding the ground lanes)
-        int laneIndex = (int) (Math.random() * 10) + 1; // Lanes 1 to 10
-
-        // Choose a random position within the lane, aligned with the frog's step size
+        int laneIndex = (int) (Math.random() * 10) + 1;
         int xPosition = ((int) (Math.random() * (WIDTH / LANE_HEIGHT))) * LANE_HEIGHT;
         int yPosition = laneIndex * LANE_HEIGHT;
-
-        // Add the token to the objects list
-        objects.add(new Token(xPosition, yPosition));
+        
+        Token token = new Token(xPosition, yPosition);
+        objects.add(token);
     }
 
     public List<Lane> getLanes() {

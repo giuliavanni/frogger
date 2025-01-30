@@ -7,17 +7,19 @@ import javafx.scene.input.KeyCode;
 import java.util.List;
 
 public class MatchController implements ViewObserver {
-
+    
     private Frog frog;
     private List<Lane> lanes;
     private MatchView view;
     private CollisionDetector collisionDetector;
     private boolean isPaused;
     private AnimationTimer gameLoop;
+    private List<GameObjectNotControllable> objects; // Add this field
 
-    public MatchController(Frog frog, List<Lane> lanes, MatchView view) {
+    public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view) {
         this.frog = frog;
         this.lanes = lanes;
+        this.objects = objects; // Initialize objects list
         this.view = view;
         this.collisionDetector = new CollisionDetector();
         this.isPaused = false;
@@ -79,6 +81,13 @@ public class MatchController implements ViewObserver {
                 view.renderLogLane(lane, i);
             } else {
                 view.renderTrafficLane(lane, i);
+            }
+        }
+        
+        // Render tokens using objects list
+        for (GameObjectNotControllable obj : objects) {
+            if (obj instanceof Token) {
+                view.renderToken(obj);
             }
         }
         
