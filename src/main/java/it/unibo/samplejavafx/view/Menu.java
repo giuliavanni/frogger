@@ -68,7 +68,7 @@ public class Menu {
         submitButton.setOnAction(e -> {
             String playerName = nameInputField.getText();
             System.out.println("Player's name: " + playerName);
-            mainApp.setupGame(); // Call setupGame from MainApp
+            startNewGame(); // Call setupGame from MainApp
         });
 
         nameInputLayout.getChildren().addAll(nameLabel, nameInputField, submitButton);
