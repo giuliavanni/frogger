@@ -4,12 +4,11 @@ import it.unibo.samplejavafx.main.MainApp;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 
 public class Menu {
 
@@ -17,7 +16,6 @@ public class Menu {
     private MainApp mainApp; // Reference to MainApp
     
     Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
-    //Font pixelFont = new Font(80);
 
     public Menu(Stage stage, MainApp mainApp) {
         this.stage = stage;
@@ -47,7 +45,7 @@ public class Menu {
 
         Scene menuScene = new Scene(layout, 800, 600); // Set the size of the menu
         stage.setScene(menuScene);
-        stage.show(); // Show the menuu
+        stage.show(); // Show the menu
     }
 
     private void startNewGame() {
@@ -60,6 +58,7 @@ public class Menu {
 
         Label nameLabel = new Label("Enter your name:");
         nameLabel.setFont(pixelFont);
+        nameLabel.setStyle("-fx-text-fill: white;"); // Set text color to white
         TextField nameInputField = new TextField();
         nameInputField.setFont(pixelFont);
         nameInputField.setMaxWidth(500);
@@ -79,5 +78,3 @@ public class Menu {
         stage.setScene(nameInputScene); // Change to the name input scene
     }
 }
-
-
