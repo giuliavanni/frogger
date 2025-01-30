@@ -142,7 +142,10 @@ public class Match implements ViewObserver {
         for (Lane lane : lanes) {
             lane.updateObjectsPosition();
         }
-        collisionDetector.handleCollisions(frog, objects);
+        //collisionDetector.handleCollisions(frog, objects);
+        for (GameObjectNotControllable objt : objects){
+            collisionDetector.checkCollision(objt, frog);
+        }
         frog.updatePosition(); // Update frog's position if on a log
     }
 
