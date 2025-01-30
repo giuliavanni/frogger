@@ -13,6 +13,8 @@ public class Match implements ViewObserver {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private static final int LANE_HEIGHT = HEIGHT / 13; // 13 lanes in total
+    private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
+    private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
 
     private Frog frog;
     private List<GameObjectNotControllable> objects;
@@ -54,8 +56,20 @@ public class Match implements ViewObserver {
     
             // Add logs to lanes
             for (int j = 0; j < 3; j++) {
+                int xPosition;
+                boolean overlap;
+                do {
+                    overlap = false;
+                    xPosition = (int) (Math.random() * (WIDTH - LOG_WIDTH));
+                    for (GameObjectNotControllable obj : lane.getObjects()) {
+                        if (Math.abs(obj.getXPosition() - xPosition) < LOG_WIDTH) {
+                            overlap = true;
+                            break;
+                        }
+                    }
+                } while (overlap);
                 int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Log((int) (Math.random() * WIDTH), yPosition, lane.getSpeed()));
+                lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed()));
             }
         }        
     
@@ -71,8 +85,20 @@ public class Match implements ViewObserver {
     
             // Add obstacles to lanes
             for (int j = 0; j < 3; j++) {
+                int xPosition;
+                boolean overlap;
+                do {
+                    overlap = false;
+                    xPosition = (int) (Math.random() * (WIDTH - OBSTACLE_WIDTH));
+                    for (GameObjectNotControllable obj : lane.getObjects()) {
+                        if (Math.abs(obj.getXPosition() - xPosition) < OBSTACLE_WIDTH) {
+                            overlap = true;
+                            break;
+                        }
+                    }
+                } while (overlap);
                 int yPosition = (i + 7) * LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Obstacle((int) (Math.random() * WIDTH), yPosition));
+                lane.getObjects().add(new Obstacle(xPosition, yPosition));
             }
         }
     
@@ -97,6 +123,7 @@ public class Match implements ViewObserver {
         // Add the token to the objects list
         objects.add(new Token(xPosition, yPosition));
     }
+
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
             @Override
