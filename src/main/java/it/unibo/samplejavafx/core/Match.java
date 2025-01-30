@@ -111,16 +111,22 @@ public class Match implements ViewObserver {
         view.clearScene(); // Clear the scene before rendering
         
         // Render lanes and other elements first
-        view.renderGroundLane(lanes.get(0), 0); 
+        view.renderGroundLane(lanes.get(0), 0);
+
         for (int i = 1; i <= 5; i++) {
             view.renderLogLane(lanes.get(i), i);
         }
+
         view.renderGroundLane(lanes.get(6), 6);
+
         for (int i = 7; i <= 11; i++) {
             view.renderTrafficLane(lanes.get(i), i);
         }
+
         view.renderGroundLane(lanes.get(12), 12);
+
         view.renderFrog(frog);
+        
         for (GameObjectNotControllable token : objects) {
             view.renderToken(token);
         }
