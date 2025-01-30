@@ -45,6 +45,23 @@ public class Match implements ViewObserver {
         // Create ground lane (start)
         Lane groundStartLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundStartLane);
+
+        // Create log lanes and add logs to them
+        for (int i = 0; i < 5; i++) {
+            int direction = (i % 2 == 0) ? 1 : -1;
+            Lane lane = new Lane((int) (Math.random() * 3 + 2), direction, new ArrayList<>());
+            lanes.add(lane);
+    
+            // Add logs to lanes
+            for (int j = 0; j < 3; j++) {
+                int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
+                lane.getObjects().add(new Log((int) (Math.random() * WIDTH), yPosition, lane.getSpeed()));
+            }
+        }        
+    
+        // Create ground lane (middle)
+        Lane groundMiddleLane = new Lane(0, 0, new ArrayList<>());
+        lanes.add(groundMiddleLane);
     
         // Create traffic lanes and add obstacles to them
         for (int i = 0; i < 5; i++) {
@@ -54,25 +71,8 @@ public class Match implements ViewObserver {
     
             // Add obstacles to lanes
             for (int j = 0; j < 3; j++) {
-                int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Obstacle((int) (Math.random() * WIDTH), yPosition));
-            }
-        }
-    
-        // Create ground lane (middle)
-        Lane groundMiddleLane = new Lane(0, 0, new ArrayList<>());
-        lanes.add(groundMiddleLane);
-    
-        // Create log lanes and add logs to them
-        for (int i = 0; i < 5; i++) {
-            int direction = (i % 2 == 0) ? 1 : -1;
-            Lane lane = new Lane((int) (Math.random() * 3 + 2), direction, new ArrayList<>());
-            lanes.add(lane);
-    
-            // Add logs to lanes
-            for (int j = 0; j < 3; j++) {
                 int yPosition = (i + 7) * LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Log((int) (Math.random() * WIDTH), yPosition, lane.getSpeed()));
+                lane.getObjects().add(new Obstacle((int) (Math.random() * WIDTH), yPosition));
             }
         }
     
