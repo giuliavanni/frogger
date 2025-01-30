@@ -9,8 +9,8 @@ public class Token extends GameObjectNotControllable {
 
     public Token(int x, int y) {
         super(x, y, new ImageView(new Image(Token.class.getResourceAsStream(IMAGE_PATH))));
-        this.imageView.setFitWidth(20); // Set appropriate size
-        this.imageView.setFitHeight(20); // Set appropriate size
+        this.imageView.setFitWidth(30); // Set appropriate size
+        this.imageView.setFitHeight(30); // Set appropriate size
     }
 
     public void applyEffect(Frog frog) {

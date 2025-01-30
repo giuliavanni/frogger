@@ -9,8 +9,8 @@ public class Obstacle extends GameObjectNotControllable {
 
     public Obstacle(int x, int y) {
         super(x, y, new ImageView(new Image(Obstacle.class.getResourceAsStream(IMAGE_PATH))));
-        this.imageView.setFitWidth(80); // Set appropriate size
-        this.imageView.setFitHeight(80); // Set appropriate size
+        this.imageView.setFitWidth(70); // Set appropriate size
+        this.imageView.setFitHeight(70); // Set appropriate size
     }
 
     @Override

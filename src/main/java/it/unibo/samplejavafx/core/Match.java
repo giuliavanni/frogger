@@ -97,7 +97,7 @@ public class Match implements ViewObserver {
                         }
                     }
                 } while (overlap);
-                int yPosition = (i + 7) * LANE_HEIGHT; // Position in the current lane
+                int yPosition = (i + 7) * LANE_HEIGHT - 12; // Position in the current lane
                 lane.getObjects().add(new Obstacle(xPosition, yPosition));
             }
         }
