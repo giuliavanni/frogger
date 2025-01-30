@@ -80,12 +80,23 @@ public class Match implements ViewObserver {
         Lane groundEndLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundEndLane);
     
-        // Create token
-        objects.add(new Token((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT)));
-    
+        // Create token in valid positions
+        addTokenInValidPosition();
+
         startGameLoop();
     }
 
+    private void addTokenInValidPosition() {
+        // Choose a random lane index (excluding the ground lanes)
+        int laneIndex = (int) (Math.random() * 10) + 1; // Lanes 1 to 10
+
+        // Choose a random position within the lane, aligned with the frog's step size
+        int xPosition = ((int) (Math.random() * (WIDTH / LANE_HEIGHT))) * LANE_HEIGHT;
+        int yPosition = laneIndex * LANE_HEIGHT;
+
+        // Add the token to the objects list
+        objects.add(new Token(xPosition, yPosition));
+    }
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
             @Override
