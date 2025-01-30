@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.core;
 
+import javafx.scene.input.KeyCode;
+
 public abstract class GameObjectControllable {
     protected int xPosition;
     protected int yPosition;
@@ -17,5 +19,5 @@ public abstract class GameObjectControllable {
         return yPosition;
     }
 
-    public abstract void move(String direction);
+    public abstract void move(KeyCode code);
 }
