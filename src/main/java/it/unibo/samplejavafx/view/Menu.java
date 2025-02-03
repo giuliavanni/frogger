@@ -1,11 +1,16 @@
 package it.unibo.samplejavafx.view;
 
+import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.main.MainApp;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -23,27 +28,54 @@ public class Menu {
     }
 
     public void createMenu() {
-        
         Label titleLabel = new Label("Frogger");
         titleLabel.setFont(pixelFont);
         titleLabel.setStyle("-fx-text-fill: white;");
 
         Button newGameButton = new Button("New Game");
+        Button settingsButton = new Button();
         Button quitButton = new Button("Quit");
         newGameButton.setFont(pixelFont);
         quitButton.setFont(pixelFont);
 
-        newGameButton.setOnAction(e -> askForPlayerName());
-        quitButton.setOnAction(e -> stage.close());
+        // Set icon for settings button
+        ImageView settingsIcon = new ImageView(new Image(getClass().getResourceAsStream("/gear.png")));
+        settingsIcon.setFitWidth(30);
+        settingsIcon.setFitHeight(30);
+        settingsButton.setGraphic(settingsIcon);
 
-        // Use VBox for vertical arrangement
-        VBox layout = new VBox(20);
-        layout.setPadding(new Insets(20)); // Add some padding around the layout
-        layout.getChildren().addAll(titleLabel, newGameButton, quitButton);
-        layout.setAlignment(javafx.geometry.Pos.CENTER);
-        layout.setStyle("-fx-background-color: black;");
+        newGameButton.setOnAction(e -> {
+            SoundManager.playSound("click");
+            askForPlayerName();
+        });
+        settingsButton.setOnAction(e -> {
+            SoundManager.playSound("click");
+            openSettings();
+        });
+        quitButton.setOnAction(e -> {
+            SoundManager.playSound("click");
+            stage.close();
+        });
 
-        Scene menuScene = new Scene(layout, 800, 600); // Set the size of the menu
+        // Use VBox for vertical arrangement of buttons
+        VBox centerLayout = new VBox(20);
+        centerLayout.setPadding(new Insets(20)); // Add some padding around the layout
+        centerLayout.getChildren().addAll(titleLabel, newGameButton, quitButton);
+        centerLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // Use HBox for settings button in top right corner
+        HBox topLayout = new HBox();
+        topLayout.setPadding(new Insets(10));
+        topLayout.setAlignment(javafx.geometry.Pos.TOP_RIGHT);
+        topLayout.getChildren().add(settingsButton);
+
+        // Use BorderPane for overall layout
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setCenter(centerLayout);
+        mainLayout.setTop(topLayout);
+        mainLayout.setStyle("-fx-background-color: black;");
+
+        Scene menuScene = new Scene(mainLayout, 800, 600); // Set the size of the menu
         stage.setScene(menuScene);
         stage.show(); // Show the menu
     }
@@ -66,6 +98,7 @@ public class Menu {
         Button submitButton = new Button("Submit");
         submitButton.setFont(pixelFont);
         submitButton.setOnAction(e -> {
+            SoundManager.playSound("click");
             String playerName = nameInputField.getText();
             System.out.println("Player's name: " + playerName);
             startNewGame(); // Call setupGame from MainApp
@@ -76,5 +109,10 @@ public class Menu {
 
         Scene nameInputScene = new Scene(nameInputLayout, 800, 600);
         stage.setScene(nameInputScene); // Change to the name input scene
+    }
+
+    private void openSettings() {
+        SettingsDialog settingsDialog = new SettingsDialog(stage);
+        settingsDialog.show();
     }
 }

@@ -9,7 +9,8 @@ public class SoundManager {
     private static final Map<String, Media> soundEffects = new HashMap<>();
     private static final Map<String, MediaPlayer> players = new HashMap<>();
     private static MediaPlayer backgroundMusicPlayer;
-    private static double volume = 0.5;
+    private static double musicVolume = 0.5;
+    private static double effectsVolume = 0.5;
 
     public static void loadSoundEffects() {
         try {
@@ -26,7 +27,7 @@ public class SoundManager {
         if (sound != null) {
             if (!players.containsKey(soundName)) {
                 MediaPlayer player = new MediaPlayer(sound);
-                player.setVolume(volume);
+                player.setVolume(effectsVolume);
                 players.put(soundName, player);
             }
             MediaPlayer player = players.get(soundName);
@@ -35,12 +36,24 @@ public class SoundManager {
         }
     }
 
-    public static void setVolume(double newVolume) {
-        volume = Math.min(1.0, Math.max(0.0, newVolume));
-        players.values().forEach(player -> player.setVolume(volume));
+    public static void setMusicVolume(double newVolume) {
+        musicVolume = Math.min(1.0, Math.max(0.0, newVolume));
         if (backgroundMusicPlayer != null) {
-            backgroundMusicPlayer.setVolume(volume);
+            backgroundMusicPlayer.setVolume(musicVolume);
         }
+    }
+
+    public static double getMusicVolume() {
+        return musicVolume;
+    }
+
+    public static void setEffectsVolume(double newVolume) {
+        effectsVolume = Math.min(1.0, Math.max(0.0, newVolume));
+        players.values().forEach(player -> player.setVolume(effectsVolume));
+    }
+
+    public static double getEffectsVolume() {
+        return effectsVolume;
     }
 
     public static void playBackgroundMusic(String musicFile) {
@@ -48,22 +61,10 @@ public class SoundManager {
             Media sound = new Media(SoundManager.class.getResource(musicFile).toExternalForm());
             backgroundMusicPlayer = new MediaPlayer(sound);
             backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop music
-            backgroundMusicPlayer.setVolume(volume);
+            backgroundMusicPlayer.setVolume(musicVolume);
             backgroundMusicPlayer.play();
         } catch (Exception e) {
             System.err.println("Error loading background music: " + e.getMessage());
-        }
-    }
-
-    public static void pauseBackgroundMusic() {
-        if (backgroundMusicPlayer != null) {
-            backgroundMusicPlayer.pause();
-        }
-    }
-
-    public static void resumeBackgroundMusic() {
-        if (backgroundMusicPlayer != null) {
-            backgroundMusicPlayer.play();
         }
     }
 
@@ -77,7 +78,7 @@ public class SoundManager {
         try {
             Media sound = new Media(SoundManager.class.getResource("/game-over.mp3").toExternalForm());
             MediaPlayer gameOverPlayer = new MediaPlayer(sound);
-            gameOverPlayer.setVolume(volume);
+            gameOverPlayer.setVolume(musicVolume);
             gameOverPlayer.play();
         } catch (Exception e) {
             System.err.println("Error playing game over music: " + e.getMessage());
