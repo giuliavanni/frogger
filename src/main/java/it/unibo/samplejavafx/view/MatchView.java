@@ -38,8 +38,8 @@ public class MatchView {
     }
 
     public void renderGroundLane(Lane lane, int laneIndex) {
-        gc.setFill(Color.GREEN); // Set the background color to green for ground lanes
-        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with green color
+        gc.setFill(Color.PURPLE); // Set the background color to purple for ground lanes
+        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with purple color
         for (GameObjectNotControllable obj : lane.getObjects()) {
             gc.drawImage(obj.getImageView().getImage(), obj.getXPosition(), obj.getYPosition(), obj.getImageView().getFitWidth(), obj.getImageView().getFitHeight());
         }
@@ -47,7 +47,7 @@ public class MatchView {
 
     public void renderTrafficLane(Lane lane, int laneIndex) {
         gc.setFill(Color.BLACK); // Set the background color to black for traffic lanes
-        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with gray color
+        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with black color
         for (GameObjectNotControllable obj : lane.getObjects()) {
             gc.drawImage(obj.getImageView().getImage(), obj.getXPosition(), obj.getYPosition(), obj.getImageView().getFitWidth(), obj.getImageView().getFitHeight());
         }
