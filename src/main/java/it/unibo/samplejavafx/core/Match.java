@@ -87,7 +87,7 @@ public class Match {
                     }
                 } while (overlap);
                 int yPosition = (i + 7) * LANE_HEIGHT - OBSTACLE_Y_OFFSET; // Position in the current lane
-                lane.getObjects().add(new Obstacle(xPosition, yPosition));
+                lane.getObjects().add(new Obstacle(xPosition, yPosition, direction));
             }
         }
     
