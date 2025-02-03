@@ -74,7 +74,7 @@ public class MatchController implements ViewObserver {
             view.renderGameOver(calculateScore());
             return;
         }
-        
+
         view.clearScene();
         
         // Render lanes
@@ -97,6 +97,7 @@ public class MatchController implements ViewObserver {
         }
         
         view.renderFrog(frog);
+        view.renderLives(frog);
         view.drawLaneLines();
     }
 

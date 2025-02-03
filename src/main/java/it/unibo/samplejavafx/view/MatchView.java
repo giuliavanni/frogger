@@ -79,6 +79,20 @@ public class MatchView {
         renderFrog(frog); // Render the frog at the new position
     }
 
+    public void renderLives(Frog frog) {
+        // Define size and position of lives icons
+        final int LIFE_ICON_SIZE = 30;  // Smaller size for lives icons
+        final int PADDING = 10;         // Space from border
+        final int SPACING = 5;          // Space between icons
+        final int BASE_Y = HEIGHT - LIFE_ICON_SIZE - PADDING;  // Base Y position
+        
+        // For each lives draw a Frog icon
+        for (int i = 0; i < frog.getLives(); i++) {
+            double x = PADDING + (i * (LIFE_ICON_SIZE + SPACING));
+            gc.drawImage(frog.getImageView().getImage(), x, BASE_Y, LIFE_ICON_SIZE, LIFE_ICON_SIZE);
+        }
+    }
+
     public void renderGameOver(int score) {
         showGameOverScreen(score);
     }
