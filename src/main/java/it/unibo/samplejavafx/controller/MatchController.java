@@ -5,6 +5,8 @@ import it.unibo.samplejavafx.view.MatchView;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import java.util.List;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class MatchController implements ViewObserver {
 
@@ -15,6 +17,8 @@ public class MatchController implements ViewObserver {
     private boolean isPaused;
     private AnimationTimer gameLoop;
     private List<GameObjectNotControllable> objects;
+    private MediaPlayer musicPlayer;
+    private boolean isMusicPlaying = false;
 
     public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view) {
         this.frog = frog;
@@ -23,7 +27,35 @@ public class MatchController implements ViewObserver {
         this.view = view;
         this.collisionDetector = new CollisionDetector();
         this.isPaused = false;
+        initializeMusic();
         startGameLoop();
+    }
+
+    private void initializeMusic() {
+        try {
+            String musicFile = "/Frogger_Theme.mp3";
+            Media sound = new Media(getClass().getResource(musicFile).toExternalForm());
+            musicPlayer = new MediaPlayer(sound);
+            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop music
+            //musicPlayer.setVolume(0.5); // Set volume to 50%
+            playMusic();
+        } catch (Exception e) {
+            System.err.println("Error loading music: " + e.getMessage());
+        }
+    }
+    
+    public void playMusic() {
+        if (musicPlayer != null && !isMusicPlaying) {
+            musicPlayer.play();
+            isMusicPlaying = true;
+        }
+    }
+    
+    public void pauseMusic() {
+        if (musicPlayer != null && isMusicPlaying) {
+            musicPlayer.pause();
+            isMusicPlaying = false;
+        }
     }
 
     private void startGameLoop() {
