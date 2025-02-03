@@ -70,6 +70,11 @@ public class MatchController implements ViewObserver {
 
     @Override
     public void updateView() {
+        if (frog.getLives() <= 0) {
+            view.renderGameOver(calculateScore());
+            return;
+        }
+        
         view.clearScene();
         
         // Render lanes
