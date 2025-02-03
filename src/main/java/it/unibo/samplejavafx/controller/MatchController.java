@@ -111,6 +111,8 @@ public class MatchController implements ViewObserver {
 
     private void gameOver() {
         stop();
+        SoundManager.stopBackgroundMusic();  // Ferma la musica di sottofondo
+        SoundManager.playGameOverMusic();    // Avvia la musica di game over
         view.renderGameOver(calculateScore());
     }
 

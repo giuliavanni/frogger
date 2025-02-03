@@ -66,4 +66,21 @@ public class SoundManager {
             backgroundMusicPlayer.play();
         }
     }
+
+    public static void stopBackgroundMusic() {
+        if (backgroundMusicPlayer != null) {
+            backgroundMusicPlayer.stop();
+        }
+    }
+
+    public static void playGameOverMusic() {
+        try {
+            Media sound = new Media(SoundManager.class.getResource("/game-over.mp3").toExternalForm());
+            MediaPlayer gameOverPlayer = new MediaPlayer(sound);
+            gameOverPlayer.setVolume(volume);
+            gameOverPlayer.play();
+        } catch (Exception e) {
+            System.err.println("Error playing game over music: " + e.getMessage());
+        }
+    }
 }
