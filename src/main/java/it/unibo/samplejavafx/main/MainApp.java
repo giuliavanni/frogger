@@ -35,7 +35,7 @@ public class MainApp extends Application {
     public void setupGame() {
         System.out.println("Setting up the game..."); // Debugging output
 
-        matchView = new MatchView();
+        matchView = new MatchView(primaryStage, this); // Pass stage and this
         match = new Match(matchView);
         matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView);
 

@@ -7,19 +7,29 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import it.unibo.samplejavafx.main.MainApp;
 
 public class MatchView {
-
+    
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
-    private static final int LANE_HEIGHT = HEIGHT / 13; // 13 lanes in total
+    private static final int LANE_HEIGHT = HEIGHT / 13;
 
     private Canvas canvas;
     private GraphicsContext gc;
     private Font pixelFont;
+    private Stage stage;
+    private MainApp mainApp;
 
-    public MatchView() {
-        this.canvas = new Canvas(WIDTH, HEIGHT); // Set the game window size to 800x600
+    public MatchView(Stage stage, MainApp mainApp) {
+        this.stage = stage;
+        this.mainApp = mainApp;
+        this.canvas = new Canvas(WIDTH, HEIGHT);
         this.gc = canvas.getGraphicsContext2D();
         this.pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
     }
@@ -70,12 +80,34 @@ public class MatchView {
     }
 
     public void renderGameOver(int score) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
-        gc.setFill(Color.WHITE);
-        gc.setFont(pixelFont);
-        gc.fillText("Game Over", canvas.getWidth() / 2 - 100, canvas.getHeight() / 2 - 50);
-        gc.fillText("Score: " + score, canvas.getWidth() / 2 - 100, canvas.getHeight() / 2);
+        showGameOverScreen(score);
+    }
+
+    private void showGameOverScreen(int score) {
+        VBox gameOverLayout = new VBox(40);
+        gameOverLayout.setAlignment(javafx.geometry.Pos.CENTER);
+        
+        Label gameOverLabel = new Label("Game Over");
+        gameOverLabel.setFont(pixelFont);
+        gameOverLabel.setStyle("-fx-text-fill: white;");
+        
+        Label scoreLabel = new Label("Score: " + score);
+        scoreLabel.setFont(pixelFont);
+        scoreLabel.setStyle("-fx-text-fill: white;");
+        
+        Button restartButton = new Button("Restart");
+        restartButton.setFont(pixelFont);
+        restartButton.setOnAction(e -> mainApp.setupGame());
+        
+        Button quitButton = new Button("Quit");
+        quitButton.setFont(pixelFont);
+        quitButton.setOnAction(e -> stage.close());
+        
+        gameOverLayout.getChildren().addAll(gameOverLabel, scoreLabel, restartButton, quitButton);
+        gameOverLayout.setStyle("-fx-background-color: black;");
+        
+        Scene gameOverScene = new Scene(gameOverLayout, WIDTH, HEIGHT);
+        stage.setScene(gameOverScene);
     }
 
     public void drawLaneLines() {
