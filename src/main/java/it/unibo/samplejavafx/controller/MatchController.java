@@ -45,14 +45,17 @@ public class MatchController implements ViewObserver {
             lane.updateObjectsPosition();
         }
         
-        // Check collisions
+        // Check collisions with lane objects
         for (Lane lane : lanes) {
             collisionDetector.handleCollisions(frog, lane.getObjects());
         }
+    
+        // Check collisions with tokens and other objects not in lanes
+        collisionDetector.handleCollisions(frog, objects);
         
         // Update frog position if on log
         frog.updatePosition();
-
+    
         // Check game over conditions
         if (frog.getLives() <= 0) {
             gameOver();

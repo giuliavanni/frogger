@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.core.Obstacle;
 import it.unibo.samplejavafx.core.Log;
 import it.unibo.samplejavafx.core.Token;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class CollisionDetector {
@@ -44,7 +45,9 @@ public class CollisionDetector {
         boolean onLog = false;
         int logSpeed = 0;
     
-        for (GameObjectNotControllable obj : objects) {
+        Iterator<GameObjectNotControllable> iterator = objects.iterator();
+        while (iterator.hasNext()) {
+            GameObjectNotControllable obj = iterator.next();
             if (checkCollision(obj, frog)) {
                 if (obj instanceof Obstacle) {
                     handleObstacleCollision(frog);
@@ -54,6 +57,8 @@ public class CollisionDetector {
                     logSpeed = ((Log) obj).getSpeed();
                 } else if (obj instanceof Token) {
                     handleTokenCollision(frog, (Token) obj);
+                    iterator.remove(); // Remove the token after collection
+                    return;
                 }
             }
         }
