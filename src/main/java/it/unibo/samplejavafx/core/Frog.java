@@ -50,10 +50,22 @@ public class Frog extends GameObjectControllable {
 
     public void move(KeyCode code) {
         switch (code) {
-            case UP: yPosition -= 46; break;
-            case DOWN: yPosition += 46; break;
-            case LEFT: xPosition -= 46; break;
-            case RIGHT: xPosition += 46; break;
+            case UP: 
+                yPosition -= 46; 
+                SoundManager.playSound("jump");
+                break;
+            case DOWN: 
+                yPosition += 46; 
+                SoundManager.playSound("jump");
+                break;
+            case LEFT: 
+                xPosition -= 46; 
+                SoundManager.playSound("jump");
+                break;
+            case RIGHT: 
+                xPosition += 46; 
+                SoundManager.playSound("jump");
+                break;
             default: break;
         }
         // Limit movement within window boundaries
@@ -76,6 +88,8 @@ public class Frog extends GameObjectControllable {
     }
 
     public void updatePosition() {
+        System.out.println("onLog: " + onLog);
+        System.out.println("logSpeed: " + logSpeed);
         if (onLog) {
             xPosition += logSpeed;
             imageView.setX(xPosition);

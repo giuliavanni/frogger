@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.controller;
 import it.unibo.samplejavafx.core.Frog;
 import it.unibo.samplejavafx.core.GameObjectNotControllable;
 import it.unibo.samplejavafx.core.Obstacle;
+import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.core.Log;
 import it.unibo.samplejavafx.core.Token;
 
@@ -53,6 +54,8 @@ public class CollisionDetector {
                     handleObstacleCollision(frog);
                     return;
                 } else if (obj instanceof Log) {
+                    System.out.println("Log collision detected!");
+                    System.out.println("Log speed: " + ((Log) obj).getSpeed());
                     onLog = true;
                     logSpeed = ((Log) obj).getSpeed();
                 } else if (obj instanceof Token) {
@@ -67,12 +70,14 @@ public class CollisionDetector {
     }
 
     private void handleObstacleCollision(Frog frog) {
+        SoundManager.playSound("collision");
         frog.loseLife();
         frog.resetPosition(WIDTH / 2, HEIGHT - 46);
         lastCollisionTime = System.currentTimeMillis();
     }
 
     private void handleTokenCollision(Frog frog, Token token) {
+        SoundManager.playSound("token");
         token.applyEffect(frog);
     }
 }

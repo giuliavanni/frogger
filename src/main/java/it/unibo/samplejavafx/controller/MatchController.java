@@ -27,6 +27,7 @@ public class MatchController implements ViewObserver {
         this.view = view;
         this.collisionDetector = new CollisionDetector();
         this.isPaused = false;
+        SoundManager.loadSoundEffects();
         initializeMusic();
         startGameLoop();
     }
@@ -37,7 +38,6 @@ public class MatchController implements ViewObserver {
             Media sound = new Media(getClass().getResource(musicFile).toExternalForm());
             musicPlayer = new MediaPlayer(sound);
             musicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop music
-            //musicPlayer.setVolume(0.5); // Set volume to 50%
             playMusic();
         } catch (Exception e) {
             System.err.println("Error loading music: " + e.getMessage());
