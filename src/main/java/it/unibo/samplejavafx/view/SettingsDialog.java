@@ -44,7 +44,7 @@ public class SettingsDialog {
         });
 
         layout.getChildren().addAll(musicVolumeLabel, musicVolumeSlider, effectsVolumeLabel, effectsVolumeSlider, saveButton);
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 400, 300);
         dialogStage.setScene(scene);
     }
 
