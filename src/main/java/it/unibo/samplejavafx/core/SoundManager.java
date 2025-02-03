@@ -8,6 +8,7 @@ import java.util.Map;
 public class SoundManager {
     private static final Map<String, Media> soundEffects = new HashMap<>();
     private static final Map<String, MediaPlayer> players = new HashMap<>();
+    private static MediaPlayer backgroundMusicPlayer;
     private static double volume = 0.5;
 
     public static void loadSoundEffects() {
@@ -37,5 +38,32 @@ public class SoundManager {
     public static void setVolume(double newVolume) {
         volume = Math.min(1.0, Math.max(0.0, newVolume));
         players.values().forEach(player -> player.setVolume(volume));
+        if (backgroundMusicPlayer != null) {
+            backgroundMusicPlayer.setVolume(volume);
+        }
+    }
+
+    public static void playBackgroundMusic(String musicFile) {
+        try {
+            Media sound = new Media(SoundManager.class.getResource(musicFile).toExternalForm());
+            backgroundMusicPlayer = new MediaPlayer(sound);
+            backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop music
+            backgroundMusicPlayer.setVolume(volume);
+            backgroundMusicPlayer.play();
+        } catch (Exception e) {
+            System.err.println("Error loading background music: " + e.getMessage());
+        }
+    }
+
+    public static void pauseBackgroundMusic() {
+        if (backgroundMusicPlayer != null) {
+            backgroundMusicPlayer.pause();
+        }
+    }
+
+    public static void resumeBackgroundMusic() {
+        if (backgroundMusicPlayer != null) {
+            backgroundMusicPlayer.play();
+        }
     }
 }
