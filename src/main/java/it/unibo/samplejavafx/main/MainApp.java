@@ -1,46 +1,85 @@
 package it.unibo.samplejavafx.main;
 
+import java.util.Properties;
+
+import it.unibo.samplejavafx.controller.MatchController;
+import it.unibo.samplejavafx.core.GameSettingsManager;
 import it.unibo.samplejavafx.core.Match;
+import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
-import it.unibo.samplejavafx.controller.MatchController;
+import it.unibo.samplejavafx.view.SettingsDialog;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyCode;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 
 public class MainApp extends Application {
-
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
-
     private Stage primaryStage;
-    private Match match;
     private MatchView matchView;
+    private Match match;
     private MatchController matchController;
+    private Button settingsButton;
+    private Label pausedLabel;
+    private String playerName;
 
-    @Override
-    public void start(Stage stage) {
-        this.primaryStage = stage;
-        primaryStage.setTitle("Frogger");
-        showMenu(primaryStage); // Show the menu first
+    public String getPlayerName() {
+        return playerName;
     }
 
-    private void showMenu(Stage primaryStage) {
-        Menu menu = new Menu(primaryStage, this); // Pass this instance of MainApp to Menu
-        menu.createMenu(); // Create and show the menu
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        Properties settings = GameSettingsManager.loadSettings();
+        double musicVolume = Double.parseDouble(settings.getProperty("musicVolume", "0.5"));
+        double effectsVolume = Double.parseDouble(settings.getProperty("effectsVolume", "0.5"));
+        SoundManager.setMusicVolume(musicVolume);
+        SoundManager.setEffectsVolume(effectsVolume);
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle("Frogger");
+        showMenu();
     }
 
     public void setupGame() {
-        System.out.println("Setting up the game..."); // Debugging output
-
         matchView = new MatchView(primaryStage, this); // Pass stage and this
         match = new Match(matchView);
-        matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView);
+        matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView, this);
 
         // Create a new Scene for the game and set it on the stage
         StackPane root = new StackPane(matchView.getCanvas());
+
+        // Add settings button to the top right corner
+        settingsButton = new Button();
+        ImageView settingsIcon = new ImageView(new Image(getClass().getResourceAsStream("/gear.png")));
+        settingsIcon.setFitWidth(30);
+        settingsIcon.setFitHeight(30);
+        settingsButton.setGraphic(settingsIcon);
+        settingsButton.setOnAction(e -> openSettings());
+        settingsButton.setVisible(false); // Initially hidden
+
+        // Add paused label to the center
+        pausedLabel = new Label("Paused");
+        pausedLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 48));
+        pausedLabel.setTextFill(Color.WHITE);
+        pausedLabel.setVisible(false); // Initially hidden
+
+        root.getChildren().addAll(settingsButton, pausedLabel);
+        StackPane.setAlignment(settingsButton, javafx.geometry.Pos.TOP_RIGHT);
+        StackPane.setMargin(settingsButton, new javafx.geometry.Insets(10));
+        StackPane.setAlignment(pausedLabel, javafx.geometry.Pos.CENTER);
+
         Scene gameScene = new Scene(root, WIDTH, HEIGHT);
 
         gameScene.setOnKeyPressed(event -> {
@@ -56,24 +95,25 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void showSettingsButton(boolean show) {
+        settingsButton.setVisible(show);
     }
 
-    /**
-     * Entry point's class.
-     */
-    public static final class Main {
-        private Main() {
-            // the constructor will never be called directly.
-        }
+    public void showPausedLabel(boolean show) {
+        pausedLabel.setVisible(show);
+    }
 
-        /**
-         * Program's entry point.
-         * @param args
-         */
-        public static void main(final String...args) {
-            Application.launch(MainApp.class, args);
-        }
+    private void openSettings() {
+        SettingsDialog settingsDialog = new SettingsDialog(primaryStage);
+        settingsDialog.show();
+    }
+
+    private void showMenu() {
+        Menu menu = new Menu(primaryStage, this);
+        menu.createMenu();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
