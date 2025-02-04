@@ -58,7 +58,7 @@ public class Match {
                     }
                 } while (overlap);
                 int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed()));
+                lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed(), lane.getDirection()));
             }
         }        
     
@@ -100,8 +100,14 @@ public class Match {
     }
 
     private void addTokenInValidPosition() {
-        int laneIndex = (int) (Math.random() * 10) + 1;
+        int laneIndex; // = (int) (Math.random() * 10) + 1;
         int xPosition = ((int) (Math.random() * (WIDTH / LANE_HEIGHT))) * LANE_HEIGHT;
+
+        do {
+            laneIndex = (int) (Math.random() * 10) + 1;
+            if ((laneIndex == 1) || (laneIndex == 6) || (laneIndex == 11))
+                laneIndex = 0;
+        } while (laneIndex == 0);
         int yPosition = laneIndex * LANE_HEIGHT;
         
         Token token = new Token(xPosition, yPosition);
@@ -121,7 +127,7 @@ public class Match {
             lane.updateObjectsPosition();
         }
         for (GameObjectNotControllable objt : objects){
-            collisionDetector.checkCollision(objt, frog);
+           collisionDetector.checkCollision(objt, frog);
         }
         frog.updatePosition(); // Update frog's position if on a log
     }
