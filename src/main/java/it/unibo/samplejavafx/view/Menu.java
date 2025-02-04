@@ -44,18 +44,9 @@ public class Menu {
         settingsIcon.setFitHeight(30);
         settingsButton.setGraphic(settingsIcon);
 
-        newGameButton.setOnAction(e -> {
-            SoundManager.playSound("click");
-            askForPlayerName();
-        });
-        settingsButton.setOnAction(e -> {
-            SoundManager.playSound("click");
-            openSettings();
-        });
-        quitButton.setOnAction(e -> {
-            SoundManager.playSound("click");
-            stage.close();
-        });
+        newGameButton.setOnAction(e -> askForPlayerName());
+        settingsButton.setOnAction(e -> openSettings());
+        quitButton.setOnAction(e -> stage.close());
 
         // Use VBox for vertical arrangement of buttons
         VBox centerLayout = new VBox(20);
