@@ -25,7 +25,7 @@ class AppTest {
         detector = new CollisionDetector();
         obstacle = new Obstacle(400, 500,1); // Same position as frog to test collision
         token = new Token(400, 500); // Same position as frog to test collection
-        log = new Log(400, 500, 2); // Same position as frog with speed 2
+        log = new Log(400, 500, 2, 1); // Same position as frog with speed 2
     }
 
     @Test 
@@ -92,7 +92,7 @@ class AppTest {
     void testLogInteraction() {
         assertFalse(frog.isOnLog(), "Frog should not start on a log");
         
-        frog.setOnLog(true, 2);
+        frog.setOnLog(true, 2,1);
         assertTrue(frog.isOnLog(), "Frog should be on log after setting");
         
         int initialX = frog.getXPosition();
