@@ -118,7 +118,10 @@ public class MatchController implements ViewObserver {
         stop();
         SoundManager.stopBackgroundMusic();
         SoundManager.playGameOverMusic();
-        view.renderGameOver(calculateScore());
+        int finalScore = calculateScore();
+        String playerName = view.getPlayerName();
+        PlayerScoreManager.saveScore(playerName, finalScore);
+        view.renderGameOver(finalScore);
     }
 
     public void stop() {

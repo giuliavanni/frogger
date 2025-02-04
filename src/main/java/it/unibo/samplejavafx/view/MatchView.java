@@ -134,4 +134,8 @@ public class MatchView {
             gc.strokeLine(0, y, WIDTH, y);
         }
     }
+
+    public String getPlayerName() {
+        return mainApp.getPlayerName();
+    }
 }

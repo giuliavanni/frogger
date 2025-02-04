@@ -92,6 +92,7 @@ public class Menu {
             SoundManager.playSound("click");
             String playerName = nameInputField.getText();
             System.out.println("Player's name: " + playerName);
+            mainApp.setPlayerName(playerName);
             startNewGame(); // Call setupGame from MainApp
         });
 

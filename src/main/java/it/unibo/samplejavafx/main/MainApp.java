@@ -1,7 +1,11 @@
 package it.unibo.samplejavafx.main;
 
+import java.util.Properties;
+
 import it.unibo.samplejavafx.controller.MatchController;
+import it.unibo.samplejavafx.core.GameSettingsManager;
 import it.unibo.samplejavafx.core.Match;
+import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
 import it.unibo.samplejavafx.view.SettingsDialog;
@@ -26,9 +30,23 @@ public class MainApp extends Application {
     private MatchController matchController;
     private Button settingsButton;
     private Label pausedLabel;
+    private String playerName;
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
     @Override
     public void start(Stage primaryStage) {
+        Properties settings = GameSettingsManager.loadSettings();
+        double musicVolume = Double.parseDouble(settings.getProperty("musicVolume", "0.5"));
+        double effectsVolume = Double.parseDouble(settings.getProperty("effectsVolume", "0.5"));
+        SoundManager.setMusicVolume(musicVolume);
+        SoundManager.setEffectsVolume(effectsVolume);
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Frogger");
         showMenu();
