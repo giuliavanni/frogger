@@ -1,5 +1,8 @@
 package it.unibo.samplejavafx.view;
 
+import java.util.Properties;
+
+import it.unibo.samplejavafx.core.GameSettingsManager;
 import it.unibo.samplejavafx.core.SoundManager;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -38,8 +41,18 @@ public class SettingsDialog {
 
         Button saveButton = new Button("Save");
         saveButton.setOnAction(e -> {
-            SoundManager.setMusicVolume(musicVolumeSlider.getValue());
-            SoundManager.setEffectsVolume(effectsVolumeSlider.getValue());
+            double musicVolume = musicVolumeSlider.getValue();
+            double effectsVolume = effectsVolumeSlider.getValue();
+            
+            SoundManager.setMusicVolume(musicVolume);
+            SoundManager.setEffectsVolume(effectsVolume);
+            
+            // Save settings to file
+            Properties settings = new Properties();
+            settings.setProperty("musicVolume", String.valueOf(musicVolume));
+            settings.setProperty("effectsVolume", String.valueOf(effectsVolume));
+            GameSettingsManager.saveSettings(settings);
+            
             dialogStage.close();
         });
 
