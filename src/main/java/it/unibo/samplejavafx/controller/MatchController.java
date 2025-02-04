@@ -111,6 +111,7 @@ public class MatchController implements ViewObserver {
     public void togglePause() {
         isPaused = !isPaused;
         mainApp.showSettingsButton(isPaused);
+        mainApp.showPausedLabel(isPaused);
     }
 
     private void gameOver() {
