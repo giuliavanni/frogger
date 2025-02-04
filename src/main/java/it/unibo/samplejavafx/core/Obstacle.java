@@ -2,7 +2,6 @@ package it.unibo.samplejavafx.core;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.transform.Scale;
 
 public class Obstacle extends GameObjectNotControllable {
 
