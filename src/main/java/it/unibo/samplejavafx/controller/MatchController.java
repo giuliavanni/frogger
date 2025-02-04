@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.controller;
 
 import it.unibo.samplejavafx.core.*;
 import it.unibo.samplejavafx.view.MatchView;
+import it.unibo.samplejavafx.main.MainApp;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import java.util.List;
@@ -14,14 +15,16 @@ public class MatchController implements ViewObserver {
     private boolean isPaused;
     private AnimationTimer gameLoop;
     private List<GameObjectNotControllable> objects;
+    private MainApp mainApp;
 
-    public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view) {
+    public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view, MainApp mainApp) {
         this.frog = frog;
         this.lanes = lanes;
         this.objects = objects;
         this.view = view;
         this.collisionDetector = new CollisionDetector();
         this.isPaused = false;
+        this.mainApp = mainApp;
         SoundManager.loadSoundEffects();
         SoundManager.playBackgroundMusic("/Frogger_Theme.mp3");
         startGameLoop();
@@ -107,12 +110,13 @@ public class MatchController implements ViewObserver {
 
     public void togglePause() {
         isPaused = !isPaused;
+        mainApp.showSettingsButton(isPaused);
     }
 
     private void gameOver() {
         stop();
-        SoundManager.stopBackgroundMusic();  // Ferma la musica di sottofondo
-        SoundManager.playGameOverMusic();    // Avvia la musica di game over
+        SoundManager.stopBackgroundMusic();
+        SoundManager.playGameOverMusic();
         view.renderGameOver(calculateScore());
     }
 

@@ -1,46 +1,56 @@
 package it.unibo.samplejavafx.main;
 
+import it.unibo.samplejavafx.controller.MatchController;
 import it.unibo.samplejavafx.core.Match;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
-import it.unibo.samplejavafx.controller.MatchController;
+import it.unibo.samplejavafx.view.SettingsDialog;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyCode;
 
 public class MainApp extends Application {
-
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
-
     private Stage primaryStage;
-    private Match match;
     private MatchView matchView;
+    private Match match;
     private MatchController matchController;
+    private Button settingsButton;
 
     @Override
-    public void start(Stage stage) {
-        this.primaryStage = stage;
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Frogger");
-        showMenu(primaryStage); // Show the menu first
-    }
-
-    private void showMenu(Stage primaryStage) {
-        Menu menu = new Menu(primaryStage, this); // Pass this instance of MainApp to Menu
-        menu.createMenu(); // Create and show the menu
+        showMenu();
     }
 
     public void setupGame() {
-        System.out.println("Setting up the game..."); // Debugging output
-
         matchView = new MatchView(primaryStage, this); // Pass stage and this
         match = new Match(matchView);
-        matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView);
+        matchController = new MatchController(match.getFrog(), match.getLanes(), match.getObjects(), matchView, this);
 
         // Create a new Scene for the game and set it on the stage
         StackPane root = new StackPane(matchView.getCanvas());
+
+        // Add settings button to the top right corner
+        settingsButton = new Button();
+        ImageView settingsIcon = new ImageView(new Image(getClass().getResourceAsStream("/gear.png")));
+        settingsIcon.setFitWidth(30);
+        settingsIcon.setFitHeight(30);
+        settingsButton.setGraphic(settingsIcon);
+        settingsButton.setOnAction(e -> openSettings());
+        settingsButton.setVisible(false); // Initially hidden
+
+        root.getChildren().add(settingsButton);
+        StackPane.setAlignment(settingsButton, javafx.geometry.Pos.TOP_RIGHT);
+        StackPane.setMargin(settingsButton, new javafx.geometry.Insets(10));
+
         Scene gameScene = new Scene(root, WIDTH, HEIGHT);
 
         gameScene.setOnKeyPressed(event -> {
@@ -56,24 +66,21 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void showSettingsButton(boolean show) {
+        settingsButton.setVisible(show);
     }
 
-    /**
-     * Entry point's class.
-     */
-    public static final class Main {
-        private Main() {
-            // the constructor will never be called directly.
-        }
+    private void openSettings() {
+        SettingsDialog settingsDialog = new SettingsDialog(primaryStage);
+        settingsDialog.show();
+    }
 
-        /**
-         * Program's entry point.
-         * @param args
-         */
-        public static void main(final String...args) {
-            Application.launch(MainApp.class, args);
-        }
+    private void showMenu() {
+        Menu menu = new Menu(primaryStage, this);
+        menu.createMenu();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
