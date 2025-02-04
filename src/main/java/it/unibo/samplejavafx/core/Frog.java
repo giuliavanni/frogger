@@ -9,6 +9,7 @@ public class Frog extends GameObjectControllable {
     private ImageView imageView;
     private boolean onLog = false;
     private int logSpeed = 0;
+    private int logDirection = 0;
 
     private static final String IMAGE_PATH = "/froggy1.png"; // Path to your image
 
@@ -82,17 +83,27 @@ public class Frog extends GameObjectControllable {
         imageView.setY(y);
     }
 
-    public void setOnLog(boolean onLog, int logSpeed) {
+    public void setOnLog(boolean onLog, int logSpeed, int logDirection) {
         this.onLog = onLog;
-        this.logSpeed = logSpeed;
+        if (onLog) {
+            this.logSpeed = logSpeed;
+            this.logDirection = logDirection;
+        } else {
+            this.logSpeed = 0;
+            this.logDirection = 0;
+        }
     }
 
     public void updatePosition() {
-        System.out.println("onLog: " + onLog);
-        System.out.println("logSpeed: " + logSpeed);
-        if (onLog) {
-            xPosition += logSpeed;
+        // System.out.println("F onLog: " + this.onLog);
+        // System.out.println("F logSpeed: " + this.logSpeed);
+        // System.out.println("F logDirection: " + this.logDirection);
+        
+        if (this.onLog) {
+            xPosition += this.logSpeed * this.logDirection;
+            xPosition = Math.max(0, Math.min(xPosition, 800 - 46));
             imageView.setX(xPosition);
         }
+        //System.out.println("F position: " + xPosition);
     }
 }
