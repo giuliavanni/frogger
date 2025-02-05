@@ -9,7 +9,6 @@ import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
 import it.unibo.samplejavafx.view.SettingsDialog;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
