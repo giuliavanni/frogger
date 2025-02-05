@@ -7,12 +7,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import it.unibo.samplejavafx.main.MainApp;
+import javafx.util.Duration;
+
 
 public class MatchView {
     
@@ -26,12 +32,45 @@ public class MatchView {
     private Stage stage;
     private MainApp mainApp;
 
+    private ProgressBar timerBar;
+    private static final int GAME_DURATION = 60;  // Durata del gioco in secondi
+    private double timeLeft = GAME_DURATION;  // Tempo rimanente
+    private AnchorPane rootPane;
+
+
     public MatchView(Stage stage, MainApp mainApp) {
         this.stage = stage;
         this.mainApp = mainApp;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.gc = canvas.getGraphicsContext2D();
         this.pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
+
+        // Inizializza rootPane
+        rootPane = new AnchorPane();
+
+        // Crea la barra di progresso per il timer
+        timerBar = new ProgressBar(1.0);  // Inizia al 100%
+        timerBar.setPrefWidth(300); 
+        timerBar.setPrefHeight(25);
+        timerBar.setStyle("-fx-accent: green;");  // Imposta il colore della barra
+
+        // Posiziona la barra in basso a destra
+        AnchorPane.setBottomAnchor(timerBar, 10.0);
+        AnchorPane.setRightAnchor(timerBar, 10.0);
+
+        // Aggiungi il canvas al rootPane
+        rootPane.getChildren().add(canvas);
+
+        // Aggiungi la barra del timer al rootPane
+        rootPane.getChildren().add(timerBar);  
+        
+        // Imposta la scena
+        Scene scene = new Scene(rootPane, WIDTH, HEIGHT);  
+        stage.setScene(scene);
+        stage.show();
+
+        // Avvia il timer
+        startTimer();
     }
 
     public Canvas getCanvas() {
@@ -42,7 +81,7 @@ public class MatchView {
         gc.setFill(Color.BLACK); // Set the background color
         gc.fillRect(0, 0, WIDTH, HEIGHT); // Clear the canvas with the background color
     }
-
+ 
     public void renderFrog(Frog frog) {
         gc.drawImage(frog.getImageView().getImage(), frog.getXPosition(), frog.getYPosition(), 40, 40);
     }
@@ -137,5 +176,27 @@ public class MatchView {
 
     public String getPlayerName() {
         return mainApp.getPlayerName();
+    }
+
+    private void onGameOver() {
+        System.out.println("Tempo scaduto!");
+        // Puoi chiamare un metodo per fermare il gioco o visualizzare una schermata di game over.
+        renderGameOver(0);  // Per esempio, mostra la schermata di game over
+    }
+
+    private void startTimer() {
+        // Creiamo una Timeline che aggiorna la barra di progresso ogni secondo
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeLeft > 0) {
+                timeLeft--;  // Decrementa il tempo
+                double progress = timeLeft / GAME_DURATION;  // Calcola la percentuale rimanente
+                timerBar.setProgress(progress);  // Aggiorna la barra di progresso
+            } else {
+                timerBar.setProgress(0);  // Se il tempo è finito, la barra è vuota
+                onGameOver();  // Chiama la funzione quando il tempo è scaduto
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);  // Ripete il ciclo
+        timeline.play();  // Avvia il timer
     }
 }

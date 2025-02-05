@@ -98,6 +98,13 @@ public class Frog extends GameObjectControllable {
         // System.out.println("F onLog: " + this.onLog);
         // System.out.println("F logSpeed: " + this.logSpeed);
         // System.out.println("F logDirection: " + this.logDirection);
+        int lheight = 600 / 13;
+        int flane = this.getYPosition() / lheight;
+        if ((flane == 0) || (flane == 6))
+        {
+            this.onLog = false;
+            this.logSpeed = 0;
+        }
         
         if (this.onLog) {
             xPosition += this.logSpeed * this.logDirection;
