@@ -9,10 +9,12 @@ import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.view.Menu;
 import it.unibo.samplejavafx.view.SettingsDialog;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -31,6 +33,7 @@ public class MainApp extends Application {
     private Button settingsButton;
     private Label pausedLabel;
     private String playerName;
+    private ProgressBar timerBar;
 
     public String getPlayerName() {
         return playerName;
@@ -75,11 +78,19 @@ public class MainApp extends Application {
         pausedLabel.setTextFill(Color.WHITE);
         pausedLabel.setVisible(false); // Initially hidden
 
-        root.getChildren().addAll(settingsButton, pausedLabel);
+        // Create progressbar for timer
+        timerBar = new ProgressBar(1.0);  // Start at 100%
+        timerBar.setPrefWidth(200); 
+        timerBar.setPrefHeight(25);
+        timerBar.setStyle("-fx-accent: green;");  
+
+        // Add all elements to scene
+        root.getChildren().addAll(settingsButton, pausedLabel, timerBar);
         StackPane.setAlignment(settingsButton, javafx.geometry.Pos.TOP_RIGHT);
         StackPane.setMargin(settingsButton, new javafx.geometry.Insets(10));
         StackPane.setAlignment(pausedLabel, javafx.geometry.Pos.CENTER);
-
+        StackPane.setAlignment(timerBar, javafx.geometry.Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(timerBar, new javafx.geometry.Insets(10));
         Scene gameScene = new Scene(root, WIDTH, HEIGHT);
 
         gameScene.setOnKeyPressed(event -> {
@@ -101,6 +112,10 @@ public class MainApp extends Application {
 
     public void showPausedLabel(boolean show) {
         pausedLabel.setVisible(show);
+    }
+
+    public void showTimerBar(double progress) {
+        timerBar.setProgress(progress);  // Update progress bar
     }
 
     private void openSettings() {
