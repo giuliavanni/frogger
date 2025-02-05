@@ -16,6 +16,7 @@ public class MatchController implements ViewObserver {
     private AnimationTimer gameLoop;
     private List<GameObjectNotControllable> objects;
     private MainApp mainApp;
+    private int currentScore = 0;
 
     public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view, MainApp mainApp) {
         this.frog = frog;
@@ -72,6 +73,9 @@ public class MatchController implements ViewObserver {
             togglePause();
         } else {
             frog.move(code);
+            if (code == KeyCode.UP) {
+                updateScore(10);
+            }
         }
     }
 
@@ -122,14 +126,20 @@ public class MatchController implements ViewObserver {
         String playerName = view.getPlayerName();
         PlayerScoreManager.saveScore(playerName, finalScore);
         view.renderGameOver(finalScore);
+        System.out.println("Punteggio " + finalScore);
     }
 
     public void stop() {
         gameLoop.stop();
     }
 
+    public int updateScore(int value) {
+        currentScore += value;
+        return 0;
+    }
+
     private int calculateScore() {
         // Implement score calculation logic
-        return 0;
+        return currentScore;
     }
 }
