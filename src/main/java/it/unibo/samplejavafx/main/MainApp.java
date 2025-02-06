@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import it.unibo.samplejavafx.controller.MatchController;
 import it.unibo.samplejavafx.core.GameSettingsManager;
+import it.unibo.samplejavafx.core.GlobalVariables;
 import it.unibo.samplejavafx.core.Match;
 import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.view.MatchView;
@@ -23,8 +24,6 @@ import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
 public class MainApp extends Application {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
     private Stage primaryStage;
     private MatchView matchView;
     private Match match;
@@ -90,7 +89,7 @@ public class MainApp extends Application {
         StackPane.setAlignment(pausedLabel, javafx.geometry.Pos.CENTER);
         StackPane.setAlignment(timerBar, javafx.geometry.Pos.BOTTOM_RIGHT);
         StackPane.setMargin(timerBar, new javafx.geometry.Insets(10));
-        Scene gameScene = new Scene(root, WIDTH, HEIGHT);
+        Scene gameScene = new Scene(root, GlobalVariables.WIDTH, GlobalVariables.HEIGHT);
 
         gameScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.P) {
