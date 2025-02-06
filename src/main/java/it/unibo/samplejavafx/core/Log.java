@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Log extends GameObjectNotControllable {
-
     private static final String IMAGE_PATH = "/log.png"; // Path to your log image
     private int speed;
     private int direction;
@@ -14,8 +13,8 @@ public class Log extends GameObjectNotControllable {
 
     public Log(int x, int y, int speed, int direction) {
         super(x, y, new ImageView(new Image(Log.class.getResourceAsStream(IMAGE_PATH))));
-        this.imageView.setFitWidth(100); // Set appropriate size
-        this.imageView.setFitHeight(40); // Set appropriate size
+        this.getImageView().setFitWidth(100); // Set appropriate size
+        this.getImageView().setFitHeight(40); // Set appropriate size
         this.speed = speed;
         this.direction = direction;
     }
@@ -23,8 +22,7 @@ public class Log extends GameObjectNotControllable {
     @Override
     public void updatePosition() {
         // Implement position update logic
-        this.xPosition += speed * direction;
-        imageView.setX(xPosition);
+        setXPosition(getXPosition() + speed * direction);
 
         // Controlla se la rana è sopra il tronco
         for (GameObjectControllable obj : laneObjects) {
@@ -33,9 +31,9 @@ public class Log extends GameObjectNotControllable {
                 Frog frog = (Frog) obj;  // Fai il cast sicuro a Frog
 
                 // Verifica se la rana è sopra il tronco
-                if (frog.getYPosition() == this.yPosition && 
-                    frog.getXPosition() >= this.xPosition && 
-                    frog.getXPosition() <= this.xPosition + this.imageView.getFitWidth()) {
+                if (frog.getYPosition() == this.getYPosition() && 
+                    frog.getXPosition() >= this.getXPosition() && 
+                    frog.getXPosition() <= this.getXPosition() + this.getImageView().getFitWidth()) {
                     // La rana è sopra il tronco, quindi deve muoversi insieme
                     frog.setOnLog(true, this.speed, this.direction);
                 } else {

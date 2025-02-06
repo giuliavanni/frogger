@@ -13,7 +13,7 @@ public class Frog extends GameObjectControllable {
 
     private static final String IMAGE_PATH = "/froggy1.png"; // Path to your image
 
-    public Frog(int x, int y, int lives) {
+    public Frog(final int x, final int y, final int lives) {
         super(x, y);
         this.imageView = new ImageView(new Image(Frog.class.getResourceAsStream(IMAGE_PATH)));
         this.imageView.setFitWidth(40); // Set appropriate size
@@ -43,13 +43,13 @@ public class Frog extends GameObjectControllable {
         lives++;
     }
 
-    public void collectToken(Token token) {
+    public void collectToken(final Token token) {
         if (this.xPosition == token.getXPosition() && this.yPosition == token.getYPosition()) {
             token.applyEffect(this);
         }
     }
 
-    public void move(KeyCode code) {
+    public void move(final KeyCode code) {
         switch (code) {
             case UP: 
                 yPosition -= 46; 
@@ -76,14 +76,14 @@ public class Frog extends GameObjectControllable {
         imageView.setY(yPosition);
     }
 
-    public void resetPosition(int x, int y) {
+    public void resetPosition(final int x, final int y) {
         this.xPosition = x;
         this.yPosition = y;
         imageView.setX(x);
         imageView.setY(y);
     }
 
-    public void setOnLog(boolean onLog, int logSpeed, int logDirection) {
+    public void setOnLog(final boolean onLog, final int logSpeed, final int logDirection) {
         this.onLog = onLog;
         if (onLog) {
             this.logSpeed = logSpeed;
@@ -100,12 +100,11 @@ public class Frog extends GameObjectControllable {
         // System.out.println("F logDirection: " + this.logDirection);
         int lheight = 600 / 13;
         int flane = this.getYPosition() / lheight;
-        if ((flane == 0) || (flane == 6))
-        {
+        if ((flane == 0) || (flane == 6)) {
             this.onLog = false;
             this.logSpeed = 0;
         }
-        
+
         if (this.onLog) {
             xPosition += this.logSpeed * this.logDirection;
             xPosition = Math.max(0, Math.min(xPosition, 800 - 46));

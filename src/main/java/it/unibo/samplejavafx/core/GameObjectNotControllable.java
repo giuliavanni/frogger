@@ -3,11 +3,11 @@ package it.unibo.samplejavafx.core;
 import javafx.scene.image.ImageView;
 
 public abstract class GameObjectNotControllable {
-    protected int xPosition;
-    protected int yPosition;
-    protected ImageView imageView;
+    private int xPosition;
+    private int yPosition;
+    private ImageView imageView;
 
-    public GameObjectNotControllable(int xPosition, int yPosition, ImageView imageView) {
+    public GameObjectNotControllable(final int xPosition, final int yPosition, final ImageView imageView) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.imageView = imageView;
@@ -17,19 +17,31 @@ public abstract class GameObjectNotControllable {
         return xPosition;
     }
 
+    public void setXPosition(final int xPosition) {
+        this.xPosition = xPosition;
+        this.imageView.setX(xPosition);
+    }
+
     public int getYPosition() {
         return yPosition;
     }
 
-    public void setPosition(int xPosition, int yPosition) {
-        this.xPosition = xPosition;
+    public void setYPosition(final int yPosition) {
         this.yPosition = yPosition;
-        this.imageView.setX(xPosition);
         this.imageView.setY(yPosition);
+    }
+
+    public void setPosition(final int xPosition, final int yPosition) {
+        setXPosition(xPosition);
+        setYPosition(yPosition);
     }
 
     public ImageView getImageView() {
         return imageView;
+    }
+
+    public void setImageView(final ImageView imageView) {
+        this.imageView = imageView;
     }
 
     public abstract void updatePosition();
