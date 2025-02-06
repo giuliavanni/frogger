@@ -8,7 +8,7 @@ import java.util.List;
 public class Match {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
-    private static final int LANE_HEIGHT = HEIGHT / 13; // 13 lanes in total
+
     private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
     private static final int OBSTACLE_Y_OFFSET = 12; // Offset to adjust the vertical position of obstacles
     private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
@@ -57,7 +57,7 @@ public class Match {
                         }
                     }
                 } while (overlap);
-                int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
+                int yPosition = (i + 1) * GlobalVariables.LANE_HEIGHT; // Position in the current lane
                 lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed(), lane.getDirection()));
             }
         }
@@ -86,7 +86,7 @@ public class Match {
                         }
                     }
                 } while (overlap);
-                int yPosition = (i + 7) * LANE_HEIGHT - OBSTACLE_Y_OFFSET; // Position in the current lane
+                int yPosition = (i + 7) * GlobalVariables.LANE_HEIGHT - OBSTACLE_Y_OFFSET; // Position in the current lane
                 lane.getObjects().add(new Obstacle(xPosition, yPosition, direction));
             }
         }
@@ -101,7 +101,7 @@ public class Match {
 
     private void addTokenInValidPosition() {
         int laneIndex; // = (int) (Math.random() * 10) + 1;
-        int xPosition = ((int) (Math.random() * (WIDTH / LANE_HEIGHT))) * LANE_HEIGHT;
+        int xPosition = ((int) (Math.random() * (WIDTH / GlobalVariables.LANE_HEIGHT))) * GlobalVariables.LANE_HEIGHT;
 
         do {
             laneIndex = (int) (Math.random() * 10) + 1;
@@ -109,7 +109,7 @@ public class Match {
                 laneIndex = 0;
             }
         } while (laneIndex == 0);
-        int yPosition = laneIndex * LANE_HEIGHT;
+        int yPosition = laneIndex * GlobalVariables.LANE_HEIGHT;
 
         Token token = new Token(xPosition, yPosition);
         objects.add(token);

@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.core.Frog;
 import it.unibo.samplejavafx.core.Lane;
 import it.unibo.samplejavafx.core.PlayerScoreManager;
 import it.unibo.samplejavafx.core.GameObjectNotControllable;
+import it.unibo.samplejavafx.core.GlobalVariables;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -21,9 +22,9 @@ import it.unibo.samplejavafx.main.MainApp;
 
 public class MatchView {
     
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
-    private static final int LANE_HEIGHT = HEIGHT / 13;
+
+
+    
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -36,7 +37,7 @@ public class MatchView {
     public MatchView(Stage stage, MainApp mainApp) {
         this.stage = stage;
         this.mainApp = mainApp;
-        this.canvas = new Canvas(WIDTH, HEIGHT);
+        this.canvas = new Canvas(GlobalVariables.WIDTH, GlobalVariables.HEIGHT);
         this.gc = canvas.getGraphicsContext2D();
         this.TitlePixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
         this.SubtitlePixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 24);
@@ -49,7 +50,7 @@ public class MatchView {
 
     public void clearScene() {
         gc.setFill(Color.BLACK); // Set the background color
-        gc.fillRect(0, 0, WIDTH, HEIGHT); // Clear the canvas with the background color
+        gc.fillRect(0, 0, GlobalVariables.WIDTH, GlobalVariables.HEIGHT); // Clear the canvas with the background color
     }
  
     public void renderFrog(Frog frog) {
@@ -58,7 +59,7 @@ public class MatchView {
 
     public void renderGroundLane(Lane lane, int laneIndex) {
         gc.setFill(Color.PURPLE); // Set the background color to purple for ground lanes
-        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with purple color
+        gc.fillRect(0, laneIndex * GlobalVariables.LANE_HEIGHT,GlobalVariables.WIDTH, GlobalVariables.LANE_HEIGHT); // Fill the lane with purple color
         for (GameObjectNotControllable obj : lane.getObjects()) {
             gc.drawImage(obj.getImageView().getImage(), obj.getXPosition(), obj.getYPosition(), obj.getImageView().getFitWidth(), obj.getImageView().getFitHeight());
         }
@@ -66,7 +67,7 @@ public class MatchView {
 
     public void renderTrafficLane(Lane lane, int laneIndex) {
         gc.setFill(Color.BLACK); // Set the background color to black for traffic lanes
-        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with black color
+        gc.fillRect(0, laneIndex * GlobalVariables.LANE_HEIGHT, GlobalVariables.WIDTH, GlobalVariables.LANE_HEIGHT); // Fill the lane with black color
         for (GameObjectNotControllable obj : lane.getObjects()) {
             gc.drawImage(obj.getImageView().getImage(), obj.getXPosition(), obj.getYPosition(), obj.getImageView().getFitWidth(), obj.getImageView().getFitHeight());
         }
@@ -74,7 +75,7 @@ public class MatchView {
 
     public void renderLogLane(Lane lane, int laneIndex) {
         gc.setFill(Color.BLUE); // Set the background color to blue for log lanes
-        gc.fillRect(0, laneIndex * LANE_HEIGHT, WIDTH, LANE_HEIGHT); // Fill the lane with blue color
+        gc.fillRect(0, laneIndex * GlobalVariables.LANE_HEIGHT, GlobalVariables.WIDTH, GlobalVariables.LANE_HEIGHT); // Fill the lane with blue color
         for (GameObjectNotControllable obj : lane.getObjects()) {
             gc.drawImage(obj.getImageView().getImage(), obj.getXPosition(), obj.getYPosition(), obj.getImageView().getFitWidth(), obj.getImageView().getFitHeight());
         }
@@ -93,7 +94,7 @@ public class MatchView {
         final int LIFE_ICON_SIZE = 30;  // Smaller size for lives icons
         final int PADDING = 10;         // Space from border
         final int SPACING = 5;          // Space between icons
-        final int BASE_Y = HEIGHT - LIFE_ICON_SIZE - PADDING;  // Base Y position
+        final int BASE_Y = GlobalVariables.HEIGHT - LIFE_ICON_SIZE - PADDING;  // Base Y position
         
         // For each lives draw a Frog icon
         for (int i = 0; i < frog.getLives(); i++) {
@@ -155,7 +156,7 @@ public class MatchView {
         gameOverLayout.getChildren().addAll(gameOverLabel, scoreLabel, topScoresLayout, restartButton, quitButton);
         gameOverLayout.setStyle("-fx-background-color: black;");
 
-        Scene gameOverScene = new Scene(gameOverLayout, WIDTH, HEIGHT);
+        Scene gameOverScene = new Scene(gameOverLayout, GlobalVariables.WIDTH, GlobalVariables.HEIGHT);
         stage.setScene(gameOverScene);
     }
 
@@ -165,8 +166,8 @@ public class MatchView {
         
         // Draw horizontal lines between lanes
         for (int i = 0; i <= 13; i++) { // Changed to <= to draw the bottom line
-            double y = i * LANE_HEIGHT;
-            gc.strokeLine(0, y, WIDTH, y);
+            double y = i * GlobalVariables.LANE_HEIGHT;
+            gc.strokeLine(0, y, GlobalVariables.WIDTH, y);
         }
     }
 

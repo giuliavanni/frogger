@@ -14,7 +14,6 @@ import java.util.List;
 public class CollisionDetector {
     private static final double INVULNERABILITY_TIME = 2.0; // seconds
     private long lastCollisionTime = 0;
-    private static final int LANE_HEIGHT = GlobalVariables.HEIGHT / 13;
 
     public boolean checkCollision(final GameObjectNotControllable obj, final Frog frog) {
         // Add some tolerance to the collision detection
@@ -71,9 +70,9 @@ public class CollisionDetector {
             } else {
                 // Check if player missed the log
                 if (obj instanceof Log) {
-                    int llane = obj.getYPosition() / LANE_HEIGHT;
+                    int llane = obj.getYPosition() /  GlobalVariables.LANE_HEIGHT;
                     frogY = frog.getYPosition();
-                    int flane = frogY / LANE_HEIGHT;
+                    int flane = frogY / GlobalVariables.LANE_HEIGHT;
                     if ((flane >= 1) && (flane <= 5)) {
                         //System.out.println("Log lane " + llane);
                         if (llane == flane) { 

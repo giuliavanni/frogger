@@ -10,4 +10,6 @@ public final class GlobalVariables {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final int JUMP_SIZE = 46;
+    public static final int LANE_NUMBER = 13;
+    public static final int LANE_HEIGHT = HEIGHT / LANE_NUMBER;
 }
