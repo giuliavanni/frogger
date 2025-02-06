@@ -4,10 +4,17 @@ import it.unibo.samplejavafx.core.*;
 import it.unibo.samplejavafx.view.MatchView;
 import it.unibo.samplejavafx.main.MainApp;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
+
 import java.util.List;
 
 public class MatchController implements ViewObserver {
+    private static final int GAME_DURATION = 60;
+    private Timeline timeline;
+    private double timeLeft = GAME_DURATION;
     private Frog frog;
     private List<Lane> lanes;
     private MatchView view;
@@ -29,6 +36,7 @@ public class MatchController implements ViewObserver {
         SoundManager.loadSoundEffects();
         SoundManager.playBackgroundMusic("/Frogger_Theme.mp3");
         startGameLoop();
+        startTimer();
     }
 
     private void startGameLoop() {
@@ -112,6 +120,26 @@ public class MatchController implements ViewObserver {
         view.drawLaneLines();
     }
 
+    private void startTimer() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeLeft > 0) {
+                timeLeft--;  // Decrement the time
+                double progress = timeLeft / GAME_DURATION;  // Calculate the remaining percentage
+                view.updateTimerDisplay(progress);  // Update the timer display in the view
+            } else {
+                view.updateTimerDisplay(0);  // If the time is up, the bar is empty
+                timeline.stop();
+                gameOver();  // Call the function when the time is up
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);  // Repeat the cycle
+        timeline.play();  // Start the timer
+    }
+
+    private void stopTimer() {
+        this.timeline.stop();
+    }
+
     public void togglePause() {
         isPaused = !isPaused;
         mainApp.showSettingsButton(isPaused);
@@ -120,6 +148,7 @@ public class MatchController implements ViewObserver {
 
     private void gameOver() {
         stop();
+        stopTimer();
         SoundManager.stopBackgroundMusic();
         SoundManager.playGameOverMusic();
         int finalScore = calculateScore();

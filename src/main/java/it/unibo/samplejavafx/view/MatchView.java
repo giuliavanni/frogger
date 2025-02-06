@@ -7,16 +7,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import it.unibo.samplejavafx.main.MainApp;
-import javafx.util.Duration;
-
 
 public class MatchView {
     
@@ -30,19 +26,12 @@ public class MatchView {
     private Stage stage;
     private MainApp mainApp;
 
-    private static final int GAME_DURATION = 60;  // Durata del gioco in secondi
-    private double timeLeft = GAME_DURATION;  // Tempo rimanente
-    private Timeline timeline;
-
     public MatchView(Stage stage, MainApp mainApp) {
         this.stage = stage;
         this.mainApp = mainApp;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.gc = canvas.getGraphicsContext2D();
         this.pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
-
-        // Start timer for progress bar update
-        startTimer();
     }
 
     public Canvas getCanvas() {
@@ -150,31 +139,7 @@ public class MatchView {
         return mainApp.getPlayerName();
     }
 
-    private void onGameOver() {
-        System.out.println("Tempo scaduto!");
-        stopTimer();
-        renderGameOver(0);
-    }
-
-    private void startTimer() {
-        // Let's create a Timeline that updates the progress bar every second.
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (timeLeft > 0) {
-                timeLeft--;  // Decrement the time
-                double progress = timeLeft / GAME_DURATION;  // Calculate the remaining percentage
-                mainApp.showTimerBar(progress); 
-            } else {
-                mainApp.showTimerBar(0);  // If the time is up, the bar is empty
-                timeline.stop();
-                onGameOver();  // Call the function when the time is up
-            }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);  // Repeat the cycle
-        timeline.play();  // Start the timer
-    }
-
-    private void stopTimer()
-    {
-        this.timeline.stop();
+    public void updateTimerDisplay(double progress) {
+        mainApp.showTimerBar(progress);  // Update the progress bar in the main application
     }
 }
