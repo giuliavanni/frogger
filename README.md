@@ -13,7 +13,7 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 ### Requisiti funzionali
 - **[RF1] Schermata Menù**: Offre le seguenti opzioni:
   - `New Game`: Inizia una nuova partita e reimposta i progressi.
-  - `Settings`: Permette di regolare impostazioni come il volume, la difficoltà del gioco e la modalità a schermo intero.
+  - `Settings`: Permette di regolare impostazioni come il volume.
   - `Quit`: Consente di uscire dall'applicazione in modo semplice e immediato.
 
 - **[RF2] Inserimento Nome Giocatore**: Una schermata dedicata permette al giocatore di inserire il proprio nome prima dell'inizio della partita, garantendo che il punteggio venga salvato correttamente e possa essere confrontato nella classifica.
@@ -26,12 +26,12 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
   - Possibilità di raccogliere gettoni che forniscono bonus, come estensioni del tempo o vite extra.
 
 - **[RF4] Sistema di Collisione**:
-  - La partita termina se la rana collide con un ostacolo o se il tempo a disposizione si esaurisce. Viene mostrata una schermata di `Game Over` con il punteggio ottenuto.
+  - La partita termina se la rana collide con un ostacolo e non dispone di altre vite o se il tempo a disposizione si esaurisce. Viene mostrata una schermata di `Game Over` con il punteggio ottenuto.
 
-- **[RF5] Countdown Temporale**: Un timer visibile in alto a schermo tiene traccia del tempo rimanente. Il conto alla rovescia aggiunge tensione e strategia al gameplay.
+- **[RF5] Countdown Temporale**: Un timer visibile in basso allo schermo tiene traccia del tempo rimanente. Il conto alla rovescia aggiunge tensione e strategia al gameplay.
 
 - **[RF6] Schermata di `Game Over`**:
-  - Visualizza il punteggio raggiunto e offre opzioni per tornare al menù principale o iniziare una nuova partita.
+  - Visualizza il punteggio raggiunto e offre opzioni per iniziare una nuova partita o chiudere il gioco.
 
 ### Funzionalità opzionali
 - Livelli con difficoltà crescente che aumentano progressivamente la velocità e la densità degli ostacoli, introducendo nuove sfide a ogni progresso.
@@ -51,37 +51,67 @@ Gli elementi costitutivi il problema sono sintetizzati nella seguente figura.
 ```mermaid
 classDiagram
     class Match {
-        +start() void
+        start() void
     }
     class GameObjectControllable  {
-        +int xPosition
-        +int yPosition
-        +int getXPosition()
-        +int getYPosition()
-        +void move(KeyCode code)
+        getXPosition() int
+        setXPosition(int x) int
+        getYPosition() int
+        setYPosition(int y) int
+        move(KeyCode) void
     }
     class Frog {
-        +int lives
-        +void collectToken()
-        +int getLives()
+        boolean isOnLog()
+        ImageView getImageView()
+        int getLives()
+        loseLife() void
+        gainLife() void
+        collectToken(Token token) void
+        move(KeyCode code) void
+        resetPosition(int x, int y) void
+        setOnLog(boolean onLog, int logSpeed, int logDirection) void
+        updatePosition() void
     }
     class Lane {
-        +int speed
-        +int direction
+        getSpeed() int
+        getDirection() int
+        getObjects() : List (GameObjectNotControllable)
+        updateObjectsPosition() void
     }
     class GameObjectNotControllable{
-        +int xPosition
-        +int yPosition
-        +int getXPosition()
-        +int getYPosition()
-        +void updatePosition()
+        getXPosition() int
+        setXPosition(int x) int
+        getYPosition() int
+        setYPosition(int y) int
+        setPosition(int x, int y) void
+        getImageView() ImageView
+        setImageView(ImageView imageView) void
+        updatePosition() void
     }
     class Obstacle {
+        updatePosition() void
+        setPosition(int x, int y) void
     }
     class Log {
+        updatePosition() void
+        getSpeed() int
+        getDirection() int
     }
     class Token {
-        +void applyEffect(Frog)
+        applyEffect(Frog frog) void
+        updatePosition() void
+    }
+    class CollisionDetector {
+        checkCollision(GameObjectNotControllable obj, Frog frog) boolean
+        handleCollisions(Frog frog, List(GameObjectNotControllable) objects) void
+        handleObstacleCollision(Frog frog) void
+        handleLogMiss(Frog frog) void
+        handleTokenCollision(Frog frog, Token token) void
+    }
+    class PlayerScoreManager {
+        saveScore(String playerName, int score) void
+        loadScores() : Map(String, Integer)
+        getTopScores(int limit) : List(Map.Entry(String, Integer))
     }
     Match -- GameObjectControllable
     Match -- Lane
@@ -90,17 +120,21 @@ classDiagram
     GameObjectNotControllable <|-- Log
     GameObjectControllable <|-- Frog
     Lane *-- GameObjectNotControllable : composed of
-
+    Frog --> CollisionDetector : uses
+    CollisionDetector -- GameObjectNotControllable
+    Frog --> PlayerScoreManager : uses
 ```
 
 Ogni classe definisce un comportamento specifico:
 - **Match**: coordinatore principale del flusso di gioco. Responsabile dell’inizio del match e del collegamento tra le varie entità.
-- **Frog**: rappresenta il personaggio principale controllato dal giocatore e fornisce le funzioni di movimento e raccolta dei gettoni.
+- **Frog**: rappresenta il personaggio principale controllato dal giocatore e fornisce le funzioni di movimento, raccolta dei gettoni e gestione delle vite.
 - **Lane**: definisce una corsia di gioco con una velocità e una direzione specifiche composta da elementi non controllabili.
 - **GameObjectNotControllable**: classe base per gli oggetti non controllabili. Possono essere ostacoli, tronchi o gettoni.
 - **Obstacle**: definisce gli elementi dinamici del percorso che determinano le collisioni.
 - **Token**: introduce elementi strategici attraverso effetti bonus.
 - **Log**: rappresenta un elemento in movimento che può essere utilizzato come mezzo di trasporto tra 2 sponde.
+- **CollisionDetector**: verifica se la posizione della rana è valida utilizzando bounding boxes per rilevare le collisioni.
+- **PlayerScoreManager**: gestisce il salvataggio e il caricamento dei punteggi dei giocatori, e fornisce i migliori punteggi
 
 Questa struttura consente una chiara separazione delle responsabilità, facilitando la manutenzione e l'espansione del progetto.
 
@@ -121,24 +155,37 @@ class Match {
 
 class MatchView {
     +renderFrog(frog: Frog) void
-    +renderLane(lane: Lane) void
+    +renderGroundLane(lane: Lane, laneIndex: int) void
+    +renderTrafficLane(lane: Lane, laneIndex: int) void
+    +renderLogLane(lane: Lane, laneIndex: int) void
+    +renderToken(token: GameObjectNotControllable) void
     +updateFrogPosition(frog: Frog) void
+    +renderLives(frog: Frog) void
+    +updateTimerDisplay(progress: double) void
+    +renderScore(score: int) void
     +renderGameOver(score: int) void
 }
 
 class ViewObserver {
-    +onMove(direction: String) void
+    +handleInput(code: KeyCode) void
+    +updateView() void
 }
 
 class MatchController {
-    +handleInput(input: String) void
+    -startGameLoop() void
+    -gameOver() void
+    -calculateScore() int
+    +handleInput(code: KeyCode) void
     +updateView() void
+    +startTimer() void
+    +stopTimer() void
+    +togglePause() void
+    +updateScore(value: int) int
 }
 
 MatchController <|-- Match
 MatchController <|-- ViewObserver
 MatchController "1" -- "1..*" MatchView : interacts with
-
 ```
 
 - **Model**: Si occupa della logica del gioco e dello stato delle entità, come la posizione della rana e il timer.
@@ -150,7 +197,7 @@ MatchController "1" -- "1..*" MatchView : interacts with
 #### Gestione del Timer
 **Problema**: Garantire un sistema di countdown efficace e sincronizzato con il gameplay.
 
-**Soluzione**: Implementazione di un thread dedicato che aggiorna periodicamente il timer e notifica la View per aggiornare il display.
+**Soluzione**:  Implementazione di un `Timeline` che aggiorna periodicamente il timer e notifica la View per aggiornare il display.
 
 ```mermaid
 classDiagram
@@ -160,10 +207,16 @@ classDiagram
         +void stop()
         +void decrement()
     }
-    class View {
-        +void updateTimerDisplay(int time)
+    class MatchController {
+        +void startTimer()
+        +void stopTimer()
+        +void togglePause()
     }
-    Timer -- View
+    class MatchView {
+        +void updateTimerDisplay(double progress)
+    }
+    Timer -- MatchController
+    MatchController -- MatchView
 ```
 
 #### Collision Detection
@@ -177,7 +230,7 @@ Nel gioco, la rana si muove lungo le corsie evitando gli ostacoli o saltando su 
 
 ##### Soluzione
 
-Il movimento è gestito dalla classe ```Frog```, che calcola la nuova posizione in base alla direzione ricevuta. La classe ```CollisionDetector``` verifica se la posizione è valida utilizzando bounding boxes. Questa separazione migliora la modularità: ```Frog``` si occupa solo del movimento, mentre il ```CollisionDetector``` si concentra sulla logica di interazione.
+Il movimento è gestito dalla classe `Frog`, che calcola la nuova posizione in base alla direzione ricevuta. La classe `CollisionDetector` verifica se la posizione è valida utilizzando bounding boxes. Questa separazione migliora la modularità: `Frog` si occupa solo del movimento, mentre il `CollisionDetector` si concentra sulla logica di interazione.
 
 ##### Motivazioni
 
@@ -188,8 +241,8 @@ L’uso del sistema di bounding boxes per le collisioni è stato scelto per la s
 classDiagram
     class Frog {
         +int lives
-        +void collectToken()
-        +int getLives()
+        +collectToken(Token token) void
+        +getLives() int
     }
     class CollisionDetector {
         +boolean checkCollision(GameObjectNotControllable, Frog)
@@ -197,17 +250,17 @@ classDiagram
     class GameObjectNotControllable{
         +int xPosition
         +int yPosition
-        +int getXPosition()
-        +int getYPosition()
-        +void updatePosition()
+        +getXPosition() int
+        +getYPosition() int
+        +updatePosition() void
     }
     class Obstacle {
-        +void updatePosition()
+        +updatePosition() void
     }
     class Log {
-        +void updatePosition()
+        +updatePosition() void
     }
-    Frog --> CollisionDetector : usa
+    Frog --> CollisionDetector : uses
     CollisionDetector -- GameObjectNotControllable
     GameObjectNotControllable <|-- Obstacle
     GameObjectNotControllable <|-- Log
