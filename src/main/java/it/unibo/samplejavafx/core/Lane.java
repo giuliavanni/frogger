@@ -31,10 +31,10 @@ public class Lane {
             obj.setPosition(newX, obj.getYPosition());
 
             // Reset position if it moves off-screen
-            if (newX > 800) { // Assuming the width of your window is 800
+            if (newX > GlobalVariables.WIDTH) { // Assuming the width of your window is 800
                 obj.setPosition((int) -obj.getImageView().getFitWidth(), obj.getYPosition());
             } else if (newX < -obj.getImageView().getFitWidth()) {
-                obj.setPosition(800, obj.getYPosition());
+                obj.setPosition(GlobalVariables.WIDTH, obj.getYPosition());
             }
         }
     }
