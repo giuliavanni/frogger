@@ -96,7 +96,15 @@ public class Frog extends GameObjectControllable {
 
     public void updatePosition() {
         int flane = this.getYPosition() / GlobalVariables.LANE_HEIGHT;
-        if ((flane == 0) || (flane == 6)) {
+
+        //frog on middle line
+        if (flane == 6) {
+            this.onLog = false;
+            this.logSpeed = 0;
+        }
+
+        // frog on top line
+        if (flane == 0) {
             this.onLog = false;
             this.logSpeed = 0;
         }
@@ -106,5 +114,9 @@ public class Frog extends GameObjectControllable {
             setXPosition(Math.max(0, Math.min(getXPosition(), GlobalVariables.WIDTH - GlobalVariables.JUMP_SIZE)));
             imageView.setX(getXPosition());
         }
+    }
+
+    public int lanePosition() {
+        return (this.getYPosition() / GlobalVariables.LANE_HEIGHT);
     }
 }

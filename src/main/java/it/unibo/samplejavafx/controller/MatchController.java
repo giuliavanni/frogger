@@ -75,6 +75,14 @@ public class MatchController implements ViewObserver {
         // Update frog position if on log
         frog.updatePosition();
 
+        // Check frog on top lane:
+        // reset frog position, update score, increment game level
+        if (frog.lanePosition() == GlobalVariables.LANE_END) {
+            frog.resetPosition(GlobalVariables.WIDTH / 2, GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE);
+            updateScore(100);
+            //mainApp.setupGame();
+        }
+
         // Check game over conditions
         if (frog.getLives() <= 0) {
             gameOver();
