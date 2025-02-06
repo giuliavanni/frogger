@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.view;
 
+import it.unibo.samplejavafx.core.GlobalVariables;
 import it.unibo.samplejavafx.core.SoundManager;
 import it.unibo.samplejavafx.main.MainApp;
 import javafx.geometry.Insets;
@@ -16,13 +17,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Menu {
-
     private Stage stage;
     private MainApp mainApp; // Reference to MainApp
-    
+
     Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
 
-    public Menu(Stage stage, MainApp mainApp) {
+    public Menu(final Stage stage, final MainApp mainApp) {
         this.stage = stage;
         this.mainApp = mainApp; // Initialize the reference
     }
@@ -66,7 +66,7 @@ public class Menu {
         mainLayout.setTop(topLayout);
         mainLayout.setStyle("-fx-background-color: black;");
 
-        Scene menuScene = new Scene(mainLayout, 800, 600); // Set the size of the menu
+        Scene menuScene = new Scene(mainLayout, GlobalVariables.WIDTH, GlobalVariables.HEIGHT); // Set the size of the menu
         stage.setScene(menuScene);
         stage.show(); // Show the menu
     }
@@ -99,7 +99,7 @@ public class Menu {
         nameInputLayout.getChildren().addAll(nameLabel, nameInputField, submitButton);
         nameInputLayout.setStyle("-fx-background-color: black; -fx-text-fill: white;");
 
-        Scene nameInputScene = new Scene(nameInputLayout, 800, 600);
+        Scene nameInputScene = new Scene(nameInputLayout, GlobalVariables.WIDTH, GlobalVariables.HEIGHT);
         stage.setScene(nameInputScene); // Change to the name input scene
     }
 
