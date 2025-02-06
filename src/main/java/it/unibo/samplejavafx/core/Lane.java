@@ -7,7 +7,7 @@ public class Lane {
     private int direction; // 1 for right, -1 for left
     private List<GameObjectNotControllable> objects;
 
-    public Lane(int speed, int direction, List<GameObjectNotControllable> objects) {
+    public Lane(final int speed, final int direction, final List<GameObjectNotControllable> objects) {
         this.speed = speed;
         this.direction = direction;
         this.objects = objects;

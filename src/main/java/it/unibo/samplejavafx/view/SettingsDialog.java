@@ -14,10 +14,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class SettingsDialog {
-
     private Stage dialogStage;
 
-    public SettingsDialog(Stage owner) {
+    public SettingsDialog(final Stage owner) {
         dialogStage = new Stage();
         dialogStage.initOwner(owner);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -43,16 +42,16 @@ public class SettingsDialog {
         saveButton.setOnAction(e -> {
             double musicVolume = musicVolumeSlider.getValue();
             double effectsVolume = effectsVolumeSlider.getValue();
-            
+
             SoundManager.setMusicVolume(musicVolume);
             SoundManager.setEffectsVolume(effectsVolume);
-            
+
             // Save settings to file
             Properties settings = new Properties();
             settings.setProperty("musicVolume", String.valueOf(musicVolume));
             settings.setProperty("effectsVolume", String.valueOf(effectsVolume));
             GameSettingsManager.saveSettings(settings);
-            
+
             dialogStage.close();
         });
 
