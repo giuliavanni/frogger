@@ -52,26 +52,26 @@ public class Frog extends GameObjectControllable {
     public void move(final KeyCode code) {
         switch (code) {
             case UP: 
-                setYPosition(getYPosition() - 46); 
+                setYPosition(getYPosition() - GlobalVariables.JUMP_SIZE); 
                 SoundManager.playSound("jump");
                 break;
             case DOWN: 
-                setYPosition(getYPosition() + 46); 
+                setYPosition(getYPosition() + GlobalVariables.JUMP_SIZE); 
                 SoundManager.playSound("jump");
                 break;
             case LEFT: 
-                setXPosition(getXPosition() - 46); 
+                setXPosition(getXPosition() - GlobalVariables.JUMP_SIZE); 
                 SoundManager.playSound("jump");
                 break;
             case RIGHT: 
-                setXPosition(getXPosition() + 46); 
+                setXPosition(getXPosition() + GlobalVariables.JUMP_SIZE); 
                 SoundManager.playSound("jump");
                 break;
             default: break;
         }
         // Limit movement within window boundaries
-        setXPosition(Math.max(0, Math.min(getXPosition(), 800 - 46)));
-        setYPosition(Math.max(0, Math.min(getYPosition(), 600 - 46)));
+        setXPosition(Math.max(0, Math.min(getXPosition(), GlobalVariables.WIDTH - GlobalVariables.JUMP_SIZE)));
+        setYPosition(Math.max(0, Math.min(getYPosition(), GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE)));
         imageView.setX(getXPosition());
         imageView.setY(getYPosition());
     }
@@ -95,8 +95,7 @@ public class Frog extends GameObjectControllable {
     }
 
     public void updatePosition() {
-        int lheight = 600 / 13;
-        int flane = this.getYPosition() / lheight;
+        int flane = this.getYPosition() / GlobalVariables.LANE_HEIGHT;
         if ((flane == 0) || (flane == 6)) {
             this.onLog = false;
             this.logSpeed = 0;
@@ -104,7 +103,7 @@ public class Frog extends GameObjectControllable {
 
         if (this.onLog) {
             setXPosition(getXPosition() + this.logSpeed * this.logDirection);
-            setXPosition(Math.max(0, Math.min(getXPosition(), 800 - 46)));
+            setXPosition(Math.max(0, Math.min(getXPosition(), GlobalVariables.WIDTH - GlobalVariables.JUMP_SIZE)));
             imageView.setX(getXPosition());
         }
     }
