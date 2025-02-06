@@ -3,10 +3,15 @@ package it.unibo.samplejavafx.core;
 import java.io.*;
 import java.util.Properties;
 
-public class GameSettingsManager {
+public final class GameSettingsManager {
     private static final String SETTINGS_FILE = "src/main/resources/game_settings.properties";
 
-    public static void saveSettings(Properties settings) {
+    // Private constructor to prevent instantiation
+    private GameSettingsManager() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+    public static void saveSettings(final Properties settings) {
         try (OutputStream output = new FileOutputStream(SETTINGS_FILE)) {
             settings.store(output, null);
         } catch (IOException e) {
