@@ -118,6 +118,7 @@ public class MatchController implements ViewObserver {
         view.renderFrog(frog);
         view.renderLives(frog);
         view.drawLaneLines();
+        view.renderScore(currentScore);
     }
 
     private void startTimer() {

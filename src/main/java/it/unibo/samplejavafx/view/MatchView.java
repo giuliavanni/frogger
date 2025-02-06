@@ -101,6 +101,16 @@ public class MatchView {
             gc.drawImage(frog.getImageView().getImage(), x, BASE_Y, LIFE_ICON_SIZE, LIFE_ICON_SIZE);
         }
     }
+    
+    public void updateTimerDisplay(double progress) {
+        mainApp.showTimerBar(progress);  // Update the progress bar in the main application
+    }
+
+    public void renderScore(int score) {
+        gc.setFill(Color.WHITE); // Set the text color to white
+        gc.setFont(pixelFont); // Use the pixel font
+        gc.fillText("Score: " + score, 10, 20); // Draw the score at the top-left corner
+    }
 
     public void renderGameOver(int score) {
         showGameOverScreen(score);
@@ -162,9 +172,5 @@ public class MatchView {
 
     public String getPlayerName() {
         return mainApp.getPlayerName();
-    }
-
-    public void updateTimerDisplay(double progress) {
-        mainApp.showTimerBar(progress);  // Update the progress bar in the main application
     }
 }
