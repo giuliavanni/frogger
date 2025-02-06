@@ -144,6 +144,11 @@ public class MatchController implements ViewObserver {
         isPaused = !isPaused;
         mainApp.showSettingsButton(isPaused);
         mainApp.showPausedLabel(isPaused);
+        if (isPaused) {
+            timeline.pause();  // Pause the timer
+        } else {
+            timeline.play();  // Resume the timer
+        }
     }
 
     private void gameOver() {
