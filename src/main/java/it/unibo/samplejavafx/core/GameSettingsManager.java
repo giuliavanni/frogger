@@ -3,14 +3,25 @@ package it.unibo.samplejavafx.core;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * Utility class for managing game settings.
+ * Provides methods to save and load settings from a properties file.
+ */
 public final class GameSettingsManager {
     private static final String SETTINGS_FILE = "src/main/resources/game_settings.properties";
 
-    // Private constructor to prevent instantiation
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private GameSettingsManager() {
         throw new UnsupportedOperationException("Utility class");
     }
 
+    /**
+     * Saves the specified settings to the properties file.
+     *
+     * @param settings the properties object containing the settings to save
+     */
     public static void saveSettings(final Properties settings) {
         try (OutputStream output = new FileOutputStream(SETTINGS_FILE)) {
             settings.store(output, null);
@@ -19,6 +30,11 @@ public final class GameSettingsManager {
         }
     }
 
+    /**
+     * Loads the settings from the properties file.
+     *
+     * @return the properties object containing the loaded settings
+     */
     public static Properties loadSettings() {
         Properties settings = new Properties();
         File file = new File(SETTINGS_FILE);
