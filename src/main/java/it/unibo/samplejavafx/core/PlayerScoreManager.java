@@ -38,4 +38,12 @@ public class PlayerScoreManager {
         }
         return scores;
     }
+
+    public static List<Map.Entry<String, Integer>> getTopScores(int limit) {
+        Map<String, Integer> scores = loadScores();
+        return scores.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(limit)
+                .toList();
+    }
 }

@@ -1,12 +1,17 @@
 package it.unibo.samplejavafx.view;
 
+import java.util.List;
+import java.util.Map;
+
 import it.unibo.samplejavafx.core.Frog;
 import it.unibo.samplejavafx.core.Lane;
+import it.unibo.samplejavafx.core.PlayerScoreManager;
 import it.unibo.samplejavafx.core.GameObjectNotControllable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +27,8 @@ public class MatchView {
 
     private Canvas canvas;
     private GraphicsContext gc;
+    private Font TitlePixelFont;
+    private Font SubtitlePixelFont;
     private Font pixelFont;
     private Stage stage;
     private MainApp mainApp;
@@ -31,7 +38,9 @@ public class MatchView {
         this.mainApp = mainApp;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.gc = canvas.getGraphicsContext2D();
-        this.pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
+        this.TitlePixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
+        this.SubtitlePixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 24);
+        this.pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 16);
     }
 
     public Canvas getCanvas() {
@@ -98,28 +107,44 @@ public class MatchView {
     }
 
     private void showGameOverScreen(int score) {
-        VBox gameOverLayout = new VBox(40);
+        VBox gameOverLayout = new VBox(30);  // Reduce spacing between elements
         gameOverLayout.setAlignment(javafx.geometry.Pos.CENTER);
-        
+        gameOverLayout.setPadding(new Insets(10));  // Add padding around the layout
+
         Label gameOverLabel = new Label("Game Over");
-        gameOverLabel.setFont(pixelFont);
+        gameOverLabel.setFont(TitlePixelFont);
         gameOverLabel.setStyle("-fx-text-fill: white;");
-        
+
         Label scoreLabel = new Label("Score: " + score);
-        scoreLabel.setFont(pixelFont);
+        scoreLabel.setFont(SubtitlePixelFont);
         scoreLabel.setStyle("-fx-text-fill: white;");
-        
+
+        // Add top scores
+        List<Map.Entry<String, Integer>> topScores = PlayerScoreManager.getTopScores(5);
+        VBox topScoresLayout = new VBox(5);  // Reduce spacing between score entries
+        topScoresLayout.setAlignment(javafx.geometry.Pos.CENTER);
+        Label topScoresLabel = new Label("Top 5 Scores:");
+        topScoresLabel.setFont(pixelFont);
+        topScoresLabel.setStyle("-fx-text-fill: white;");
+        topScoresLayout.getChildren().add(topScoresLabel);
+        for (Map.Entry<String, Integer> entry : topScores) {
+            Label scoreEntryLabel = new Label(entry.getKey() + ": " + entry.getValue());
+            scoreEntryLabel.setFont(pixelFont);
+            scoreEntryLabel.setStyle("-fx-text-fill: white;");
+            topScoresLayout.getChildren().add(scoreEntryLabel);
+        }
+
         Button restartButton = new Button("Restart");
-        restartButton.setFont(pixelFont);
+        restartButton.setFont(TitlePixelFont);
         restartButton.setOnAction(e -> mainApp.setupGame());
-        
+
         Button quitButton = new Button("Quit");
-        quitButton.setFont(pixelFont);
+        quitButton.setFont(TitlePixelFont);
         quitButton.setOnAction(e -> stage.close());
-        
-        gameOverLayout.getChildren().addAll(gameOverLabel, scoreLabel, restartButton, quitButton);
+
+        gameOverLayout.getChildren().addAll(gameOverLabel, scoreLabel, topScoresLayout, restartButton, quitButton);
         gameOverLayout.setStyle("-fx-background-color: black;");
-        
+
         Scene gameOverScene = new Scene(gameOverLayout, WIDTH, HEIGHT);
         stage.setScene(gameOverScene);
     }
