@@ -18,7 +18,7 @@ public class Match {
     private List<Lane> lanes;
     private CollisionDetector collisionDetector;
 
-    public Match(MatchView view) {
+    public Match(final MatchView view) {
         this.collisionDetector = new CollisionDetector();
         this.objects = new ArrayList<>();
         this.lanes = new ArrayList<>();
@@ -32,7 +32,7 @@ public class Match {
     private void setupGame() {
         // Initialize Frog
         frog = new Frog(WIDTH / 2, HEIGHT - 46, 3);
-    
+
         // Create ground lane (start)
         Lane groundStartLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundStartLane);
@@ -42,7 +42,7 @@ public class Match {
             int direction = (i % 2 == 0) ? 1 : -1;
             Lane lane = new Lane((int) (Math.random() * 3 + 2), direction, new ArrayList<>());
             lanes.add(lane);
-    
+
             // Add logs to lanes
             for (int j = 0; j < 3; j++) {
                 int xPosition;
@@ -60,18 +60,18 @@ public class Match {
                 int yPosition = (i + 1) * LANE_HEIGHT; // Position in the current lane
                 lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed(), lane.getDirection()));
             }
-        }        
-    
+        }
+
         // Create ground lane (middle)
         Lane groundMiddleLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundMiddleLane);
-    
+
         // Create traffic lanes and add obstacles to them
         for (int i = 0; i < 5; i++) {
             int direction = (i % 2 == 0) ? 1 : -1;
             Lane lane = new Lane((int) (Math.random() * 3 + 2), direction, new ArrayList<>());
             lanes.add(lane);
-    
+
             // Add obstacles to lanes
             for (int j = 0; j < 3; j++) {
                 int xPosition;
@@ -90,11 +90,11 @@ public class Match {
                 lane.getObjects().add(new Obstacle(xPosition, yPosition, direction));
             }
         }
-    
+
         // Create ground lane (end)
         Lane groundEndLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundEndLane);
-    
+
         // Create token in valid positions
         addTokenInValidPosition();
     }
@@ -105,11 +105,12 @@ public class Match {
 
         do {
             laneIndex = (int) (Math.random() * 10) + 1;
-            if ((laneIndex == 1) || (laneIndex == 6) || (laneIndex == 11))
+            if ((laneIndex == 1) || (laneIndex == 6) || (laneIndex == 11)) {
                 laneIndex = 0;
+            }
         } while (laneIndex == 0);
         int yPosition = laneIndex * LANE_HEIGHT;
-        
+
         Token token = new Token(xPosition, yPosition);
         objects.add(token);
     }
@@ -126,7 +127,7 @@ public class Match {
         for (Lane lane : lanes) {
             lane.updateObjectsPosition();
         }
-        for (GameObjectNotControllable objt : objects){
+        for (GameObjectNotControllable objt : objects) {
            collisionDetector.checkCollision(objt, frog);
         }
         frog.updatePosition(); // Update frog's position if on a log

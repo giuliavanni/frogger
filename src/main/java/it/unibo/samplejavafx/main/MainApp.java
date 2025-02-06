@@ -38,12 +38,12 @@ public class MainApp extends Application {
         return playerName;
     }
 
-    public void setPlayerName(String playerName) {
+    public void setPlayerName(final String playerName) {
         this.playerName = playerName;
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(final Stage primaryStage) {
         Properties settings = GameSettingsManager.loadSettings();
         double musicVolume = Double.parseDouble(settings.getProperty("musicVolume", "0.5"));
         double effectsVolume = Double.parseDouble(settings.getProperty("effectsVolume", "0.5"));
@@ -81,7 +81,7 @@ public class MainApp extends Application {
         timerBar = new ProgressBar(1.0);  // Start at 100%
         timerBar.setPrefWidth(200); 
         timerBar.setPrefHeight(25);
-        timerBar.setStyle("-fx-accent: green;");  
+        timerBar.setStyle("-fx-accent: green;");
 
         // Add all elements to scene
         root.getChildren().addAll(settingsButton, pausedLabel, timerBar);
@@ -105,15 +105,15 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    public void showSettingsButton(boolean show) {
+    public void showSettingsButton(final boolean show) {
         settingsButton.setVisible(show);
     }
 
-    public void showPausedLabel(boolean show) {
+    public void showPausedLabel(final boolean show) {
         pausedLabel.setVisible(show);
     }
 
-    public void showTimerBar(double progress) {
+    public void showTimerBar(final double progress) {
         timerBar.setProgress(progress);  // Update progress bar
     }
 
@@ -127,7 +127,7 @@ public class MainApp extends Application {
         menu.createMenu();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         launch(args);
     }
 }

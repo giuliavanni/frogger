@@ -44,7 +44,7 @@ public class Frog extends GameObjectControllable {
     }
 
     public void collectToken(final Token token) {
-        if (this.xPosition == token.getXPosition() && this.yPosition == token.getYPosition()) {
+        if (this.getXPosition() == token.getXPosition() && this.getYPosition() == token.getYPosition()) {
             token.applyEffect(this);
         }
     }
@@ -52,33 +52,33 @@ public class Frog extends GameObjectControllable {
     public void move(final KeyCode code) {
         switch (code) {
             case UP: 
-                yPosition -= 46; 
+                setYPosition(getYPosition() - 46); 
                 SoundManager.playSound("jump");
                 break;
             case DOWN: 
-                yPosition += 46; 
+                setYPosition(getYPosition() + 46); 
                 SoundManager.playSound("jump");
                 break;
             case LEFT: 
-                xPosition -= 46; 
+                setXPosition(getXPosition() - 46); 
                 SoundManager.playSound("jump");
                 break;
             case RIGHT: 
-                xPosition += 46; 
+                setXPosition(getXPosition() + 46); 
                 SoundManager.playSound("jump");
                 break;
             default: break;
         }
         // Limit movement within window boundaries
-        xPosition = Math.max(0, Math.min(xPosition, 800 - 46));
-        yPosition = Math.max(0, Math.min(yPosition, 600 - 46));
-        imageView.setX(xPosition);
-        imageView.setY(yPosition);
+        setXPosition(Math.max(0, Math.min(getXPosition(), 800 - 46)));
+        setYPosition(Math.max(0, Math.min(getYPosition(), 600 - 46)));
+        imageView.setX(getXPosition());
+        imageView.setY(getYPosition());
     }
 
     public void resetPosition(final int x, final int y) {
-        this.xPosition = x;
-        this.yPosition = y;
+        setXPosition(x);
+        setYPosition(y);
         imageView.setX(x);
         imageView.setY(y);
     }
@@ -95,9 +95,6 @@ public class Frog extends GameObjectControllable {
     }
 
     public void updatePosition() {
-        // System.out.println("F onLog: " + this.onLog);
-        // System.out.println("F logSpeed: " + this.logSpeed);
-        // System.out.println("F logDirection: " + this.logDirection);
         int lheight = 600 / 13;
         int flane = this.getYPosition() / lheight;
         if ((flane == 0) || (flane == 6)) {
@@ -106,10 +103,9 @@ public class Frog extends GameObjectControllable {
         }
 
         if (this.onLog) {
-            xPosition += this.logSpeed * this.logDirection;
-            xPosition = Math.max(0, Math.min(xPosition, 800 - 46));
-            imageView.setX(xPosition);
+            setXPosition(getXPosition() + this.logSpeed * this.logDirection);
+            setXPosition(Math.max(0, Math.min(getXPosition(), 800 - 46)));
+            imageView.setX(getXPosition());
         }
-        //System.out.println("F position: " + xPosition);
     }
 }

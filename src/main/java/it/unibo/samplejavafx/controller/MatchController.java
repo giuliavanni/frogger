@@ -25,7 +25,13 @@ public class MatchController implements ViewObserver {
     private MainApp mainApp;
     private int currentScore = 0;
 
-    public MatchController(Frog frog, List<Lane> lanes, List<GameObjectNotControllable> objects, MatchView view, MainApp mainApp) {
+    public MatchController(
+        final Frog frog, 
+        final List<Lane> lanes, 
+        final List<GameObjectNotControllable> objects, 
+        final MatchView view, 
+        final MainApp mainApp
+    ) {
         this.frog = frog;
         this.lanes = lanes;
         this.objects = objects;
@@ -42,7 +48,7 @@ public class MatchController implements ViewObserver {
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
             @Override
-            public void handle(long now) {
+            public void handle(final long now) {
                 if (!isPaused) {
                     update();
                 }
@@ -57,18 +63,18 @@ public class MatchController implements ViewObserver {
         for (Lane lane : lanes) {
             lane.updateObjectsPosition();
         }
-        
+
         // Check collisions with lane objects
         for (Lane lane : lanes) {
             collisionDetector.handleCollisions(frog, lane.getObjects());
         }
-    
+
         // Check collisions with tokens and other objects not in lanes
         collisionDetector.handleCollisions(frog, objects);
-        
+
         // Update frog position if on log
         frog.updatePosition();
-    
+
         // Check game over conditions
         if (frog.getLives() <= 0) {
             gameOver();
@@ -76,7 +82,7 @@ public class MatchController implements ViewObserver {
     }
 
     @Override
-    public void handleInput(KeyCode code) {
+    public void handleInput(final KeyCode code) {
         if (code == KeyCode.P) {
             togglePause();
         } else {
@@ -95,7 +101,7 @@ public class MatchController implements ViewObserver {
         }
 
         view.clearScene();
-        
+
         // Render lanes
         for (int i = 0; i < lanes.size(); i++) {
             Lane lane = lanes.get(i);
@@ -107,14 +113,14 @@ public class MatchController implements ViewObserver {
                 view.renderTrafficLane(lane, i);
             }
         }
-        
+
         // Render tokens using objects list
         for (GameObjectNotControllable obj : objects) {
             if (obj instanceof Token) {
                 view.renderToken(obj);
             }
         }
-        
+
         view.renderFrog(frog);
         view.renderLives(frog);
         view.drawLaneLines();
@@ -168,7 +174,7 @@ public class MatchController implements ViewObserver {
         gameLoop.stop();
     }
 
-    public int updateScore(int value) {
+    public int updateScore(final int value) {
         currentScore += value;
         return 0;
     }
