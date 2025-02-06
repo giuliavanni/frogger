@@ -12,9 +12,9 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class MatchController implements ViewObserver {
-    private static final int GAME_DURATION = 60;
+    
     private Timeline timeline;
-    private double timeLeft = GAME_DURATION;
+    private double timeLeft = GlobalVariables.GAME_DURATION;
     private Frog frog;
     private List<Lane> lanes;
     private MatchView view;
@@ -131,7 +131,7 @@ public class MatchController implements ViewObserver {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (timeLeft > 0) {
                 timeLeft--;  // Decrement the time
-                double progress = timeLeft / GAME_DURATION;  // Calculate the remaining percentage
+                double progress = timeLeft / GlobalVariables.GAME_DURATION;  // Calculate the remaining percentage
                 view.updateTimerDisplay(progress);  // Update the timer display in the view
             } else {
                 view.updateTimerDisplay(0);  // If the time is up, the bar is empty
