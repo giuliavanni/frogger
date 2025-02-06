@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Match {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
-
+    
     private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
     private static final int OBSTACLE_Y_OFFSET = 12; // Offset to adjust the vertical position of obstacles
     private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
@@ -16,10 +14,10 @@ public class Match {
     private Frog frog;
     private List<GameObjectNotControllable> objects;
     private List<Lane> lanes;
-    private CollisionDetector collisionDetector;
+    //private CollisionDetector collisionDetector;
 
     public Match(final MatchView view) {
-        this.collisionDetector = new CollisionDetector();
+       // this.collisionDetector = new CollisionDetector();
         this.objects = new ArrayList<>();
         this.lanes = new ArrayList<>();
         setupGame();
@@ -31,7 +29,7 @@ public class Match {
 
     private void setupGame() {
         // Initialize Frog
-        frog = new Frog(WIDTH / 2, HEIGHT - 46, 3);
+        frog = new Frog(GlobalVariables.WIDTH / 2, GlobalVariables.HEIGHT - 46, 3);
 
         // Create ground lane (start)
         Lane groundStartLane = new Lane(0, 0, new ArrayList<>());
@@ -49,7 +47,7 @@ public class Match {
                 boolean overlap;
                 do {
                     overlap = false;
-                    xPosition = (int) (Math.random() * (WIDTH - LOG_WIDTH));
+                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - LOG_WIDTH));
                     for (GameObjectNotControllable obj : lane.getObjects()) {
                         if (Math.abs(obj.getXPosition() - xPosition) < LOG_WIDTH) {
                             overlap = true;
@@ -78,7 +76,7 @@ public class Match {
                 boolean overlap;
                 do {
                     overlap = false;
-                    xPosition = (int) (Math.random() * (WIDTH - OBSTACLE_WIDTH));
+                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - OBSTACLE_WIDTH));
                     for (GameObjectNotControllable obj : lane.getObjects()) {
                         if (Math.abs(obj.getXPosition() - xPosition) < OBSTACLE_WIDTH) {
                             overlap = true;
@@ -101,7 +99,7 @@ public class Match {
 
     private void addTokenInValidPosition() {
         int laneIndex; // = (int) (Math.random() * 10) + 1;
-        int xPosition = ((int) (Math.random() * (WIDTH / GlobalVariables.LANE_HEIGHT))) * GlobalVariables.LANE_HEIGHT;
+        int xPosition = ((int) (Math.random() * (GlobalVariables.WIDTH / GlobalVariables.LANE_HEIGHT))) * GlobalVariables.LANE_HEIGHT;
 
         do {
             laneIndex = (int) (Math.random() * 10) + 1;
@@ -123,13 +121,13 @@ public class Match {
         return objects;
     }
 
-    public void update() {
-        for (Lane lane : lanes) {
-            lane.updateObjectsPosition();
-        }
-        for (GameObjectNotControllable objt : objects) {
-           collisionDetector.checkCollision(objt, frog);
-        }
-        frog.updatePosition(); // Update frog's position if on a log
-    }
+    // public void update() {
+    //     for (Lane lane : lanes) {
+    //         lane.updateObjectsPosition();
+    //     }
+    //     for (GameObjectNotControllable objt : objects) {
+    //        collisionDetector.checkCollision(objt, frog);
+    //     }
+    //     frog.updatePosition(); // Update frog's position if on a log
+    // }
 }
