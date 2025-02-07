@@ -16,17 +16,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * This class represents the main menu of the Frogger game.
+ */
 public class Menu {
     private Stage stage;
-    private MainApp mainApp; // Reference to MainApp
+    private MainApp mainApp;
 
-    Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
+    private Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/PressStart2P-Regular.ttf"), 36);
 
+    /**
+     * Constructs a new Menu.
+     *
+     * @param stage   the primary stage for this application
+     * @param mainApp the main application instance
+     */
     public Menu(final Stage stage, final MainApp mainApp) {
         this.stage = stage;
-        this.mainApp = mainApp; // Initialize the reference
+        this.mainApp = mainApp;
     }
 
+    /**
+     * Creates the main menu layout and displays it.
+     */
     public void createMenu() {
         Label titleLabel = new Label("Frogger");
         titleLabel.setFont(pixelFont);
@@ -71,10 +83,16 @@ public class Menu {
         stage.show(); // Show the menu
     }
 
+    /**
+     * Starts a new game by calling the setupGame method in MainApp.
+     */
     private void startNewGame() {
-        mainApp.setupGame(); // Call the setupGame method in MainApp
+        mainApp.setupGame();
     }
 
+    /**
+     * Asks the player for their name before starting a new game.
+     */
     private void askForPlayerName() {
         VBox nameInputLayout = new VBox(20);
         nameInputLayout.setAlignment(javafx.geometry.Pos.CENTER);
@@ -103,6 +121,9 @@ public class Menu {
         stage.setScene(nameInputScene); // Change to the name input scene
     }
 
+    /**
+     * Opens the settings dialog.
+     */
     private void openSettings() {
         SettingsDialog settingsDialog = new SettingsDialog(stage);
         settingsDialog.show();

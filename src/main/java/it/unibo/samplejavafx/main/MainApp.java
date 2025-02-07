@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
+/**
+ * The main application class for the Frogger game.
+ */
 public class MainApp extends Application {
     private Stage primaryStage;
     private MatchView matchView;
@@ -33,14 +36,29 @@ public class MainApp extends Application {
     private String playerName;
     private ProgressBar timerBar;
 
+    /**
+     * Gets the player name.
+     *
+     * @return the player name
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Sets the player name.
+     *
+     * @param playerName the player name to set
+     */
     public void setPlayerName(final String playerName) {
         this.playerName = playerName;
     }
 
+    /**
+     * Starts the application.
+     *
+     * @param primaryStage the primary stage for this application
+     */
     @Override
     public void start(final Stage primaryStage) {
         Properties settings = GameSettingsManager.loadSettings();
@@ -53,6 +71,9 @@ public class MainApp extends Application {
         showMenu();
     }
 
+    /**
+     * Sets up the game by initializing the match view, match, and match controller.
+     */
     public void setupGame() {
         matchView = new MatchView(primaryStage, this); // Pass stage and this
         match = new Match(matchView);
@@ -104,28 +125,54 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Shows or hides the settings button.
+     *
+     * @param show true to show the settings button, false to hide it
+     */
     public void showSettingsButton(final boolean show) {
         settingsButton.setVisible(show);
     }
 
+    /**
+     * Shows or hides the paused label.
+     *
+     * @param show true to show the paused label, false to hide it
+     */
     public void showPausedLabel(final boolean show) {
         pausedLabel.setVisible(show);
     }
 
+    /**
+     * Updates the timer bar with the given progress.
+     *
+     * @param progress the progress to set on the timer bar (0.0 to 1.0)
+     */
     public void showTimerBar(final double progress) {
         timerBar.setProgress(progress);  // Update progress bar
     }
 
+    /**
+     * Opens the settings dialog.
+     */
     private void openSettings() {
         SettingsDialog settingsDialog = new SettingsDialog(primaryStage);
         settingsDialog.show();
     }
 
+    /**
+     * Shows the main menu.
+     */
     private void showMenu() {
         Menu menu = new Menu(primaryStage, this);
         menu.createMenu();
     }
 
+    /**
+     * The main method to launch the application.
+     *
+     * @param args the command line arguments
+     */
     public static void main(final String[] args) {
         launch(args);
     }

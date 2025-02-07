@@ -4,28 +4,47 @@ import it.unibo.samplejavafx.view.MatchView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a match in the Frogger game, managing the game setup and state.
+ */
 public class Match {
-    private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
-    private static final int OBSTACLE_Y_OFFSET = 12; // Offset to adjust the vertical position of obstacles
-    private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
+    private static final int OBSTACLE_WIDTH = 50;
+    private static final int OBSTACLE_Y_OFFSET = 12;
 
     private Frog frog;
     private List<GameObjectNotControllable> objects;
     private List<Lane> lanes;
 
+    /**
+     * Constructs a new Match.
+     *
+     * @param view the view to render the game
+     */
     public Match(final MatchView view) {
         this.objects = new ArrayList<>();
         this.lanes = new ArrayList<>();
         setupGame();
     }
 
+    /**
+     * Gets the frog character in the game.
+     *
+     * @return the frog character
+     */
     public Frog getFrog() {
         return frog;
     }
 
+    /**
+     * Sets up the game by initializing the frog, lanes, logs, and obstacles.
+     */
     private void setupGame() {
         // Initialize Frog
-        frog = new Frog(GlobalVariables.WIDTH / 2, GlobalVariables.HEIGHT - 46, 3);
+        frog = new Frog(
+            GlobalVariables.WIDTH / 2, 
+            GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE, 
+            GlobalVariables.FROG_LIVES
+        );
 
         // Create ground lane (start)
         Lane groundStartLane = new Lane(0, 0, new ArrayList<>());
@@ -43,9 +62,9 @@ public class Match {
                 boolean overlap;
                 do {
                     overlap = false;
-                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - LOG_WIDTH));
+                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - GlobalVariables.LOG_WIDTH));
                     for (GameObjectNotControllable obj : lane.getObjects()) {
-                        if (Math.abs(obj.getXPosition() - xPosition) < LOG_WIDTH) {
+                        if (Math.abs(obj.getXPosition() - xPosition) < GlobalVariables.LOG_WIDTH) {
                             overlap = true;
                             break;
                         }
@@ -89,13 +108,17 @@ public class Match {
         Lane groundEndLane = new Lane(0, 0, new ArrayList<>());
         lanes.add(groundEndLane);
 
-        // Create token in valid positions
         addTokenInValidPosition();
     }
 
+    /**
+     * Adds a token in a valid position within the game.
+     */
     private void addTokenInValidPosition() {
-        int laneIndex; // = (int) (Math.random() * 10) + 1;
-        int xPosition = ((int) (Math.random() * (GlobalVariables.WIDTH / GlobalVariables.LANE_HEIGHT))) * GlobalVariables.LANE_HEIGHT;
+        int laneIndex;
+        int xPosition = (
+            (int) (Math.random() * (GlobalVariables.WIDTH / GlobalVariables.LANE_HEIGHT))
+        ) * GlobalVariables.LANE_HEIGHT;
 
         do {
             laneIndex = (int) (Math.random() * 10) + 1;
@@ -109,10 +132,20 @@ public class Match {
         objects.add(token);
     }
 
+    /**
+     * Gets the list of lanes in the game.
+     *
+     * @return the list of lanes
+     */
     public List<Lane> getLanes() {
         return lanes;
     }
 
+    /**
+     * Gets the list of game objects not in lanes.
+     *
+     * @return the list of game objects not in lanes
+     */
     public List<GameObjectNotControllable> getObjects() {
         return objects;
     }

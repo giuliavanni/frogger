@@ -13,9 +13,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * This class represents a settings dialog for the Frogger game.
+ */
 public class SettingsDialog {
     private Stage dialogStage;
 
+    /**
+     * Constructs a new SettingsDialog.
+     *
+     * @param owner the owner stage of this dialog
+     */
     public SettingsDialog(final Stage owner) {
         dialogStage = new Stage();
         dialogStage.initOwner(owner);
@@ -60,6 +68,9 @@ public class SettingsDialog {
         dialogStage.setScene(scene);
     }
 
+    /**
+     * Shows the settings dialog and waits for it to be closed before returning.
+     */
     public void show() {
         dialogStage.showAndWait();
     }

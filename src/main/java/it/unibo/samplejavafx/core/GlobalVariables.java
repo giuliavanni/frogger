@@ -27,6 +27,16 @@ public final class GlobalVariables {
     public static final int JUMP_SIZE = 46;
 
     /**
+     * The number of lives the frog has.
+     */
+    public static final int FROG_LIVES = 3;
+
+    /**
+     * The width of each log in the game.
+     */
+    public static final int LOG_WIDTH = 100;
+
+    /**
      * The number of lanes in the game.
      */
     public static final int LANE_NUMBER = 13;
