@@ -1,7 +1,13 @@
 package it.unibo.samplejavafx.controller;
 
-import it.unibo.samplejavafx.core.*;
 import it.unibo.samplejavafx.view.MatchView;
+import it.unibo.samplejavafx.core.Frog;
+import it.unibo.samplejavafx.core.GameObjectNotControllable;
+import it.unibo.samplejavafx.core.GlobalVariables;
+import it.unibo.samplejavafx.core.Lane;
+import it.unibo.samplejavafx.core.PlayerScoreManager;
+import it.unibo.samplejavafx.core.SoundManager;
+import it.unibo.samplejavafx.core.Token;
 import it.unibo.samplejavafx.main.MainApp;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -11,6 +17,9 @@ import javafx.util.Duration;
 
 import java.util.List;
 
+/**
+ * This class controls the game logic and interactions for the Frogger game.
+ */
 public class MatchController implements ViewObserver {
     private Timeline timeline;
     private double timeLeft = GlobalVariables.GAME_DURATION;
@@ -24,6 +33,15 @@ public class MatchController implements ViewObserver {
     private MainApp mainApp;
     private int currentScore = 0;
 
+    /**
+     * Constructs a new MatchController.
+     *
+     * @param frog    the frog character in the game
+     * @param lanes   the list of lanes in the game
+     * @param objects the list of game objects not in lanes
+     * @param view    the view to render the game
+     * @param mainApp the main application instance
+     */
     public MatchController(
         final Frog frog, 
         final List<Lane> lanes, 
@@ -44,6 +62,9 @@ public class MatchController implements ViewObserver {
         startTimer();
     }
 
+    /**
+     * Starts the game loop.
+     */
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
             @Override
@@ -57,6 +78,9 @@ public class MatchController implements ViewObserver {
         gameLoop.start();
     }
 
+    /**
+     * Updates the game state.
+     */
     private void update() {
         // Update game state
         for (Lane lane : lanes) {
@@ -88,6 +112,11 @@ public class MatchController implements ViewObserver {
         }
     }
 
+    /**
+     * Handles input from the user.
+     *
+     * @param code the key code of the input
+     */
     @Override
     public void handleInput(final KeyCode code) {
         if (code == KeyCode.P) {
@@ -100,6 +129,9 @@ public class MatchController implements ViewObserver {
         }
     }
 
+    /**
+     * Updates the view to reflect the current game state.
+     */
     @Override
     public void updateView() {
         if (frog.getLives() <= 0) {
@@ -134,6 +166,9 @@ public class MatchController implements ViewObserver {
         view.renderScore(currentScore);
     }
 
+    /**
+     * Starts the game timer.
+     */
     private void startTimer() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (timeLeft > 0) {
@@ -150,10 +185,16 @@ public class MatchController implements ViewObserver {
         timeline.play();  // Start the timer
     }
 
+    /**
+     * Stops the game timer.
+     */
     private void stopTimer() {
         this.timeline.stop();
     }
 
+    /**
+     * Toggles the pause state of the game.
+     */
     public void togglePause() {
         isPaused = !isPaused;
         mainApp.showSettingsButton(isPaused);
@@ -165,6 +206,9 @@ public class MatchController implements ViewObserver {
         }
     }
 
+    /**
+     * Handles the game over state.
+     */
     private void gameOver() {
         stop();
         stopTimer();
@@ -177,15 +221,29 @@ public class MatchController implements ViewObserver {
         System.out.println("Punteggio " + finalScore);
     }
 
+    /**
+     * Stops the game loop.
+     */
     public void stop() {
         gameLoop.stop();
     }
 
+    /**
+     * Updates the score by a given value.
+     *
+     * @param value the value to add to the current score
+     * @return the updated score
+     */
     public int updateScore(final int value) {
         currentScore += value;
-        return 0;
+        return currentScore;
     }
 
+    /**
+     * Calculates the final score.
+     *
+     * @return the final score
+     */
     private int calculateScore() {
         // Implement score calculation logic
         return currentScore;

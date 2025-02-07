@@ -11,10 +11,20 @@ import it.unibo.samplejavafx.core.Token;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class is responsible for detecting and handling collisions between the frog and other game objects.
+ */
 public class CollisionDetector {
     private static final double INVULNERABILITY_TIME = 2.0; // seconds
     private long lastCollisionTime = 0;
 
+    /**
+     * Checks if there is a collision between the given game object and the frog.
+     *
+     * @param obj  the game object to check for collision
+     * @param frog the frog to check for collision
+     * @return true if there is a collision, false otherwise
+     */
     public boolean checkCollision(final GameObjectNotControllable obj, final Frog frog) {
         // Add some tolerance to the collision detection
         double frogWidth = frog.getImageView().getFitWidth() * 0.8; // Reduce hitbox by 20%
@@ -35,6 +45,12 @@ public class CollisionDetector {
                 || objY + objHeight <= frogY);      // frog is below
     }
 
+    /**
+     * Handles collisions between the frog and a list of game objects.
+     *
+     * @param frog    the frog to check for collisions
+     * @param objects the list of game objects to check for collisions
+     */
     public void handleCollisions(final Frog frog, final List<GameObjectNotControllable> objects) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastCollisionTime < INVULNERABILITY_TIME * 1000) {
@@ -45,7 +61,7 @@ public class CollisionDetector {
         int logSpeed = 0;
         int logDirection = 0;
         int frogY;
-        int[] logCnt = new int[6];
+        int[] logCounter = new int[6];
 
         Iterator<GameObjectNotControllable> iterator = objects.iterator();
         while (iterator.hasNext()) {
@@ -55,8 +71,6 @@ public class CollisionDetector {
                     handleObstacleCollision(frog);
                     return;
                 } else if (obj instanceof Log) {
-                    //System.out.println("Log collision detected!");
-                    //System.out.println("Log speed: " + ((Log) obj).getSpeed());
                     onLog = true;
                     logSpeed = ((Log) obj).getSpeed();
                     logDirection = ((Log) obj).getDirection();
@@ -70,13 +84,12 @@ public class CollisionDetector {
             } else {
                 // Check if player missed the log
                 if (obj instanceof Log) {
-                    int llane = obj.getYPosition() /  GlobalVariables.LANE_HEIGHT;
+                    int llane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
                     frogY = frog.getYPosition();
                     int flane = frogY / GlobalVariables.LANE_HEIGHT;
                     if ((flane >= 1) && (flane <= 5)) {
-                        //System.out.println("Log lane " + llane);
                         if (llane == flane) { 
-                            logCnt[llane]++;
+                            logCounter[llane]++;
                         }
                     }
                 }
@@ -84,7 +97,7 @@ public class CollisionDetector {
         }
         int logFault = 0;
         for (int i = 0; i <= 5; i++) {
-            if (logCnt[i] == 3) {
+            if (logCounter[i] == 3) {
                 logFault++;
             }
         }
@@ -95,6 +108,11 @@ public class CollisionDetector {
         }
     }
 
+    /**
+     * Handles the collision between the frog and an obstacle.
+     *
+     * @param frog the frog that collided with the obstacle
+     */
     private void handleObstacleCollision(final Frog frog) {
         SoundManager.playSound("collision");
         frog.loseLife();
@@ -102,6 +120,11 @@ public class CollisionDetector {
         lastCollisionTime = System.currentTimeMillis();
     }
 
+    /**
+     * Handles the event when the frog misses a log.
+     *
+     * @param frog the frog that missed the log
+     */
     private void handleLogMiss(final Frog frog) {
         SoundManager.playSound("water");
         frog.loseLife();
@@ -109,6 +132,12 @@ public class CollisionDetector {
         lastCollisionTime = System.currentTimeMillis();
     }
 
+    /**
+     * Handles the collision between the frog and a token.
+     *
+     * @param frog   the frog that collided with the token
+     * @param token  the token that the frog collided with
+     */
     private void handleTokenCollision(final Frog frog, final Token token) {
         SoundManager.playSound("token");
         token.applyEffect(frog);
