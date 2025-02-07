@@ -35,16 +35,13 @@ public class Log extends GameObjectNotControllable {
      */
     @Override
     public void updatePosition() {
-        // Implement position update logic
         setXPosition(getXPosition() + speed * direction);
 
         // Check if the frog is on the log
         for (GameObjectControllable obj : laneObjects) {
-            // Check if the object is an instance of Frog
             if (obj instanceof Frog) {
-                Frog frog = (Frog) obj;  // Safely cast to Frog
+                Frog frog = (Frog) obj;
 
-                // Check if the frog is on the log
                 if (frog.getYPosition() == this.getYPosition()
                     && frog.getXPosition() >= this.getXPosition()
                     && frog.getXPosition() <= this.getXPosition() + this.getImageView().getFitWidth()) {

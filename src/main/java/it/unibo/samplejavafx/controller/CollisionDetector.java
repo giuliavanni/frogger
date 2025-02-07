@@ -84,12 +84,12 @@ public class CollisionDetector {
             } else {
                 // Check if player missed the log
                 if (obj instanceof Log) {
-                    int llane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
+                    int logLane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
                     frogY = frog.getYPosition();
-                    int flane = frogY / GlobalVariables.LANE_HEIGHT;
-                    if ((flane >= 1) && (flane <= 5)) {
-                        if (llane == flane) { 
-                            logCounter[llane]++;
+                    int frogLane = frogY / GlobalVariables.LANE_HEIGHT;
+                    if ((frogLane >= 1) && (frogLane <= 5)) {
+                        if (logLane == frogLane) { 
+                            logCounter[logLane]++;
                         }
                     }
                 }

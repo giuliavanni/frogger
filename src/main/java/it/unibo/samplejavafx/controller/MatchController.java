@@ -100,7 +100,7 @@ public class MatchController implements ViewObserver {
 
         // Check frog on top lane:
         // reset frog position, update score, increment game level
-        if (frog.lanePosition() == GlobalVariables.LANE_END) {
+        if (frog.getLanePosition() == GlobalVariables.LANE_END) {
             frog.resetPosition(GlobalVariables.WIDTH / 2, GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE);
             updateScore(100);
             incrementLevel();

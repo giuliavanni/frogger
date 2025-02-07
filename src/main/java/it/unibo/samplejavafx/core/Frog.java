@@ -152,16 +152,16 @@ public class Frog extends GameObjectControllable {
      * Updates the position of the frog if it is on a log.
      */
     public void updatePosition() {
-        int flane = this.getYPosition() / GlobalVariables.LANE_HEIGHT;
+        int frogLane = getLanePosition();
 
-        //frog on middle line
-        if (flane == 6) {
+        //frog on middle lane
+        if (frogLane == 6) {
             this.onLog = false;
             this.logSpeed = 0;
         }
 
-        // frog on top line
-        if (flane == 0) {
+        // frog on top lane
+        if (frogLane == 0) {
             this.onLog = false;
             this.logSpeed = 0;
         }
@@ -169,7 +169,7 @@ public class Frog extends GameObjectControllable {
         if (this.onLog) {
             setXPosition(getXPosition() + this.logSpeed * this.logDirection);
             setXPosition(Math.max(0, Math.min(getXPosition(), GlobalVariables.WIDTH - GlobalVariables.JUMP_SIZE)));
-            imageView.setX(getXPosition());
+            imageView.setX(getXPosition() + this.logSpeed * this.logDirection);
         }
     }
 
@@ -178,7 +178,7 @@ public class Frog extends GameObjectControllable {
      *
      * @return the lane position of the frog
      */
-    public int lanePosition() {
+    public int getLanePosition() {
         return (this.getYPosition() / GlobalVariables.LANE_HEIGHT);
     }
 }
