@@ -12,7 +12,6 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class MatchController implements ViewObserver {
-    
     private Timeline timeline;
     private double timeLeft = GlobalVariables.GAME_DURATION;
     private Frog frog;

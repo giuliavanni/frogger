@@ -1,12 +1,10 @@
 package it.unibo.samplejavafx.core;
 
-import it.unibo.samplejavafx.controller.CollisionDetector;
 import it.unibo.samplejavafx.view.MatchView;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Match {
-    
     private static final int OBSTACLE_WIDTH = 50; // Assuming each obstacle is 50 pixels wide
     private static final int OBSTACLE_Y_OFFSET = 12; // Offset to adjust the vertical position of obstacles
     private static final int LOG_WIDTH = 100; // Assuming each log is 100 pixels wide
@@ -14,10 +12,8 @@ public class Match {
     private Frog frog;
     private List<GameObjectNotControllable> objects;
     private List<Lane> lanes;
-    //private CollisionDetector collisionDetector;
 
     public Match(final MatchView view) {
-       // this.collisionDetector = new CollisionDetector();
         this.objects = new ArrayList<>();
         this.lanes = new ArrayList<>();
         setupGame();
@@ -120,14 +116,4 @@ public class Match {
     public List<GameObjectNotControllable> getObjects() {
         return objects;
     }
-
-    // public void update() {
-    //     for (Lane lane : lanes) {
-    //         lane.updateObjectsPosition();
-    //     }
-    //     for (GameObjectNotControllable objt : objects) {
-    //        collisionDetector.checkCollision(objt, frog);
-    //     }
-    //     frog.updatePosition(); // Update frog's position if on a log
-    // }
 }
