@@ -39,6 +39,12 @@ public class Lane {
      */
     public void incrementSpeed(final int increment) {
         this.speed += increment;
+        // Update speed of all objects in the lane
+        for (GameObjectNotControllable obj : objects) {
+            if (obj instanceof Log) {
+                ((Log) obj).setSpeed(this.speed);
+            }
+        }
     }
 
     /**

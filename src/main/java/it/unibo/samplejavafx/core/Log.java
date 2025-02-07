@@ -65,6 +65,15 @@ public class Log extends GameObjectNotControllable {
     }
 
     /**
+     * Sets the speed of the log.
+     *
+     * @param speed the new speed to set
+     */
+    public void setSpeed(final int speed) {
+        this.speed = speed;
+    }
+
+    /**
      * Gets the direction of the log.
      *
      * @return the direction of the log (1 for right, -1 for left)
