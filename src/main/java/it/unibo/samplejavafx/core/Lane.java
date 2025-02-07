@@ -33,6 +33,15 @@ public class Lane {
     }
 
     /**
+     * Increments the speed of the lane.
+     *
+     * @param increment the amount to increment the speed by
+     */
+    public void incrementSpeed(final int increment) {
+        this.speed += increment;
+    }
+
+    /**
      * Gets the direction of the lane.
      *
      * @return the direction of the lane (1 for right, -1 for left)

@@ -103,13 +103,31 @@ public class MatchController implements ViewObserver {
         if (frog.lanePosition() == GlobalVariables.LANE_END) {
             frog.resetPosition(GlobalVariables.WIDTH / 2, GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE);
             updateScore(100);
-            //mainApp.setupGame();
+            incrementLevel();
         }
 
         // Check game over conditions
         if (frog.getLives() <= 0) {
             gameOver();
         }
+    }
+
+    /**
+     * Increments the game level by increasing the speed of logs and obstacles.
+     */
+    private void incrementLevel() {
+        for (Lane lane : lanes) {
+            lane.incrementSpeed(1); // Increment speed by 1 (adjust as needed)
+        }
+        resetTimer();
+    }
+
+    /**
+     * Resets the game timer.
+     */
+    private void resetTimer() {
+        timeLeft = GlobalVariables.GAME_DURATION;
+        timeline.playFromStart();
     }
 
     /**
