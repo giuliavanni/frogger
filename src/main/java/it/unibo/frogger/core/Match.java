@@ -1,6 +1,6 @@
-package it.unibo.samplejavafx.core;
+package it.unibo.frogger.core;
 
-import it.unibo.samplejavafx.view.MatchView;
+import it.unibo.frogger.view.MatchView;
 import java.util.ArrayList;
 import java.util.List;
 

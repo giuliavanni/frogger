@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.core;
+package it.unibo.frogger.core;
 
 /**
  * This class contains global constants used throughout the game.

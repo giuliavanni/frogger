@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.core;
+package it.unibo.frogger.core;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

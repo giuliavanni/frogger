@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.controller;
+package it.unibo.frogger.controller;
 
 import javafx.scene.input.KeyCode;
 

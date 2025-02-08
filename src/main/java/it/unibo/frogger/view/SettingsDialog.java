@@ -1,9 +1,9 @@
-package it.unibo.samplejavafx.view;
+package it.unibo.frogger.view;
 
 import java.util.Properties;
 
-import it.unibo.samplejavafx.core.GameSettingsManager;
-import it.unibo.samplejavafx.core.SoundManager;
+import it.unibo.frogger.core.GameSettingsManager;
+import it.unibo.frogger.core.SoundManager;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

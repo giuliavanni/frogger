@@ -1,11 +1,11 @@
-package it.unibo.samplejavafx;
+package it.unibo.frogger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import it.unibo.samplejavafx.core.*;
-import it.unibo.samplejavafx.controller.CollisionDetector;
+import it.unibo.frogger.core.*;
+import it.unibo.frogger.controller.CollisionDetector;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;

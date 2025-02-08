@@ -1,15 +1,15 @@
-package it.unibo.samplejavafx.main;
+package it.unibo.frogger.main;
 
 import java.util.Properties;
 
-import it.unibo.samplejavafx.controller.MatchController;
-import it.unibo.samplejavafx.core.GameSettingsManager;
-import it.unibo.samplejavafx.core.GlobalVariables;
-import it.unibo.samplejavafx.core.Match;
-import it.unibo.samplejavafx.core.SoundManager;
-import it.unibo.samplejavafx.view.MatchView;
-import it.unibo.samplejavafx.view.Menu;
-import it.unibo.samplejavafx.view.SettingsDialog;
+import it.unibo.frogger.controller.MatchController;
+import it.unibo.frogger.core.GameSettingsManager;
+import it.unibo.frogger.core.GlobalVariables;
+import it.unibo.frogger.core.Match;
+import it.unibo.frogger.core.SoundManager;
+import it.unibo.frogger.view.MatchView;
+import it.unibo.frogger.view.Menu;
+import it.unibo.frogger.view.SettingsDialog;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

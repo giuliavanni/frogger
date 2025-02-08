@@ -1,12 +1,12 @@
-package it.unibo.samplejavafx.controller;
+package it.unibo.frogger.controller;
 
-import it.unibo.samplejavafx.core.Frog;
-import it.unibo.samplejavafx.core.GameObjectNotControllable;
-import it.unibo.samplejavafx.core.GlobalVariables;
-import it.unibo.samplejavafx.core.Obstacle;
-import it.unibo.samplejavafx.core.SoundManager;
-import it.unibo.samplejavafx.core.Log;
-import it.unibo.samplejavafx.core.Token;
+import it.unibo.frogger.core.Frog;
+import it.unibo.frogger.core.GameObjectNotControllable;
+import it.unibo.frogger.core.GlobalVariables;
+import it.unibo.frogger.core.Obstacle;
+import it.unibo.frogger.core.SoundManager;
+import it.unibo.frogger.core.Log;
+import it.unibo.frogger.core.Token;
 
 import java.util.Iterator;
 import java.util.List;

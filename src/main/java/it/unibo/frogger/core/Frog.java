@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.core;
+package it.unibo.frogger.core;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

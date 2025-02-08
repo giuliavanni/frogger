@@ -1,14 +1,14 @@
-package it.unibo.samplejavafx.controller;
+package it.unibo.frogger.controller;
 
-import it.unibo.samplejavafx.view.MatchView;
-import it.unibo.samplejavafx.core.Frog;
-import it.unibo.samplejavafx.core.GameObjectNotControllable;
-import it.unibo.samplejavafx.core.GlobalVariables;
-import it.unibo.samplejavafx.core.Lane;
-import it.unibo.samplejavafx.core.PlayerScoreManager;
-import it.unibo.samplejavafx.core.SoundManager;
-import it.unibo.samplejavafx.core.Token;
-import it.unibo.samplejavafx.main.MainApp;
+import it.unibo.frogger.view.MatchView;
+import it.unibo.frogger.core.Frog;
+import it.unibo.frogger.core.GameObjectNotControllable;
+import it.unibo.frogger.core.GlobalVariables;
+import it.unibo.frogger.core.Lane;
+import it.unibo.frogger.core.PlayerScoreManager;
+import it.unibo.frogger.core.SoundManager;
+import it.unibo.frogger.core.Token;
+import it.unibo.frogger.main.MainApp;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

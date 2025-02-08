@@ -1,13 +1,13 @@
-package it.unibo.samplejavafx.view;
+package it.unibo.frogger.view;
 
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.samplejavafx.core.Frog;
-import it.unibo.samplejavafx.core.Lane;
-import it.unibo.samplejavafx.core.PlayerScoreManager;
-import it.unibo.samplejavafx.core.GameObjectNotControllable;
-import it.unibo.samplejavafx.core.GlobalVariables;
+import it.unibo.frogger.core.Frog;
+import it.unibo.frogger.core.Lane;
+import it.unibo.frogger.core.PlayerScoreManager;
+import it.unibo.frogger.core.GameObjectNotControllable;
+import it.unibo.frogger.core.GlobalVariables;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import it.unibo.samplejavafx.main.MainApp;
+import it.unibo.frogger.main.MainApp;
 
 /**
  * This class represents the view for the match in the Frogger game.

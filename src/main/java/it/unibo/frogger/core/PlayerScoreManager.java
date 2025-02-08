@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.core;
+package it.unibo.frogger.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
