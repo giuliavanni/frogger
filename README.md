@@ -51,67 +51,64 @@ Gli elementi costitutivi il problema sono sintetizzati nella seguente figura.
 ```mermaid
 classDiagram
     class Match {
-        start() void
+        setupGame() void
     }
     class GameObjectControllable  {
         getXPosition() int
-        setXPosition(int x) int
+        setXPosition(x: int) int
         getYPosition() int
-        setYPosition(int y) int
+        setYPosition(y: int) int
         move(KeyCode) void
     }
     class Frog {
-        boolean isOnLog()
-        ImageView getImageView()
-        int getLives()
+        isOnLog() boolean
+        getImageView() ImageView
+        getLives() int
         loseLife() void
         gainLife() void
-        collectToken(Token token) void
-        move(KeyCode code) void
-        resetPosition(int x, int y) void
-        setOnLog(boolean onLog, int logSpeed, int logDirection) void
+        collectToken(token: Token) void
+        resetPosition(x: int, y: int) void
+        setOnLog(onLog: boolean, logSpeed: int, logDirection: int) void
         updatePosition() void
     }
     class Lane {
         getSpeed() int
+        incrementSpeed(increment: int) void
         getDirection() int
         getObjects() : List (GameObjectNotControllable)
         updateObjectsPosition() void
     }
     class GameObjectNotControllable{
         getXPosition() int
-        setXPosition(int x) int
+        setXPosition(x: int) int
         getYPosition() int
-        setYPosition(int y) int
-        setPosition(int x, int y) void
+        setYPosition(y: int) int
+        setPosition(x: int, y: int) void
         getImageView() ImageView
-        setImageView(ImageView imageView) void
+        setImageView(imageView: ImageView) void
         updatePosition() void
     }
     class Obstacle {
-        updatePosition() void
-        setPosition(int x, int y) void
     }
     class Log {
-        updatePosition() void
         getSpeed() int
+        setSpeed(speed: int) void
         getDirection() int
     }
     class Token {
-        applyEffect(Frog frog) void
-        updatePosition() void
+        applyEffect(frog: Frog) void
     }
     class CollisionDetector {
-        checkCollision(GameObjectNotControllable obj, Frog frog) boolean
-        handleCollisions(Frog frog, List(GameObjectNotControllable) objects) void
-        handleObstacleCollision(Frog frog) void
-        handleLogMiss(Frog frog) void
-        handleTokenCollision(Frog frog, Token token) void
+        checkCollision(obj: GameObjectNotControllable, frog: Frog) boolean
+        handleCollisions(frog: Frog, objects: List(GameObjectNotControllable)) void
+        handleObstacleCollision(frog: Frog) void
+        handleLogMiss(frog: Frog) void
+        handleTokenCollision(frog: Frog, token: Token) void
     }
     class PlayerScoreManager {
-        saveScore(String playerName, int score) void
+        saveScore(playerName: String, score: int) void
         loadScores() : Map(String, Integer)
-        getTopScores(int limit) : List(Map.Entry(String, Integer))
+        getTopScores(limit: int) : List(Map.Entry(String, Integer))
     }
     Match -- GameObjectControllable
     Match -- Lane
@@ -150,7 +147,7 @@ Il design del gioco segue il pattern MVC (Model-View-Controller), una scelta che
 classDiagram
 
 class Match {
-    +start() void
+    +setupGame() void
 }
 
 class MatchView {
