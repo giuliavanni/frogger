@@ -29,6 +29,7 @@ public final class SoundManager {
             SOUND_EFFECTS.put("collision", new Media(SoundManager.class.getResource("/collision.wav").toExternalForm()));
             SOUND_EFFECTS.put("token", new Media(SoundManager.class.getResource("/token.wav").toExternalForm()));
             SOUND_EFFECTS.put("water", new Media(SoundManager.class.getResource("/water.wav").toExternalForm()));
+            SOUND_EFFECTS.put("levelup", new Media(SoundManager.class.getResource("/levelup.mp3").toExternalForm()));
         } catch (Exception e) {
             System.err.println("Error loading sound effects: " + e.getMessage());
         }

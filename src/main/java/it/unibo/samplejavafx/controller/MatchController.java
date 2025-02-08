@@ -116,6 +116,7 @@ public class MatchController implements ViewObserver {
      * Increments the game level by increasing the speed of logs and obstacles.
      */
     private void incrementLevel() {
+        SoundManager.playSound("levelup");
         for (Lane lane : lanes) {
             lane.incrementSpeed(1); // Increment speed by 1 (adjust as needed)
         }
