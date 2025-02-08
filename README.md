@@ -293,9 +293,101 @@ public void testCollisionDetection() {
 - Gestione del timer e del punteggio.
 
 #### Rambaldi
-- Implementazione del movimento della rana.
+- Implementazione del movimento della rana:
+
+    **Dove**: `it.unibo.frogger.core.Frog.java`
+
+    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/core/Frog.java#L93-L118
+
+    **Snippet**:
+```java
+public void move(final KeyCode code) {
+    switch (code) {
+        case UP:
+            setYPosition(getYPosition() - GlobalVariables.JUMP_SIZE);
+            break;
+        case DOWN:
+            setYPosition(getYPosition() + GlobalVariables.JUMP_SIZE);
+            break;
+        case LEFT:
+            setXPosition(getXPosition() - GlobalVariables.JUMP_SIZE);
+            break;
+        case RIGHT:
+            setXPosition(getXPosition() + GlobalVariables.JUMP_SIZE);
+            break;
+        default:
+            break;
+    }
+    // Limit movement within window boundaries
+    setXPosition(Math.max(0, Math.min(getXPosition(), GlobalVariables.WIDTH - GlobalVariables.JUMP_SIZE)));
+    setYPosition(Math.max(0, Math.min(getYPosition(), GlobalVariables.HEIGHT - GlobalVariables.JUMP_SIZE)));
+    imageView.setX(getXPosition());
+    imageView.setY(getYPosition());
+}
+```
+Ho implementato il movimento della rana utilizzando i tasti freccia per navigare attraverso le corsie e l'ho limitato alla dimensione della finestra.
+
 - Sviluppo della logica di collisione.
+
+    **Dove**: `it.unibo.frogger.core.CollisionDetector.java`
+
+    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/controller/CollisionDetector.java#L28-L46
+
+    **Snippet**:
+```java
+public boolean checkCollision(final GameObjectNotControllable obj, final Frog frog) {
+    // Add some tolerance to the collision detection
+    double frogWidth = frog.getImageView().getFitWidth() * 0.8; // Reduce hitbox by 20%
+    double frogHeight = frog.getImageView().getFitHeight() * 0.8;
+    double objWidth = obj.getImageView().getFitWidth() * 0.8;
+    double objHeight = obj.getImageView().getFitHeight() * 0.8;
+
+    // Add offset to center the hitbox
+    double frogX = frog.getXPosition() + (frog.getImageView().getFitWidth() - frogWidth) / 2;
+    double frogY = frog.getYPosition() + (frog.getImageView().getFitHeight() - frogHeight) / 2;
+    double objX = obj.getXPosition() + (obj.getImageView().getFitWidth() - objWidth) / 2;
+    double objY = obj.getYPosition() + (obj.getImageView().getFitHeight() - objHeight) / 2;
+
+    // Check for rectangle intersection with adjusted positions and sizes
+    return !(frogX + frogWidth <= objX     // frog is to the left
+            || objX + objWidth <= frogX       // frog is to the right
+            || frogY + frogHeight <= objY     // frog is above
+            || objY + objHeight <= frogY);      // frog is below
+}
+```
+Ho sviluppato la logica di collisione utilizzando bounding boxes per rilevare le collisioni tra la rana e gli ostacoli.
+
 - Persistenza dei dati per i punteggi.
+
+    **Dove**: `it.unibo.frogger.core.PlayerScoreManager.java`
+
+    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/core/PlayerScoreManager.java#L30-L37
+
+    **Snippet**:
+```java
+public static void saveScore(final String playerName, final int score) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(SCORES_FILE, true))) {
+        writer.write(playerName + ":" + score);
+        writer.newLine();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+Ho implementato la persistenza dei dati per i punteggi dei giocatori, permettendo di salvare e caricare i punteggi da un file.
+
+---
+
+## Commenti finali
+
+### Autovalutazione e lavori futuri
+
+#### Rambaldi
+Grazie a quest progetto, ho avuto l'opportunità di approfondire la programmazione orientata agli oggetti. Inizialmente, ho trovato difficoltà a comprendere e applicare i concetti, diversi da quelli utilizzati in altri linguaggi. Tuttavia, con il tempo e la pratica, sono riuscito a superare queste difficoltà e a contribuire in modo significativo al progetto.
+Uno dei punti di forza del lavoro è stata la fase di analisi del dominio. Anche se abbiamo speso molto tempo in questa fase, si è rivelata fondamentale per la realizzazione del codice. La comprensione approfondita delle entità e delle loro interazioni ci ha permesso di progettare un'architettura solida e ben strutturata, facilitando così lo sviluppo e la manutenzione del codice.
+Ho avuto alcune difficoltà nella gestione delle collisioni con i tronchi. Realizzare una logica di collisione precisa e affidabile si è rivelato più complesso del previsto. In particolar modo per quanto riguarda il movimento della rana sui tronchi in movimento. Grazie al lavoro di gruppo, però, siamo riusciti a trovare una soluzione adeguata.
+
+La fase di analisi del dominio è stata particolarmente impegnativa, ma si è rivelata estremamente utile per la realizzazione del codice. Vorrei suggerire di dedicare più tempo e risorse a questa fase nei futuri corsi, in quanto può davvero fare la differenza nella qualità del progetto finale.
 
 ---
 
@@ -304,7 +396,7 @@ public void testCollisionDetection() {
 1. Avviare il gioco e scegliere un'opzione dal menù principale (`New Game`, `Settings`, `Quit`).
 2. Inserire il proprio nome per salvare i progressi.
 3. Utilizzare i tasti freccia per muovere la rana e attraversare le corsie.
-4. Raccogliere gettoni per bonus di tempo o vite extra.
-5. Alla fine della partita, visualizzare il punteggio e scegliere se continuare o uscire.
+4. Raccogliere gettoni per bonus di vite extra.
+5. Alla fine della partita, visualizzare il punteggio e scegliere se riprovare o uscire.
 
 ---
