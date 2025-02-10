@@ -15,7 +15,7 @@ import java.util.List;
  * This class is responsible for detecting and handling collisions between the frog and other game objects.
  */
 public class CollisionDetector {
-    private static final double INVULNERABILITY_TIME = 2.0; // seconds
+    private static final double INVULNERABILITY_TIME = 0.1; // seconds
     private long lastCollisionTime = 0;
 
     /**
