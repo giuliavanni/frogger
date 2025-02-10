@@ -13,7 +13,7 @@ import java.util.Properties;
  * Provides methods to save and load settings from a properties file.
  */
 public final class GameSettingsManager {
-    private static final String SETTINGS_FILE = "src/main/resources/game_settings.properties";
+    private static final String SETTINGS_FILE = "game_settings.properties";
 
     /**
      * Private constructor to prevent instantiation.

@@ -14,7 +14,7 @@ import java.util.Map;
  * This class manages the player scores, allowing to save, load, and retrieve top scores.
  */
 public final class PlayerScoreManager {
-    private static final String SCORES_FILE = "src/main/resources/player_scores.txt";
+    private static final String SCORES_FILE = "player_scores.txt";
 
     // Prevent instantiation
     private PlayerScoreManager() {
