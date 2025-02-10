@@ -16,20 +16,24 @@ import java.util.Map;
 public final class PlayerScoreManager {
     private static final String SCORES_FILE = "player_scores.txt";
 
-    // Prevent instantiation
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private PlayerScoreManager() {
         throw new UnsupportedOperationException("Utility class");
     }
 
     /**
-     * Saves the score of a player to the scores file.
+     * Saves the player's score to a file.
      *
      * @param playerName the name of the player
-     * @param score      the score of the player
+     * @param score the score of the player
      */
     public static void saveScore(final String playerName, final int score) {
+        // Add timestamp to make each entry unique
+        String timestamp = String.valueOf(System.currentTimeMillis());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SCORES_FILE, true))) {
-            writer.write(playerName + ":" + score);
+            writer.write(playerName + ":" + score + ":" + timestamp);
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,9 +41,9 @@ public final class PlayerScoreManager {
     }
 
     /**
-     * Loads the scores from the scores file.
+     * Loads the scores from the file.
      *
-     * @return a map of player names to their scores
+     * @return a map of player names and their scores
      */
     public static Map<String, Integer> loadScores() {
         Map<String, Integer> scores = new HashMap<>();
@@ -55,8 +59,10 @@ public final class PlayerScoreManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    scores.put(parts[0], Integer.parseInt(parts[1]));
+                if (parts.length >= 2) {
+                    // Use playerName + timestamp as a unique key
+                    String key = parts[0] + "_" + (parts.length == 3 ? parts[2] : System.currentTimeMillis());
+                    scores.put(key, Integer.parseInt(parts[1]));
                 }
             }
         } catch (IOException e) {
@@ -66,16 +72,18 @@ public final class PlayerScoreManager {
     }
 
     /**
-     * Retrieves the top scores up to a specified limit.
+     * Retrieves the top scores.
      *
      * @param limit the maximum number of top scores to retrieve
-     * @return a list of entries containing player names and their scores, sorted by score in descending order
+     * @return a list of entries containing player names and their scores
      */
     public static List<Map.Entry<String, Integer>> getTopScores(final int limit) {
         Map<String, Integer> scores = loadScores();
         return scores.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .limit(limit)
-                .toList();
+            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+            .limit(limit)
+            // Remove the timestamp from the name when displaying scores
+            .map(entry -> Map.entry(entry.getKey().split("_")[0], entry.getValue()))
+            .toList();
     }
 }
