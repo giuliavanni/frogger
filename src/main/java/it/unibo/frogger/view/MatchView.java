@@ -278,20 +278,6 @@ public class MatchView {
     }
 
     /**
-     * Draws horizontal lines between lanes on the canvas.
-     */
-    public void drawLaneLines() {
-        gc.setStroke(Color.WHITE); // Make lines white for better visibility
-        gc.setLineWidth(2); // Make lines thicker
-
-        // Draw horizontal lines between lanes
-        for (int i = 0; i <= 13; i++) { // Changed to <= to draw the bottom line
-            double y = i * GlobalVariables.LANE_HEIGHT;
-            gc.strokeLine(0, y, GlobalVariables.WIDTH, y);
-        }
-    }
-
-    /**
      * Gets the player name from the main application.
      *
      * @return the player name
