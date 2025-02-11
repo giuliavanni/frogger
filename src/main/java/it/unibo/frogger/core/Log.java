@@ -9,9 +9,10 @@ import javafx.scene.image.ImageView;
  * This class represents a log in the game, which moves at a certain speed and direction.
  */
 public class Log extends GameObjectNotControllable {
-    private static final String IMAGE_PATH = "/log.png";
+    private static final String[] IMAGE_PATH = {"/log0.png","/log1.png","/log2.png"};
     private int speed;
     private int direction;
+    private int width;
     private List<GameObjectControllable> laneObjects;
 
     /**
@@ -21,13 +22,15 @@ public class Log extends GameObjectNotControllable {
      * @param y         the initial y position of the log
      * @param speed     the speed at which the log moves
      * @param direction the direction in which the log moves (1 for right, -1 for left)
+     * @param log_type  the type of the log  
      */
-    public Log(final int x, final int y, final int speed, final int direction) {
-        super(x, y, new ImageView(new Image(Log.class.getResourceAsStream(IMAGE_PATH))));
-        this.getImageView().setFitWidth(100); // Set appropriate size
+    public Log(final int x, final int y, final int speed, final int direction, final int log_type) {
+        super(x, y, GlobalVariables.LOG_W_BY_TYPE[log_type], new ImageView(new Image(Log.class.getResourceAsStream(IMAGE_PATH[log_type])))); 
+        this.getImageView().setFitWidth(GlobalVariables.LOG_W_BY_TYPE[log_type]); // Set appropriate size
         this.getImageView().setFitHeight(40); // Set appropriate size
         this.speed = speed;
         this.direction = direction;
+        this.width = GlobalVariables.LOG_W_BY_TYPE [log_type];
     }
 
     /**
@@ -80,5 +83,15 @@ public class Log extends GameObjectNotControllable {
      */
     public int getDirection() {
         return direction;
+    }
+
+    /**
+     * Gets the width of the log.
+     *
+     * @return  the width of the log
+     */
+    public int getWidth()
+    {
+        return(width);
     }
 }

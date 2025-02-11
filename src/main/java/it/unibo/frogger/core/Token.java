@@ -17,7 +17,7 @@ public class Token extends GameObjectNotControllable {
      * @param y the y-coordinate of the token
      */
     public Token(final int x, final int y) {
-        super(x, y, new ImageView(new Image(Token.class.getResourceAsStream(IMAGE_PATH))));
+        super(x, y, 30, new ImageView(new Image(Token.class.getResourceAsStream(IMAGE_PATH))));
         this.getImageView().setFitWidth(30); // Set appropriate size
         this.getImageView().setFitHeight(30); // Set appropriate size
     }

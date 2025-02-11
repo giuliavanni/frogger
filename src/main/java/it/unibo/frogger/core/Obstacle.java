@@ -18,7 +18,7 @@ public class Obstacle extends GameObjectNotControllable {
      * @param direction the direction in which the obstacle moves (1 for right, -1 for left)
      */
     public Obstacle(final int x, final int y, final int direction) {
-        super(x, y, new ImageView(new Image(
+        super(x, y, 70, new ImageView(new Image(
             Obstacle.class.getResourceAsStream(
                 direction == -1 ? IMAGE_REVERSED_PATH : IMAGE_PATH
             )

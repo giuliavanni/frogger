@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 public abstract class GameObjectNotControllable {
     private int xPosition;
     private int yPosition;
+    private int width;
     private ImageView imageView;
 
     /**
@@ -18,11 +19,13 @@ public abstract class GameObjectNotControllable {
      *
      * @param xPosition the x-coordinate of the game object
      * @param yPosition the y-coordinate of the game object
+     * @param width the width of the game object
      * @param imageView the image representation of the game object
      */
-    public GameObjectNotControllable(final int xPosition, final int yPosition, final ImageView imageView) {
+    public GameObjectNotControllable(final int xPosition, final int yPosition,final int width, final ImageView imageView) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
+        this.width = width;
         this.imageView = imageView;
     }
 
@@ -99,4 +102,14 @@ public abstract class GameObjectNotControllable {
      * specific behavior for updating the position.
      */
     public abstract void updatePosition();
+
+    /**
+     * Gets the width of the game object.
+     *
+     * @return the width of the game object
+     */
+    public int getWidth()
+    {
+        return width;
+    }
 }

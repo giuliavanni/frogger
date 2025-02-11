@@ -60,18 +60,28 @@ public class Match {
             for (int j = 0; j < 3; j++) {
                 int xPosition;
                 boolean overlap;
+                //int logt = (int)(Math.random()  + 0.5);
+                int logt = 0;
+                //System.out.println("L "+i+"N "+j+"D "+logt);
+                int logw = GlobalVariables.LOG_W_BY_TYPE[logt];
+                //GlobalVariables.LOG_WIDTH
+                int loopc = 0;
                 do {
                     overlap = false;
-                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - GlobalVariables.LOG_WIDTH));
+                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - logw));
                     for (GameObjectNotControllable obj : lane.getObjects()) {
-                        if (Math.abs(obj.getXPosition() - xPosition) < GlobalVariables.LOG_WIDTH) {
+                        int pos = Math.abs(obj.getXPosition() - xPosition); 
+                        if (pos < obj.getWidth()) {
+                            System.out.println("X "+pos);
                             overlap = true;
                             break;
                         }
                     }
+                    if (loopc++ > 20)
+                        break;
                 } while (overlap);
                 int yPosition = (i + 1) * GlobalVariables.LANE_HEIGHT; // Position in the current lane
-                lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed(), lane.getDirection()));
+                lane.getObjects().add(new Log(xPosition, yPosition, lane.getSpeed(), lane.getDirection(),logt));
             }
         }
 

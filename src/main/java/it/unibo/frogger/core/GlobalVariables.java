@@ -60,4 +60,9 @@ public final class GlobalVariables {
      * The duration of the game in seconds.
      */
     public static final int GAME_DURATION = 60;
-}
+
+    /**
+     * The width of the logs by type.
+     */
+    public static final int[] LOG_W_BY_TYPE = {150,200,250};
+};
