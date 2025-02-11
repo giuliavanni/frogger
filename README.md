@@ -2,7 +2,7 @@
 
 ## Analisi
 
-Il progetto consiste nella realizzazione di un videogioco ispirato al classico arcade *Frogger*. Si propone di realizzare una reinterpretazione del titolo originale, integrando meccaniche di gioco classiche con elementi di design innovativi per attrarre un pubblico ampio e diversificato. L'obiettivo principale è di guidare una rana attraverso diverse corsie trafficate evitando ostacoli, raccogliendo bonus strategici e completando il percorso entro un tempo limite.
+Il progetto consiste nella realizzazione di un videogioco ispirato al classico arcade *Frogger*. Si propone di realizzare una reinterpretazione del titolo originale, integrando le meccaniche di gioco classiche. L'obiettivo principale è di guidare una rana attraverso diverse corsie trafficate evitando ostacoli, raccogliendo bonus strategici e completando il percorso entro un tempo limite.
 
 Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche principali includono un sistema di raccolta oggetti, un timer dinamico e la possibilità di salvare i punteggi dei giocatori per promuovere una sana competitività.
 
@@ -12,7 +12,7 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 
 ### Requisiti funzionali
 - **[RF1] Schermata Menù**: Offre le seguenti opzioni:
-  - `New Game`: Inizia una nuova partita e reimposta i progressi.
+  - `New Game`: Inizia una nuova partita.
   - `Settings`: Permette di regolare impostazioni come il volume.
   - `Quit`: Consente di uscire dall'applicazione in modo semplice e immediato.
 
@@ -21,8 +21,8 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 - **[RF3] Modalità di Gioco Classica**:
   - La rana si muove attraverso diverse corsie utilizzando i tasti freccia per navigare.
   - Elementi in movimento, come: 
-    - veicoli: generano le collisioni e devono essere evitati per completare il livello
-    - tronchi: utilizzati come vettori per spostarsi e attraversare i corsi d'acqua.
+    - *veicoli*: generano le collisioni e devono essere evitati per completare il livello
+    - *tronchi*: utilizzati come vettori per spostarsi e attraversare i corsi d'acqua.
   - Possibilità di raccogliere gettoni che forniscono bonus, come estensioni del tempo o vite extra.
 
 - **[RF4] Sistema di Collisione**:
@@ -257,12 +257,88 @@ classDiagram
     class Log {
         +updatePosition() void
     }
+    class Token {
+        applyEffect(frog: Frog) void
+    }
     Frog --> CollisionDetector : uses
     CollisionDetector -- GameObjectNotControllable
     GameObjectNotControllable <|-- Obstacle
     GameObjectNotControllable <|-- Log
+    GameObjectNotControllable <|-- Token
 ```
 
+#### Game Loop
+
+##### Problema
+
+Il problema da risolvere è la gestione del ciclo di gioco in un videogioco. Questo deve aggiornare continuamente lo stato dello stesso e renderizzare la grafica, garantendo reattività e fluidità. Questo include la gestione dell'input dell'utente, l'aggiornamento delle posizioni degli oggetti di gioco, il rilevamento delle collisioni e il rendering della grafica.
+
+##### Soluzione
+
+La soluzione proposta è l'implementazione del pattern **Game Loop** utilizzando la classe `AnimationTimer` di JavaFX.
+
+##### Motivazioni
+
+L'uso del pattern Game Loop è una pratica comune nello sviluppo di videogiochi, poiché garantisce un'esperienza di gioco fluida e reattiva. Inoltre, l'implementazione di un ciclo di gioco separato consente di mantenere il codice ben strutturato e modulare.
+
+```mermaid
+classDiagram
+    class MatchController {
+        -AnimationTimer gameLoop
+        -boolean isPaused
+        +startGameLoop() void
+        +update() void
+        +updateView() void
+    }
+
+    class AnimationTimer {
+        +start() void
+        +stop() void
+        +handle(long now) void
+    }
+
+    MatchController --> AnimationTimer : uses
+```
+
+#### Template Method
+
+##### Problema
+
+All'interno del gioco si possono trovare diversi tipi di oggetti che devono aggiornare la loro posizione in base a specifiche regole di movimento. Ad esempio, la rana controllata dal giocatore si muove in base all'input della tastiera, mentre gli ostacoli e i tronchi si muovono automaticamente lungo le corsie. È necessario implementare il comportamento di movimento per ciascun tipo di oggetto di gioco in modo separato. Questo può portare a codice duplicato e difficile da mantenere.
+
+##### Soluzione
+
+Come soluzione si propone l'uso del pattern Template Method. Questo pattern permette di definire la struttura di un algoritmo, delegando alle sottoclassi la definizione di alcuni passaggi specifici. In questo modo, è possibile centralizzare la logica comune del movimento degli oggetti di gioco nella classe base, permettendo alle sottoclassi di specificare il comportamento particolare.
+
+##### Motivazioni
+
+L'uso del pattern Template Method permette di mantenere il codice ben strutturato e modulare, riducendo la duplicazione del codice e facilitando la manutenzione.
+
+```mermaid
+classDiagram
+    class GameObjectControllable {
+        +int xPosition
+        +int yPosition
+        +move(KeyCode code) void
+    }
+    class Frog {
+        +move(KeyCode code) void
+    }
+    class GameObjectNotControllable {
+        +int xPosition
+        +int yPosition
+        +updatePosition() void
+    }
+    class Obstacle {
+        +updatePosition() void
+    }
+    class Log {
+        +updatePosition() void
+    }
+    GameObjectControllable <|-- Frog
+    GameObjectNotControllable <|-- Obstacle
+    GameObjectNotControllable <|-- Log
+```
 ---
 
 ## Sviluppo
@@ -277,11 +353,14 @@ Per garantire la qualità del codice, sono stati implementati test automatizzati
 Esempio di test JUnit:
 ```java
 @Test
-public void testCollisionDetection() {
-    Frog frog = new Frog(10, 10, 10, 10);
-    Obstacle obstacle = new Obstacle(15, 15, 10, 10);
-    CollisionDetector detector = new CollisionDetector();
-    assertTrue(detector.checkCollision(frog, obstacle));
+void testCollisionDetection() {
+    assertTrue(detector.checkCollision(obstacle, frog), 
+        "Should detect collision when frog and obstacle are at same position");
+
+    // Move obstacle away and test again
+    obstacle.setPosition(OBSTACLE_X + OBSTACLE_X, OBSTACLE_Y + OBSTACLE_Y);
+    assertFalse(detector.checkCollision(obstacle, frog),
+        "Should not detect collision when objects are apart");
 }
 ```
 
