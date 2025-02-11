@@ -8,8 +8,8 @@ import java.util.List;
  * This class represents a match in the Frogger game, managing the game setup and state.
  */
 public class Match {
-    private static final int OBSTACLE_WIDTH = 50;
-    private static final int OBSTACLE_Y_OFFSET = 12;
+    //private static final int OBSTACLE_WIDTH = 50;
+    //private static final int OBSTACLE_Y_OFFSET = 12;
 
     private Frog frog;
     private List<GameObjectNotControllable> objects;
@@ -101,16 +101,17 @@ public class Match {
                 boolean overlap;
                 do {
                     overlap = false;
-                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - OBSTACLE_WIDTH));
+                    xPosition = (int) (Math.random() * (GlobalVariables.WIDTH - GlobalVariables.OBSTACLE_WIDTH));
                     for (GameObjectNotControllable obj : lane.getObjects()) {
-                        if (Math.abs(obj.getXPosition() - xPosition) < OBSTACLE_WIDTH) {
+                        if (Math.abs(obj.getXPosition() - xPosition) < GlobalVariables.OBSTACLE_WIDTH) {
                             overlap = true;
                             break;
                         }
                     }
                 } while (overlap);
-                int yPosition = (i + 7) * GlobalVariables.LANE_HEIGHT - OBSTACLE_Y_OFFSET; // Position in the current lane
-                lane.getObjects().add(new Obstacle(xPosition, yPosition, direction));
+                int yPosition = (i + 7) * GlobalVariables.LANE_HEIGHT - GlobalVariables.OBSTACLE_Y_OFFSET; // Position in the current lane
+                int obstacleType = (int)(Math.random()* 2 + 0.5);
+                lane.getObjects().add(new Obstacle(xPosition, yPosition, direction,obstacleType));
             }
         }
 

@@ -57,6 +57,16 @@ public final class GlobalVariables {
     public static final int LANE_END = 0;
 
     /**
+     * The obstacle width.
+     */
+    public static final int OBSTACLE_WIDTH = 70;
+
+    /**
+     * The obstacle y offset.
+     */
+    public static final int OBSTACLE_Y_OFFSET = 12;
+
+    /**
      * The duration of the game in seconds.
      */
     public static final int GAME_DURATION = 60;

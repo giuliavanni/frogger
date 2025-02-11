@@ -38,7 +38,7 @@ class AppTest {
     void setup() {
         frog = new Frog(INITIAL_FROG_X, INITIAL_FROG_Y, INITIAL_FROG_LIVES); // Create frog with 3 lives at position (400,500)
         detector = new CollisionDetector();
-        obstacle = new Obstacle(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_SPEED); // Same position as frog to test collision
+        obstacle = new Obstacle(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_SPEED, 0); // Same position as frog to test collision
         token = new Token(TOKEN_X, TOKEN_Y); // Same position as frog to test collection
     }
 
