@@ -5,6 +5,7 @@ import it.unibo.frogger.core.Frog;
 import it.unibo.frogger.core.GameObjectNotControllable;
 import it.unibo.frogger.core.GlobalVariables;
 import it.unibo.frogger.core.Lane;
+import it.unibo.frogger.core.Log;
 import it.unibo.frogger.core.PlayerScoreManager;
 import it.unibo.frogger.core.SoundManager;
 import it.unibo.frogger.core.Token;
@@ -12,6 +13,7 @@ import it.unibo.frogger.main.MainApp;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.css.Match;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
@@ -120,7 +122,40 @@ public class MatchController implements ViewObserver {
         for (Lane lane : lanes) {
             lane.incrementSpeed(1); // Increment speed by 1 (adjust as needed)
         }
+        //
+        boolean tokenFlag = false;
+        for (GameObjectNotControllable obj : objects) {
+            if (obj instanceof Token) {
+                tokenFlag = true;
+            }
+            
+        }
+        if (tokenFlag == false) {
+            addTokenInValidPosition();
+        }
+        //
         resetTimer();
+    }
+
+    /**
+     * Adds a token in a valid position within the game.
+     */
+    private void addTokenInValidPosition() {
+        int laneIndex;
+        int xPosition = (
+            (int) (Math.random() * (GlobalVariables.WIDTH / GlobalVariables.LANE_HEIGHT))
+        ) * GlobalVariables.LANE_HEIGHT;
+
+        do {
+            laneIndex = (int) (Math.random() * 10) + 1;
+            if ((laneIndex == 1) || (laneIndex == 6) || (laneIndex == 11)) {
+                laneIndex = 0;
+            }
+        } while (laneIndex == 0);
+        int yPosition = laneIndex * GlobalVariables.LANE_HEIGHT;
+
+        Token token = new Token(xPosition, yPosition);
+        objects.add(token);
     }
 
     /**
