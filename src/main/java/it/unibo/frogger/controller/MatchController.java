@@ -5,7 +5,6 @@ import it.unibo.frogger.core.Frog;
 import it.unibo.frogger.core.GameObjectNotControllable;
 import it.unibo.frogger.core.GlobalVariables;
 import it.unibo.frogger.core.Lane;
-import it.unibo.frogger.core.Log;
 import it.unibo.frogger.core.PlayerScoreManager;
 import it.unibo.frogger.core.SoundManager;
 import it.unibo.frogger.core.Token;
@@ -13,7 +12,6 @@ import it.unibo.frogger.main.MainApp;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.css.Match;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
