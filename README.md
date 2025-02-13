@@ -194,17 +194,13 @@ MatchController "1" -- "1..*" MatchView : interacts with
 #### Gestione del Timer
 **Problema**: Garantire un sistema di countdown efficace e sincronizzato con il gameplay.
 
-**Soluzione**:  Implementazione di un `Timeline` che aggiorna periodicamente il timer e notifica la View per aggiornare il display.
+**Soluzione**:  Implementazione di un `Timeline` che aggiorna periodicamente la variabile timeLeft e notifica la View per aggiornare la barra sul display.
 
 ```mermaid
 classDiagram
-    class Timer {
-        -int timeRemaining
-        +void start()
-        +void stop()
-        +void decrement()
-    }
+    
     class MatchController {
+        -int timeLeft
         +void startTimer()
         +void stopTimer()
         +void togglePause()
@@ -212,7 +208,13 @@ classDiagram
     class MatchView {
         +void updateTimerDisplay(double progress)
     }
-    Timer -- MatchController
+    class Timeline {
+        +void play()
+        +void pause()
+        +void stop()
+        +void KeyFrame()
+    }
+    MatchController --> Timeline : uses
     MatchController -- MatchView
 ```
 
