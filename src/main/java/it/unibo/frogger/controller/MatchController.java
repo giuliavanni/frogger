@@ -120,18 +120,18 @@ public class MatchController implements ViewObserver {
         for (Lane lane : lanes) {
             lane.incrementSpeed(1); // Increment speed by 1 (adjust as needed)
         }
-        //
+
         boolean tokenFlag = false;
         for (GameObjectNotControllable obj : objects) {
             if (obj instanceof Token) {
                 tokenFlag = true;
             }
-            
+
         }
         if (tokenFlag == false) {
             addTokenInValidPosition();
         }
-        //
+
         resetTimer();
     }
 
