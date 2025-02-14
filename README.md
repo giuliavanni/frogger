@@ -370,7 +370,80 @@ void testCollisionDetection() {
 
 #### Vanni
 - Creazione grafica degli sprite.
-- Implementazione del posizionamento dinamico degli ostacoli.
+- Algoritmo per la gestione della posizione della rana rispetto al tronco:
+  
+    **Dove**: `src/main/java/it/unibo/frogger/core/Log.java`
+  
+    **Permalink**:  
+  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/2a62f91b9df09afd29c0c88f168a2de827fe217c/src/main/java/it/unibo/frogger/core/Log.java
+  
+    **Snippet**:  
+ ```java
+public void updatePosition() {
+        setXPosition(getXPosition() + speed * direction);
+
+        // Check if the frog is on the log
+        for (GameObjectControllable obj : laneObjects) {
+            if (obj instanceof Frog) {
+                Frog frog = (Frog) obj;
+
+                if (frog.getYPosition() == this.getYPosition()
+                    && frog.getXPosition() >= this.getXPosition()
+                    && frog.getXPosition() <= this.getXPosition() + this.getImageView().getFitWidth()) {
+                    // The frog is on the log, so it should move with it
+                    frog.setOnLog(true, this.speed, this.direction);
+                } else {
+                    // The frog is no longer on the log
+                    frog.setOnLog(false, 0, 0);
+                }
+            }
+        }
+    }
+ ```
+- Algoritmo per la gestione della caduta in acqua della rana:
+
+  **Dove**: `src/main/java/it/unibo/frogger/controller/CollisionDetector.java`
+  
+    **Permalink**:
+  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/2a62f91b9df09afd29c0c88f168a2de827fe217c/src/main/java/it/unibo/frogger/controller/CollisionDetector.java  
+  
+    **Snippet**:  
+ ```java
+  Iterator<GameObjectNotControllable> iterator = objects.iterator();
+        while (iterator.hasNext()) {
+            GameObjectNotControllable obj = iterator.next();
+            if (checkCollision(obj, frog)) {
+                ...
+                <controllo delle collisioni con oggetti>
+                ...
+            } else {
+                // Check if player missed the log
+                if (obj instanceof Log) {
+                    int logLane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
+                    frogY = frog.getYPosition();
+                    int frogLane = frogY / GlobalVariables.LANE_HEIGHT;
+                    if ((frogLane >= 1) && (frogLane <= 5)) {
+                        if (logLane == frogLane) { 
+                            logCounter[logLane]++;
+                        }
+                    }
+                }
+            }
+        }
+        int logFault = 0;
+        for (int i = 0; i <= 5; i++) {
+            if (logCounter[i] == 3) {
+                logFault++;
+            }
+        }
+        if (logFault > 0) {
+            System.out.println("Log miss detected!");
+            frog.setOnLog(false, 0, 0);
+            handleLogMiss(frog);
+        }
+    }
+ ```
+
 - Gestione del timer e del punteggio.
 
 #### Rambaldi
