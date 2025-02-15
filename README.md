@@ -575,7 +575,7 @@ Ho implementato la persistenza dei dati per i punteggi dei giocatori, permettend
 
 ### Autovalutazione e lavori futuri
 
-### Vanni
+#### Vanni
 La realizzazione di questo progetto ha presentato fin da subito delle sfide stimolanti, essendo questa la mia prima esperienza con il linguaggio Java e con la programmazione orientata ad oggetti in generale. La collaborazione con il mio collega e le indicazioni fornite dai docenti sono state fondamentali per comprendere come strutturare il progetto e gestire la complessità dovuta alle numerose classi presenti. Per realizzare l'interfaccia utente in modo che fosse interattiva e dalla grafica personalizzata ho dovuto imparare ad utilizzare le API di JavaFX, che si sono rivelate utili anche per l'implementazione del timer. Dal punto di vista della logica di gioco il problema principale che ho affrontato è stato l'interazione della rana con i tronchi. Infatti lo sviluppo dell'algoritmo che gestisce l'interazione rana/tronco non è stata immediata, ma ha richiesto parecchie prove e cicli di debug per arrivare ad elaborare una soluzione adeguata.  
 Complessivamente sono soddisfatta del risultato ottenuto, sento di aver acquisito nuove competenze dopo aver superato lo scoglio iniziale di un nuovo linguaggio e paradigma di programmazione. In futuro, si potrebbe lavorare ulteriormente sull'ottimizzazione del codice e sull'implementazione di funzionalità aggiuntive per arricchire ulteriormente l'esperienza di gioco.  
 
