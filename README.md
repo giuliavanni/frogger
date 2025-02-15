@@ -368,44 +368,14 @@ void testCollisionDetection() {
 
 ### Note di sviluppo
 
-#### Vanni
-- Creazione grafica degli sprite.
-- Algoritmo per la gestione della posizione della rana rispetto al tronco:
-  
-    **Dove**: `src/main/java/it/unibo/frogger/core/Log.java`
-  
-    **Permalink**:  
-  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/2a62f91b9df09afd29c0c88f168a2de827fe217c/src/main/java/it/unibo/frogger/core/Log.java
-  
-    **Snippet**:  
- ```java
-public void updatePosition() {
-        setXPosition(getXPosition() + speed * direction);
+#### Vanni  
 
-        // Check if the frog is on the log
-        for (GameObjectControllable obj : laneObjects) {
-            if (obj instanceof Frog) {
-                Frog frog = (Frog) obj;
-
-                if (frog.getYPosition() == this.getYPosition()
-                    && frog.getXPosition() >= this.getXPosition()
-                    && frog.getXPosition() <= this.getXPosition() + this.getImageView().getFitWidth()) {
-                    // The frog is on the log, so it should move with it
-                    frog.setOnLog(true, this.speed, this.direction);
-                } else {
-                    // The frog is no longer on the log
-                    frog.setOnLog(false, 0, 0);
-                }
-            }
-        }
-    }
- ```
-- Algoritmo per la gestione della caduta in acqua della rana:
+- Algoritmo per la gestione dell'interazione rana/tronco:
 
   **Dove**: `src/main/java/it/unibo/frogger/controller/CollisionDetector.java`
   
     **Permalink**:
-  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/2a62f91b9df09afd29c0c88f168a2de827fe217c/src/main/java/it/unibo/frogger/controller/CollisionDetector.java  
+    https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/master/src/main/java/it/unibo/frogger/controller/CollisionDetector.java#L54-L109 
   
     **Snippet**:  
  ```java
@@ -414,8 +384,19 @@ public void updatePosition() {
             GameObjectNotControllable obj = iterator.next();
             if (checkCollision(obj, frog)) {
                 ...
-                <controllo delle collisioni con oggetti>
+                <controllo delle collisioni con ostacoli>
                 ...
+                } else if (obj instanceof Log) {
+                    onLog = true;
+                    logSpeed = ((Log) obj).getSpeed();
+                    logDirection = ((Log) obj).getDirection();
+                    frog.setOnLog(onLog, logSpeed, logDirection);
+                    return;
+                } else if (obj instanceof Token) {
+                     ...
+                     <controllo delle collisioni con token>
+                     ...
+                }
             } else {
                 // Check if player missed the log
                 if (obj instanceof Log) {
@@ -443,8 +424,66 @@ public void updatePosition() {
         }
     }
  ```
+Ho implementato l'algoritmo che gestisce l'interazione della rana con il tronco, l'eventuale caduta in acqua della rana e aggiorna lo stato di gioco.
 
-- Gestione del timer e del punteggio.
+- Uso della libreria JavaFX:
+
+  **Dove**: `src/main/java/it/unibo/frogger/view/Menu.java`
+
+  **Permalink**:
+  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/master/src/main/java/it/unibo/frogger/view/Menu.java#L96-L115
+
+  **Snippet**:
+```java
+private void askForPlayerName() {
+        VBox nameInputLayout = new VBox(20);
+        nameInputLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Label nameLabel = new Label("Enter your name:");
+        nameLabel.setFont(pixelFont);
+        nameLabel.setStyle("-fx-text-fill: white;"); // Set text color to white
+        TextField nameInputField = new TextField();
+        nameInputField.setFont(pixelFont);
+        nameInputField.setMaxWidth(500);
+
+        Button submitButton = new Button("Submit");
+        submitButton.setFont(pixelFont);
+        submitButton.setOnAction(e -> {
+            SoundManager.playSound("click");
+            String playerName = nameInputField.getText();
+            System.out.println("Player's name: " + playerName);
+            mainApp.setPlayerName(playerName);
+            startNewGame(); // Call setupGame from MainApp
+        });
+```
+Ho usato la libreria JavaFX e una lambda expression per creare un'interfaccia utente interattiva e personalizzata.  
+
+- Gestione del timer:
+  
+  **Dove**: `src/main/java/it/unibo/frogger/controller/MatchController.java`
+
+  **Permalink**:
+  https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/master/src/main/java/it/unibo/frogger/controller/MatchController.java#L223-L237
+
+  **Snippet**:
+```java
+ private void startTimer() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeLeft > 0) {
+                timeLeft--;  // Decrement the time
+                double progress = timeLeft / GlobalVariables.GAME_DURATION;  // Calculate the remaining percentage
+                view.updateTimerDisplay(progress);  // Update the timer display in the view
+            } else {
+                view.updateTimerDisplay(0);  // If the time is up, the bar is empty
+                timeline.stop();
+                gameOver();  // Call the function when the time is up
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);  // Repeat the cycle
+        timeline.play();  // Start the timer
+    }
+```
+Ho implementato il timer facendo uso di classi presenti in JavaFX e una lambda expression. 
 
 #### Rambaldi
 - Implementazione del movimento della rana:
@@ -536,8 +575,12 @@ Ho implementato la persistenza dei dati per i punteggi dei giocatori, permettend
 
 ### Autovalutazione e lavori futuri
 
+### Vanni
+La realizzazione di questo progetto ha presentato fin da subito delle sfide stimolanti, essendo questa la mia prima esperienza con il linguaggio Java e con la programmazione orientata ad oggetti in generale. La collaborazione con il mio collega e le indicazioni fornite dai docenti sono state fondamentali per comprendere come strutturare il progetto e gestire la complessità dovuta alle numerose classi presenti. Per realizzare l'interfaccia utente in modo che fosse interattiva e dalla grafica personalizzata ho dovuto imparare ad utilizzare le API di JavaFX, che si sono rivelate utili anche per l'implementazione del timer. Dal punto di vista della logica di gioco il problema principale che ho affrontato è stato l'interazione della rana con i tronchi. Infatti lo sviluppo dell'algoritmo che gestisce l'interazione rana/tronco non è stata immediata, ma ha richiesto parecchie prove e cicli di debug per arrivare ad elaborare una soluzione adeguata.  
+Complessivamente sono soddisfatta del risultato ottenuto, sento di aver acquisito nuove competenze dopo aver superato lo scoglio iniziale di un nuovo linguaggio e paradigma di programmazione. In futuro, si potrebbe lavorare ulteriormente sull'ottimizzazione del codice e sull'implementazione di funzionalità aggiuntive per arricchire ulteriormente l'esperienza di gioco.  
+
 #### Rambaldi
-Grazie a quest progetto, ho avuto l'opportunità di approfondire la programmazione orientata agli oggetti. Inizialmente, ho trovato difficoltà a comprendere e applicare i concetti, diversi da quelli utilizzati in altri linguaggi. Tuttavia, con il tempo e la pratica, sono riuscito a superare queste difficoltà e a contribuire in modo significativo al progetto.
+Grazie a questo progetto, ho avuto l'opportunità di approfondire la programmazione orientata agli oggetti. Inizialmente, ho trovato difficoltà a comprendere e applicare i concetti, diversi da quelli utilizzati in altri linguaggi. Tuttavia, con il tempo e la pratica, sono riuscito a superare queste difficoltà e a contribuire in modo significativo al progetto.
 Uno dei punti di forza del lavoro è stata la fase di analisi del dominio. Anche se abbiamo speso molto tempo in questa fase, si è rivelata fondamentale per la realizzazione del codice. La comprensione approfondita delle entità e delle loro interazioni ci ha permesso di progettare un'architettura solida e ben strutturata, facilitando così lo sviluppo e la manutenzione del codice.
 Ho avuto alcune difficoltà nella gestione delle collisioni con i tronchi. Realizzare una logica di collisione precisa e affidabile si è rivelato più complesso del previsto. In particolar modo per quanto riguarda il movimento della rana sui tronchi in movimento. Grazie al lavoro di gruppo, però, siamo riusciti a trovare una soluzione adeguata.
 
@@ -550,7 +593,8 @@ La fase di analisi del dominio è stata particolarmente impegnativa, ma si è ri
 1. Avviare il gioco e scegliere un'opzione dal menù principale (`New Game`, `Settings`, `Quit`).
 2. Inserire il proprio nome per salvare i progressi.
 3. Utilizzare i tasti freccia per muovere la rana e attraversare le corsie.
-4. Raccogliere gettoni per bonus di vite extra.
-5. Alla fine della partita, visualizzare il punteggio e scegliere se riprovare o uscire.
+4. Premere "P" per mettere in pausa la partita.
+5. Raccogliere gettoni per bonus di vite extra.
+6. Alla fine della partita, visualizzare il punteggio e scegliere se riprovare o uscire.
 
 ---
