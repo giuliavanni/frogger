@@ -349,8 +349,8 @@ classDiagram
 
 Per garantire la qualità del codice, sono stati implementati test automatizzati utilizzando JUnit. Questi test coprono vari aspetti del gioco, tra cui:
 - **Collisioni**: Verifica della corretta gestione degli impatti tra rana e ostacoli.
-- **Timer**: Controllo della precisione del countdown e della sua sincronizzazione.
-- **Gestione dei Punteggi**: Validazione del calcolo e della memorizzazione dei punteggi.
+- **Interazione con tronchi**: Controllo se la rana interagisce correttamente con il tronco e ottiene la velocità per rimanerci sopra.
+- **Movimento limitato**: Validazione del movimento entro i limiti della dimensione della finestra.
 
 Esempio di test JUnit:
 ```java
@@ -363,6 +363,46 @@ void testCollisionDetection() {
     obstacle.setPosition(OBSTACLE_X + OBSTACLE_X, OBSTACLE_Y + OBSTACLE_Y);
     assertFalse(detector.checkCollision(obstacle, frog),
         "Should not detect collision when objects are apart");
+}
+
+@Test
+void testLogInteraction() {
+    assertFalse(frog.isOnLog(), "Frog should not start on a log");
+
+    frog.setOnLog(true, LOG_SPEED, LOG_DIRECTION);
+    assertTrue(frog.isOnLog(), "Frog should be on log after setting");
+
+    int initialX = frog.getXPosition();
+    frog.updatePosition();
+    assertEquals(initialX + LOG_SPEED, frog.getXPosition(),
+        "Frog should move with log speed when on log");
+}
+
+@Test
+void testFrogBoundaries() {
+    // Test right boundary
+    frog.resetPosition(BOUNDARY_RIGHT, INITIAL_FROG_Y);
+    frog.move(KeyCode.RIGHT);
+    assertTrue(frog.getXPosition() <= BOUNDARY_RIGHT - MOVE_DISTANCE,
+        "Frog should not move beyond right boundary");
+
+    // Test left boundary
+    frog.resetPosition(0, INITIAL_FROG_Y);
+    frog.move(KeyCode.LEFT);
+    assertTrue(frog.getXPosition() >= 0,
+        "Frog should not move beyond left boundary");
+
+    // Test bottom boundary
+    frog.resetPosition(INITIAL_FROG_X, BOUNDARY_BOTTOM);
+    frog.move(KeyCode.DOWN);
+    assertTrue(frog.getYPosition() <= BOUNDARY_BOTTOM - MOVE_DISTANCE,
+        "Frog should not move beyond bottom boundary");
+
+    // Test top boundary
+    frog.resetPosition(INITIAL_FROG_X, 0);
+    frog.move(KeyCode.UP);
+    assertTrue(frog.getYPosition() >= 0,
+        "Frog should not move beyond top boundary");
 }
 ```
 
