@@ -220,20 +220,14 @@ classDiagram
 
 #### Collision Detection
 
-##### Problema
-
-Nel gioco, la rana si muove lungo le corsie evitando gli ostacoli o saltando su tronchi. Diventa quindi essenziale:
+**Problema**: Nel gioco, la rana si muove lungo le corsie evitando gli ostacoli o saltando su tronchi. Diventa quindi essenziale:
 - verificare la validità di ogni movimento (non fuori dai bordi dello schermo o su una posizione occupata da un ostacolo).
 - rilevare le collisioni con oggetti dinamici (es. veicoli).
 - garantire fluidità nel gameplay mantenendo un'implementazione efficiente.
 
-##### Soluzione
+**Soluzione**: Il movimento è gestito dalla classe `Frog`, che calcola la nuova posizione in base alla direzione ricevuta. La classe `CollisionDetector` verifica se la posizione è valida utilizzando bounding boxes. Questa separazione migliora la modularità: `Frog` si occupa solo del movimento, mentre il `CollisionDetector` si concentra sulla logica di interazione.
 
-Il movimento è gestito dalla classe `Frog`, che calcola la nuova posizione in base alla direzione ricevuta. La classe `CollisionDetector` verifica se la posizione è valida utilizzando bounding boxes. Questa separazione migliora la modularità: `Frog` si occupa solo del movimento, mentre il `CollisionDetector` si concentra sulla logica di interazione.
-
-##### Motivazioni
-
-Separare il movimento e il rilevamento delle collisioni migliora la leggibilità e facilita i test unitari.
+**Motivazioni**: Separare il movimento e il rilevamento delle collisioni migliora la leggibilità e facilita i test unitari.
 L’uso del sistema di bounding boxes per le collisioni è stato scelto per la sua semplicità ed efficienza.
 
 ```mermaid
@@ -271,17 +265,11 @@ classDiagram
 
 #### Game Loop
 
-##### Problema
+**Problema**: Il problema da risolvere è la gestione del ciclo di gioco in un videogioco. Questo deve aggiornare continuamente lo stato dello stesso e renderizzare la grafica, garantendo reattività e fluidità. Questo include la gestione dell'input dell'utente, l'aggiornamento delle posizioni degli oggetti di gioco, il rilevamento delle collisioni e il rendering della grafica.
 
-Il problema da risolvere è la gestione del ciclo di gioco in un videogioco. Questo deve aggiornare continuamente lo stato dello stesso e renderizzare la grafica, garantendo reattività e fluidità. Questo include la gestione dell'input dell'utente, l'aggiornamento delle posizioni degli oggetti di gioco, il rilevamento delle collisioni e il rendering della grafica.
+**Soluzione**: La soluzione proposta è l'implementazione del pattern **Game Loop** utilizzando la classe `AnimationTimer` di JavaFX.
 
-##### Soluzione
-
-La soluzione proposta è l'implementazione del pattern **Game Loop** utilizzando la classe `AnimationTimer` di JavaFX.
-
-##### Motivazioni
-
-L'uso del pattern Game Loop è una pratica comune nello sviluppo di videogiochi, poiché garantisce un'esperienza di gioco fluida e reattiva. Inoltre, l'implementazione di un ciclo di gioco separato consente di mantenere il codice ben strutturato e modulare.
+**Motivazioni**: L'uso del pattern Game Loop è una pratica comune nello sviluppo di videogiochi, poiché garantisce un'esperienza di gioco fluida e reattiva. Inoltre, l'implementazione di un ciclo di gioco separato consente di mantenere il codice ben strutturato e modulare.
 
 ```mermaid
 classDiagram
@@ -304,17 +292,11 @@ classDiagram
 
 #### Template Method
 
-##### Problema
+**Problema**: All'interno del gioco si possono trovare diversi tipi di oggetti che devono aggiornare la loro posizione in base a specifiche regole di movimento. Ad esempio, la rana controllata dal giocatore si muove in base all'input della tastiera, mentre gli ostacoli e i tronchi si muovono automaticamente lungo le corsie. È necessario implementare il comportamento di movimento per ciascun tipo di oggetto di gioco in modo separato. Questo può portare a codice duplicato e difficile da mantenere.
 
-All'interno del gioco si possono trovare diversi tipi di oggetti che devono aggiornare la loro posizione in base a specifiche regole di movimento. Ad esempio, la rana controllata dal giocatore si muove in base all'input della tastiera, mentre gli ostacoli e i tronchi si muovono automaticamente lungo le corsie. È necessario implementare il comportamento di movimento per ciascun tipo di oggetto di gioco in modo separato. Questo può portare a codice duplicato e difficile da mantenere.
+**Soluzione**: Come soluzione si propone l'uso del pattern Template Method. Questo pattern permette di definire la struttura di un algoritmo, delegando alle sottoclassi la definizione di alcuni passaggi specifici. In questo modo, è possibile centralizzare la logica comune del movimento degli oggetti di gioco nella classe base, permettendo alle sottoclassi di specificare il comportamento particolare.
 
-##### Soluzione
-
-Come soluzione si propone l'uso del pattern Template Method. Questo pattern permette di definire la struttura di un algoritmo, delegando alle sottoclassi la definizione di alcuni passaggi specifici. In questo modo, è possibile centralizzare la logica comune del movimento degli oggetti di gioco nella classe base, permettendo alle sottoclassi di specificare il comportamento particolare.
-
-##### Motivazioni
-
-L'uso del pattern Template Method permette di mantenere il codice ben strutturato e modulare, riducendo la duplicazione del codice e facilitando la manutenzione.
+**Motivazioni**: L'uso del pattern Template Method permette di mantenere il codice ben strutturato e modulare, riducendo la duplicazione del codice e facilitando la manutenzione.
 
 ```mermaid
 classDiagram
