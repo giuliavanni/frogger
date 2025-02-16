@@ -379,51 +379,51 @@ void testCollisionDetection() {
   
     **Snippet**:  
  ```java
-  Iterator<GameObjectNotControllable> iterator = objects.iterator();
-        while (iterator.hasNext()) {
-            GameObjectNotControllable obj = iterator.next();
-            if (checkCollision(obj, frog)) {
-                ...
-                <controllo delle collisioni con ostacoli>
-                ...
-                } else if (obj instanceof Log) {
-                    onLog = true;
-                    logSpeed = ((Log) obj).getSpeed();
-                    logDirection = ((Log) obj).getDirection();
-                    frog.setOnLog(onLog, logSpeed, logDirection);
-                    return;
-                } else if (obj instanceof Token) {
-                     ...
-                     <controllo delle collisioni con token>
-                     ...
-                }
-            } else {
-                // Check if player missed the log
-                if (obj instanceof Log) {
-                    int logLane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
-                    frogY = frog.getYPosition();
-                    int frogLane = frogY / GlobalVariables.LANE_HEIGHT;
-                    if ((frogLane >= 1) && (frogLane <= 5)) {
-                        if (logLane == frogLane) { 
-                            logCounter[logLane]++;
-                        }
+Iterator<GameObjectNotControllable> iterator = objects.iterator();
+    while (iterator.hasNext()) {
+        GameObjectNotControllable obj = iterator.next();
+        if (checkCollision(obj, frog)) {
+            ...
+            <controllo delle collisioni con ostacoli>
+            ...
+            } else if (obj instanceof Log) {
+                onLog = true;
+                logSpeed = ((Log) obj).getSpeed();
+                logDirection = ((Log) obj).getDirection();
+                frog.setOnLog(onLog, logSpeed, logDirection);
+                return;
+            } else if (obj instanceof Token) {
+                    ...
+                    <controllo delle collisioni con token>
+                    ...
+            }
+        } else {
+            // Check if player missed the log
+            if (obj instanceof Log) {
+                int logLane = obj.getYPosition() / GlobalVariables.LANE_HEIGHT;
+                frogY = frog.getYPosition();
+                int frogLane = frogY / GlobalVariables.LANE_HEIGHT;
+                if ((frogLane >= 1) && (frogLane <= 5)) {
+                    if (logLane == frogLane) { 
+                        logCounter[logLane]++;
                     }
                 }
             }
         }
-        int logFault = 0;
-        for (int i = 0; i <= 5; i++) {
-            if (logCounter[i] == 3) {
-                logFault++;
-            }
-        }
-        if (logFault > 0) {
-            System.out.println("Log miss detected!");
-            frog.setOnLog(false, 0, 0);
-            handleLogMiss(frog);
+    }
+    int logFault = 0;
+    for (int i = 0; i <= 5; i++) {
+        if (logCounter[i] == 3) {
+            logFault++;
         }
     }
- ```
+    if (logFault > 0) {
+        System.out.println("Log miss detected!");
+        frog.setOnLog(false, 0, 0);
+        handleLogMiss(frog);
+    }
+}
+```
 Ho implementato l'algoritmo che gestisce l'interazione della rana con il tronco, l'eventuale caduta in acqua della rana e aggiorna lo stato di gioco.
 
 - Uso della libreria JavaFX:
@@ -436,25 +436,27 @@ Ho implementato l'algoritmo che gestisce l'interazione della rana con il tronco,
   **Snippet**:
 ```java
 private void askForPlayerName() {
-        VBox nameInputLayout = new VBox(20);
-        nameInputLayout.setAlignment(javafx.geometry.Pos.CENTER);
+    VBox nameInputLayout = new VBox(20);
+    nameInputLayout.setAlignment(javafx.geometry.Pos.CENTER);
 
-        Label nameLabel = new Label("Enter your name:");
-        nameLabel.setFont(pixelFont);
-        nameLabel.setStyle("-fx-text-fill: white;"); // Set text color to white
-        TextField nameInputField = new TextField();
-        nameInputField.setFont(pixelFont);
-        nameInputField.setMaxWidth(500);
+    Label nameLabel = new Label("Enter your name:");
+    nameLabel.setFont(pixelFont);
+    nameLabel.setStyle("-fx-text-fill: white;"); // Set text color to white
+    TextField nameInputField = new TextField();
+    nameInputField.setFont(pixelFont);
+    nameInputField.setMaxWidth(500);
 
-        Button submitButton = new Button("Submit");
-        submitButton.setFont(pixelFont);
-        submitButton.setOnAction(e -> {
-            SoundManager.playSound("click");
-            String playerName = nameInputField.getText();
-            System.out.println("Player's name: " + playerName);
-            mainApp.setPlayerName(playerName);
-            startNewGame(); // Call setupGame from MainApp
-        });
+    Button submitButton = new Button("Submit");
+    submitButton.setFont(pixelFont);
+    submitButton.setOnAction(e -> {
+        SoundManager.playSound("click");
+        String playerName = nameInputField.getText();
+        System.out.println("Player's name: " + playerName);
+        mainApp.setPlayerName(playerName);
+        startNewGame(); // Call setupGame from MainApp
+    });
+    ...
+}
 ```
 Ho usato la libreria JavaFX e una lambda expression per creare un'interfaccia utente interattiva e personalizzata.  
 
@@ -467,21 +469,21 @@ Ho usato la libreria JavaFX e una lambda expression per creare un'interfaccia ut
 
   **Snippet**:
 ```java
- private void startTimer() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (timeLeft > 0) {
-                timeLeft--;  // Decrement the time
-                double progress = timeLeft / GlobalVariables.GAME_DURATION;  // Calculate the remaining percentage
-                view.updateTimerDisplay(progress);  // Update the timer display in the view
-            } else {
-                view.updateTimerDisplay(0);  // If the time is up, the bar is empty
-                timeline.stop();
-                gameOver();  // Call the function when the time is up
-            }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);  // Repeat the cycle
-        timeline.play();  // Start the timer
-    }
+private void startTimer() {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        if (timeLeft > 0) {
+            timeLeft--;  // Decrement the time
+            double progress = timeLeft / GlobalVariables.GAME_DURATION;  // Calculate the remaining percentage
+            view.updateTimerDisplay(progress);  // Update the timer display in the view
+        } else {
+            view.updateTimerDisplay(0);  // If the time is up, the bar is empty
+            timeline.stop();
+            gameOver();  // Call the function when the time is up
+        }
+    }));
+    timeline.setCycleCount(Timeline.INDEFINITE);  // Repeat the cycle
+    timeline.play();  // Start the timer
+}
 ```
 Ho implementato il timer facendo uso di classi presenti in JavaFX e una lambda expression. 
 
@@ -490,7 +492,7 @@ Ho implementato il timer facendo uso di classi presenti in JavaFX e una lambda e
 
     **Dove**: `it.unibo.frogger.core.Frog.java`
 
-    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/core/Frog.java#L93-L118
+    **Permalink**: https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/99f79c962d780f348f8b7fb4fb9fdc7816505207/src/main/java/it/unibo/frogger/core/Frog.java#L93-L118
 
     **Snippet**:
 ```java
@@ -524,7 +526,7 @@ Ho implementato il movimento della rana utilizzando i tasti freccia per navigare
 
     **Dove**: `it.unibo.frogger.core.CollisionDetector.java`
 
-    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/controller/CollisionDetector.java#L28-L46
+    **Permalink**: https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/99f79c962d780f348f8b7fb4fb9fdc7816505207/src/main/java/it/unibo/frogger/controller/CollisionDetector.java#L28-L46
 
     **Snippet**:
 ```java
@@ -554,7 +556,7 @@ Ho sviluppato la logica di collisione utilizzando bounding boxes per rilevare le
 
     **Dove**: `it.unibo.frogger.core.PlayerScoreManager.java`
 
-    **Permalink**: https://github.com/giuliavanni/frogger/blob/1d10c8c0ae71e38e5fc2c4439c5275373cc27e5f/src/main/java/it/unibo/frogger/core/PlayerScoreManager.java#L30-L37
+    **Permalink**: https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/99f79c962d780f348f8b7fb4fb9fdc7816505207/src/main/java/it/unibo/frogger/core/PlayerScoreManager.java#L32-L41
 
     **Snippet**:
 ```java
