@@ -20,7 +20,7 @@ Il gioco è strutturato su livelli con difficoltà progressiva. Le meccaniche pr
 
 - **[RF3] Modalità di Gioco Classica**:
   - La rana si muove attraverso diverse corsie utilizzando i tasti freccia per navigare.
-  - Elementi in movimento, come: 
+  - Elementi in movimento: 
     - *veicoli*: generano le collisioni e devono essere evitati per completare il livello
     - *tronchi*: utilizzati come vettori per spostarsi e attraversare i corsi d'acqua.
   - Possibilità di raccogliere gettoni che forniscono bonus, come estensioni del tempo o vite extra.
@@ -623,9 +623,9 @@ La realizzazione di questo progetto ha presentato fin da subito delle sfide stim
 Complessivamente sono soddisfatta del risultato ottenuto, sento di aver acquisito nuove competenze dopo aver superato lo scoglio iniziale di un nuovo linguaggio e paradigma di programmazione. In futuro, si potrebbe lavorare ulteriormente sull'ottimizzazione del codice e sull'implementazione di funzionalità aggiuntive per arricchire ulteriormente l'esperienza di gioco.  
 
 #### Rambaldi
-Grazie a questo progetto, ho avuto l'opportunità di approfondire la programmazione orientata agli oggetti. Inizialmente, ho trovato difficoltà a comprendere e applicare i concetti, diversi da quelli utilizzati in altri linguaggi. Tuttavia, con il tempo e la pratica, sono riuscito a superare queste difficoltà e a contribuire in modo significativo al progetto.
+Grazie a questo progetto, ho avuto l'opportunità di approfondire la programmazione orientata agli oggetti. Inizialmente, ho incontrato difficoltà a comprendere e applicare i concetti, diversi da quelli utilizzati in altri linguaggi. Tuttavia, con il tempo e la pratica, sono riuscito a superare queste difficoltà e a contribuire in modo significativo al progetto.
 Uno dei punti di forza del lavoro è stata la fase di analisi del dominio. Anche se abbiamo speso molto tempo in questa fase, si è rivelata fondamentale per la realizzazione del codice. La comprensione approfondita delle entità e delle loro interazioni ci ha permesso di progettare un'architettura solida e ben strutturata, facilitando così lo sviluppo e la manutenzione del codice.
-Ho avuto alcune difficoltà nella gestione delle collisioni con i tronchi. Realizzare una logica di collisione precisa e affidabile si è rivelato più complesso del previsto. In particolar modo per quanto riguarda il movimento della rana sui tronchi in movimento. Grazie al lavoro di gruppo, però, siamo riusciti a trovare una soluzione adeguata.
+Ho avuto alcune difficoltà nella gestione delle collisioni con i tronchi. Realizzare una logica di collisione precisa e affidabile si è rivelato più complesso del previsto. In particolar modo per quanto riguarda lo spostamento della rana sui tronchi in movimento. Grazie al lavoro di gruppo, però, siamo riusciti a trovare una soluzione adeguata.
 
 La fase di analisi del dominio è stata particolarmente impegnativa, ma si è rivelata estremamente utile per la realizzazione del codice. Vorrei suggerire di dedicare più tempo e risorse a questa fase nei futuri corsi, in quanto può davvero fare la differenza nella qualità del progetto finale.
 
