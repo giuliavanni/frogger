@@ -571,6 +571,25 @@ public static void saveScore(final String playerName, final int score) {
 ```
 Ho implementato la persistenza dei dati per i punteggi dei giocatori, permettendo di salvare e caricare i punteggi da un file.
 
+- Uso del costrutto funzionale `stream`: 
+
+    **Dove**: `it.unibo.frogger.core.PlayerScoreManager.java`
+
+    **Permalink**: https://github.com/giuliavanni/pss24-25-Frogger-Rambaldi-Vanni/blob/99f79c962d780f348f8b7fb4fb9fdc7816505207/src/main/java/it/unibo/frogger/core/PlayerScoreManager.java#L80-L88
+
+    **Snippet**:
+```java
+public static List<Map.Entry<String, Integer>> getTopScores(final int limit) {
+    Map<String, Integer> scores = loadScores();
+    return scores.entrySet().stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .limit(limit)
+        // Remove the timestamp from the name when displaying scores
+        .map(entry -> Map.entry(entry.getKey().split("_")[0], entry.getValue()))
+        .toList();
+}
+```
+
 ---
 
 ## Commenti finali
